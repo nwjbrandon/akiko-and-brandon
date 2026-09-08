@@ -1,0 +1,207 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+
+  --color-background: var(--app-background);
+  --color-foreground: var(--app-foreground);
+  --color-card: var(--app-card);
+  --color-card-foreground: var(--app-card-foreground);
+  --color-primary: var(--app-primary);
+  --color-primary-foreground: var(--app-primary-foreground);
+  --color-secondary: var(--app-secondary);
+  --color-secondary-foreground: var(--app-secondary-foreground);
+  --color-muted: var(--app-muted);
+  --color-muted-foreground: var(--app-muted-foreground);
+  --color-accent: var(--app-accent);
+  --color-accent-foreground: var(--app-accent-foreground);
+  --color-border: var(--app-border);
+  --color-ring: var(--app-ring);
+  --color-iris: var(--app-iris);
+  --color-iris-muted: var(--app-iris-muted);
+  --color-hero-chip: var(--app-hero-chip);
+
+  --text-caption: 16px;
+  --text-caption--line-height: 1.25;
+  --text-title: 20px;
+  --text-title--line-height: 1.2;
+
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.5rem;
+}
+
+:root,
+html.light {
+  color-scheme: light;
+  --app-background: #fdf5f7;
+  --app-foreground: #33131f;
+  --app-card: #ffffff;
+  --app-card-foreground: #33131f;
+  --app-primary: #c94574;
+  --app-primary-foreground: #ffffff;
+  --app-secondary: #fbe4ec;
+  --app-secondary-foreground: #4a1b2d;
+  --app-muted: #f7e6ec;
+  --app-muted-foreground: #8a6373;
+  --app-accent: #e08a4a;
+  --app-accent-foreground: #3d1e08;
+  --app-border: #eccdd9;
+  --app-ring: #c94574;
+  --app-iris: #a8305e;
+  --app-iris-muted: #a8305e8c;
+  --app-hero-chip: #ffffff;
+}
+
+html.dark {
+  color-scheme: dark;
+  --app-background: #14060f;
+  --app-foreground: #f7e9ee;
+  --app-card: #26121d;
+  --app-card-foreground: #f7e9ee;
+  --app-primary: #e8618c;
+  --app-primary-foreground: #23030e;
+  --app-secondary: #351827;
+  --app-secondary-foreground: #f2dde5;
+  --app-muted: #2b1420;
+  --app-muted-foreground: #c09aab;
+  --app-accent: #f2b880;
+  --app-accent-foreground: #33190a;
+  --app-border: #462334;
+  --app-ring: #e8618c;
+  --app-iris: #ff9ec0;
+  --app-iris-muted: #ffd5e2b3;
+  --app-hero-chip: #e8618c;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* Day selector pill: translucent over the hero, opaque once the timeline
+   scrolls beneath it. */
+.day-date-pill {
+  background-color: #ffffff4d;
+}
+html.dark .day-date-pill {
+  background-color: #1a0522cc;
+}
+.day-date-pill-solid {
+  background-color: #fdf5f7f2;
+  box-shadow: 0 2px 12px #33131f14;
+}
+html.dark .day-date-pill-solid {
+  background-color: #1c0a17f5;
+  box-shadow: 0 2px 12px #00000059;
+}
+.day-date-pill-fade {
+  background: linear-gradient(90deg, #fff0, #ffffff8c);
+}
+html.dark .day-date-pill-fade {
+  background: linear-gradient(90deg, #1a052200, #1a0522e6);
+}
+.day-date-pill-solid + .day-date-pill-fade {
+  background: linear-gradient(90deg, #fdf5f700, #fdf5f7f2);
+}
+html.dark .day-date-pill-solid + .day-date-pill-fade {
+  background: linear-gradient(90deg, #1c0a1700, #1c0a17f5);
+}
+
+/* Hero gradient with film grain */
+.day-hero-gradient {
+  background-image: linear-gradient(180deg, #e8628f 0%, #ffd3bd 61.54%, var(--app-background) 100%);
+}
+.day-hero-gradient::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.7;
+  mix-blend-mode: soft-light;
+  background-repeat: repeat;
+  background-size: 120px 120px;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+html.dark .day-hero-gradient {
+  background-image: linear-gradient(180deg, #22072e 0%, #8f3a63 61.54%, #14060f 100%);
+}
+html.dark .day-hero-gradient::before {
+  opacity: 0.55;
+  mix-blend-mode: overlay;
+}
+
+/* Timeline current-step pulse */
+@keyframes timeline-dot-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+.timeline-dot-current {
+  animation: 1.4s ease-in-out infinite timeline-dot-blink;
+}
+@media (prefers-reduced-motion: reduce) {
+  .timeline-dot-current {
+    animation: none;
+  }
+}
+
+/* Print */
+@media print {
+  html {
+    font-size: 12pt;
+  }
+  body {
+    color: #000 !important;
+    background: #fff !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-break {
+    break-after: page;
+    page-break-after: always;
+  }
+  .print-break:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  /* The hero is a full-bleed sunset on screen; on paper it is just a heading. */
+  .day-hero-gradient {
+    background-image: none !important;
+    min-height: 0 !important;
+  }
+  .day-hero-gradient::before {
+    display: none !important;
+  }
+  .day-hero-gradient svg {
+    display: none !important;
+  }
+  .day-hero-gradient h1,
+  .day-hero-gradient p,
+  .day-hero-gradient dt,
+  .day-hero-gradient dd {
+    color: #000 !important;
+  }
+
+  /* Cards print as outlines rather than tinted glass. */
+  ol [role="button"] {
+    background: #fff !important;
+    border-color: #999 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
