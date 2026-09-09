@@ -93,7 +93,17 @@ export const TRIP: Trip = {
           location: DORMY_INN,
           link: DORMY_INN_URL,
         },
-        { start: "11:00", end: "12:20", type: "meal", title: LUNCH },
+        {
+          start: "11:00",
+          end: "12:20",
+          type: "meal",
+          title: LUNCH,
+          location: {
+            en: "Tsuruga Europe-ken Honten",
+            ja: "敦賀ヨーロッパ軒 本店",
+          },
+          link: "https://tabelog.com/en/fukui/A1803/A180301/18000167/",
+        },
         {
           start: "12:20",
           end: "13:21",
@@ -140,7 +150,17 @@ export const TRIP: Trip = {
           location: { en: "Kehi-jingu Shrine", ja: "氣比神宮" },
           link: "https://maps.app.goo.gl/BzcXZkNRrm9SHryz6",
         },
-        { start: "17:30", end: "19:30", type: "meal", title: DINNER },
+        {
+          start: "17:30",
+          end: "19:30",
+          type: "meal",
+          title: DINNER,
+          location: {
+            en: "Marusanya Tsuruga Ekimae",
+            ja: "まるさん屋 敦賀駅前",
+          },
+          link: "https://tabelog.com/en/fukui/A1803/A180301/18000158/",
+        },
         {
           start: "19:30",
           end: null,
@@ -156,8 +176,8 @@ export const TRIP: Trip = {
       cityId: "fukui",
       title: { en: "Crab, and a long lunch", ja: "かにまつりの一日" },
       summary: {
-        en: "A whole afternoon to ourselves at the Echizen Crab Festival by the sea, and sauce katsudon at Europe-ken Ikuhisa to end it.",
-        ja: "海沿いの道の駅越前で開かれる越前かにまつりへ。午後はまるごとふたりの時間。締めくくりはヨーロッパ軒 幾久店のソースカツ丼。",
+        en: "A whole afternoon to ourselves at the Echizen Crab Festival by the sea, and a seafood dinner at Uoshin to end it.",
+        ja: "海沿いの道の駅越前で開かれる越前かにまつりへ。午後はまるごとふたりの時間。締めくくりは魚心の海鮮料理。",
       },
       blocks: [
         {
@@ -225,8 +245,8 @@ export const TRIP: Trip = {
           end: "19:30",
           type: "meal",
           title: DINNER,
-          location: { en: "Europe-ken Ikuhisa", ja: "ヨーロッパ軒 幾久店" },
-          link: "https://tabelog.com/en/fukui/A1801/A180101/18001655/",
+          location: { en: "Uoshin Sakoten", ja: "魚心" },
+          link: "https://tabelog.com/en/fukui/A1801/A180101/18000770/",
         },
         {
           start: "19:30",
@@ -296,8 +316,11 @@ export const TRIP: Trip = {
           end: "15:23",
           type: "meal",
           title: LUNCH,
-          location: FUKUI_STATION,
-          link: FUKUI_STATION_URL,
+          location: {
+            en: "Europe-ken Souhonten",
+            ja: "ヨーロッパ軒 総本店",
+          },
+          link: "https://tabelog.com/en/fukui/A1801/A180101/18000015/",
         },
         {
           start: "15:23",
@@ -317,7 +340,11 @@ export const TRIP: Trip = {
           end: "20:30",
           type: "meal",
           title: DINNER,
-          location: { en: "Yokohama Station", ja: "横浜駅" },
+          location: {
+            en: "Unagi Yondaime Kikukawa, Yokohama Bay Quarter",
+            ja: "うなぎ 四代目菊川 横浜ベイクォーター店",
+          },
+          link: "https://maps.app.goo.gl/hmmwYKCeXER3VtbK7",
         },
       ],
     },
