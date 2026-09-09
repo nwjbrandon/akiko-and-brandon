@@ -30,7 +30,9 @@ const DORMY_INN = {
   en: "Dormy Inn Tsuruga Natural Hot Spring",
   ja: "ドーミーイン敦賀 天然温泉",
 }
+const RIVERGE_URL = "https://maps.app.goo.gl/MYWFwLYVuKHboFJg8"
 const RIVERGE = { en: "Hotel Riverge Akebono", ja: "ホテルリバージュアケボノ" }
+const FUKUI_STATION_URL = "https://maps.app.goo.gl/SZ8QcsLqqYPr8ydi6"
 const FUKUI_STATION = { en: "Fukui Station", ja: "福井駅" }
 const COIN_LOCKER = {
   en: "Leave luggage in coin locker",
@@ -65,6 +67,7 @@ export const TRIP: Trip = {
             ja: "ドトールコーヒーで待ち合わせ",
           },
           location: { en: "Yokohama Station", ja: "横浜駅" },
+          link: "https://maps.app.goo.gl/moK2cCDyWn3SPAW87",
         },
         {
           start: "07:18",
@@ -75,13 +78,13 @@ export const TRIP: Trip = {
             ja: "横浜駅 → 敦賀駅",
           },
           note: {
-            en: "Shin Yokohama Station → Maibara Station → Tsuruga Station",
-            ja: "新横浜駅 → 米原駅 → 敦賀駅",
+            en: "Yokohama Station → Shin-Yokohama Station → Maibara Station → Tsuruga Station",
+            ja: "横浜駅 → 新横浜駅 → 米原駅 → 敦賀駅",
           },
         },
         {
           start: "10:27",
-          end: "10:40",
+          end: "11:00",
           type: "logistics",
           title: {
             en: "Leave luggage at hotel",
@@ -90,7 +93,17 @@ export const TRIP: Trip = {
           location: DORMY_INN,
           link: DORMY_INN_URL,
         },
-        { start: "11:00", end: "12:20", type: "meal", title: LUNCH },
+        {
+          start: "11:00",
+          end: "12:20",
+          type: "meal",
+          title: LUNCH,
+          location: {
+            en: "Tsuruga Europe-ken Honten",
+            ja: "敦賀ヨーロッパ軒 本店",
+          },
+          link: "https://tabelog.com/en/fukui/A1803/A180301/18000167/",
+        },
         {
           start: "12:20",
           end: "13:21",
@@ -98,6 +111,10 @@ export const TRIP: Trip = {
           title: {
             en: "Tsuruga Station → Avenue of Metasequoias",
             ja: "敦賀駅 → メタセコイア並木",
+          },
+          note: {
+            en: "Tsuruga Station → Makino Station → Makino-kogen-minshuku-mura → Avenue of Metasequoias",
+            ja: "敦賀駅 → マキノ駅 → マキノ高原民宿村 → メタセコイア並木",
           },
           link: "https://maps.app.goo.gl/zYQ78dYUZr9t39dv7",
         },
@@ -110,6 +127,7 @@ export const TRIP: Trip = {
             en: "Avenue of Metasequoias",
             ja: "メタセコイア並木",
           },
+          link: "https://maps.app.goo.gl/NJMhFGfbmzcNMZX1A",
         },
         {
           start: "15:05",
@@ -118,6 +136,10 @@ export const TRIP: Trip = {
           title: {
             en: "Avenue of Metasequoias → Tsuruga Station",
             ja: "メタセコイア並木 → 敦賀駅",
+          },
+          note: {
+            en: "Avenue of Metasequoias → Makino-kogen-minshuku-mura → Makino Station → Tsuruga Station",
+            ja: "メタセコイア並木 → マキノ高原民宿村 → マキノ駅 → 敦賀駅",
           },
         },
         {
@@ -128,7 +150,17 @@ export const TRIP: Trip = {
           location: { en: "Kehi-jingu Shrine", ja: "氣比神宮" },
           link: "https://maps.app.goo.gl/BzcXZkNRrm9SHryz6",
         },
-        { start: "17:30", end: "19:30", type: "meal", title: DINNER },
+        {
+          start: "17:30",
+          end: "19:30",
+          type: "meal",
+          title: DINNER,
+          location: {
+            en: "Marusanya Tsuruga Ekimae",
+            ja: "まるさん屋 敦賀駅前",
+          },
+          link: "https://tabelog.com/en/fukui/A1803/A180301/18000158/",
+        },
         {
           start: "19:30",
           end: null,
@@ -144,8 +176,8 @@ export const TRIP: Trip = {
       cityId: "fukui",
       title: { en: "Crab, and a long lunch", ja: "かにまつりの一日" },
       summary: {
-        en: "A whole afternoon to ourselves at the Echizen Crab Festival by the sea, and sauce katsudon at Europe-ken Ikuhisa to end it.",
-        ja: "海沿いの道の駅越前で開かれる越前かにまつりへ。午後はまるごとふたりの時間。締めくくりはヨーロッパ軒 幾久店のソースカツ丼。",
+        en: "A whole afternoon to ourselves at the Echizen Crab Festival by the sea, and a seafood dinner at Uoshin to end it.",
+        ja: "海沿いの道の駅越前で開かれる越前かにまつりへ。午後はまるごとふたりの時間。締めくくりは魚心の海鮮料理。",
       },
       blocks: [
         {
@@ -161,6 +193,10 @@ export const TRIP: Trip = {
           end: "08:45",
           type: "commute",
           title: { en: "Tsuruga Station → Fukui Station", ja: "敦賀駅 → 福井駅" },
+          note: {
+            en: "Tsuruga Station → Fukui Station",
+            ja: "敦賀駅 → 福井駅",
+          },
         },
         {
           start: "08:45",
@@ -168,6 +204,7 @@ export const TRIP: Trip = {
           type: "logistics",
           title: COIN_LOCKER,
           location: FUKUI_STATION,
+          link: FUKUI_STATION_URL,
         },
         {
           start: "09:35",
@@ -176,6 +213,10 @@ export const TRIP: Trip = {
           title: {
             en: "Fukui Station → Roadside Station Echizen",
             ja: "福井駅 → 道の駅越前",
+          },
+          note: {
+            en: "Fukui Station → Takefu Station → Michinoeki「Echizen」 → Roadside Station Echizen",
+            ja: "福井駅 → 武生駅 → 道の駅「越前」→ 道の駅越前",
           },
         },
         {
@@ -194,14 +235,18 @@ export const TRIP: Trip = {
             en: "Roadside Station Echizen → Fukui Station",
             ja: "道の駅越前 → 福井駅",
           },
+          note: {
+            en: "Roadside Station Echizen → Michinoeki「Echizen」 → Takefu Station → Fukui Station",
+            ja: "道の駅越前 → 道の駅「越前」→ 武生駅 → 福井駅",
+          },
         },
         {
           start: "17:34",
           end: "19:30",
           type: "meal",
           title: DINNER,
-          location: { en: "Europe-ken Ikuhisa", ja: "ヨーロッパ軒 幾久店" },
-          link: "https://tabelog.com/en/fukui/A1801/A180101/18001655/",
+          location: { en: "Uoshin Sakoten", ja: "魚心" },
+          link: "https://tabelog.com/en/fukui/A1801/A180101/18000770/",
         },
         {
           start: "19:30",
@@ -209,6 +254,7 @@ export const TRIP: Trip = {
           type: "lodging",
           title: CHECK_IN,
           location: RIVERGE,
+          link: RIVERGE_URL,
         },
       ],
     },
@@ -227,6 +273,7 @@ export const TRIP: Trip = {
           type: "lodging",
           title: CHECK_OUT,
           location: RIVERGE,
+          link: RIVERGE_URL,
         },
         {
           start: "08:00",
@@ -234,12 +281,17 @@ export const TRIP: Trip = {
           type: "logistics",
           title: COIN_LOCKER,
           location: FUKUI_STATION,
+          link: FUKUI_STATION_URL,
         },
         {
-          start: "08:35",
-          end: "10:17",
+          start: "08:37",
+          end: "09:59",
           type: "commute",
           title: { en: "Fukui Station → Tojinbo", ja: "福井駅 → 東尋坊" },
+          note: {
+            en: "Fukui Station → Awaraonsen Station → Awara Onsen Station → Tojinbo",
+            ja: "福井駅 → 芦原温泉駅 → 芦原温泉駅（バス停）→ 東尋坊",
+          },
         },
         {
           start: "10:17",
@@ -247,19 +299,28 @@ export const TRIP: Trip = {
           type: "activity",
           title: SIGHTSEEING,
           location: { en: "Tojinbo", ja: "東尋坊" },
+          link: "https://maps.app.goo.gl/q6dDukNkBGWCKb1t6",
         },
         {
-          start: "12:10",
-          end: "13:31",
+          start: "12:17",
+          end: "13:51",
           type: "commute",
           title: { en: "Tojinbo → Fukui Station", ja: "東尋坊 → 福井駅" },
+          note: {
+            en: "Tojinbo → Awara Onsen Station → Awaraonsen Station → Fukui Station",
+            ja: "東尋坊 → 芦原温泉駅（バス停）→ 芦原温泉駅 → 福井駅",
+          },
         },
         {
           start: "13:31",
           end: "15:23",
           type: "meal",
           title: LUNCH,
-          location: FUKUI_STATION,
+          location: {
+            en: "Europe-ken Souhonten",
+            ja: "ヨーロッパ軒 総本店",
+          },
+          link: "https://tabelog.com/en/fukui/A1801/A180101/18000015/",
         },
         {
           start: "15:23",
@@ -279,7 +340,11 @@ export const TRIP: Trip = {
           end: "20:30",
           type: "meal",
           title: DINNER,
-          location: { en: "Yokohama Station", ja: "横浜駅" },
+          location: {
+            en: "Unagi Yondaime Kikukawa, Yokohama Bay Quarter",
+            ja: "うなぎ 四代目菊川 横浜ベイクォーター店",
+          },
+          link: "https://maps.app.goo.gl/hmmwYKCeXER3VtbK7",
         },
       ],
     },

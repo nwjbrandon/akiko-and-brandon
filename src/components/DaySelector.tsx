@@ -23,7 +23,7 @@ export function DaySelector({
     <div className={cn("relative overflow-hidden rounded-full", className)}>
       <div
         className={cn(
-          "day-date-pill flex overflow-x-auto rounded-full px-4 py-1.5 backdrop-blur-md [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+          "day-date-pill flex justify-center overflow-x-auto rounded-full px-4 py-1.5 backdrop-blur-md [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
           scrolled && "day-date-pill-solid",
         )}
       >
@@ -56,10 +56,6 @@ export function DaySelector({
           )
         })}
       </div>
-      <div
-        className="day-date-pill-fade pointer-events-none absolute inset-y-0 right-0 w-16 rounded-r-full"
-        aria-hidden
-      />
     </div>
   )
 }

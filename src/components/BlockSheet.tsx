@@ -33,7 +33,7 @@ export function BlockSheet({
   const duration = blockDuration(block, lang)
 
   return (
-    <div className="no-print fixed inset-0 z-50 flex items-end justify-center sm:items-center">
+    <div className="no-print fixed inset-0 z-50 flex items-center justify-center p-4">
       <button
         type="button"
         aria-label={ui("closeDetails")}
@@ -44,7 +44,7 @@ export function BlockSheet({
         role="dialog"
         aria-modal="true"
         aria-label={tx(block.title)}
-        className="relative w-full max-w-[480px] rounded-t-3xl border border-border bg-card p-6 shadow-2xl sm:rounded-3xl"
+        className="relative max-h-[85vh] w-full max-w-[480px] overflow-y-auto rounded-3xl border border-border bg-card p-6 shadow-2xl"
       >
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-2.5">

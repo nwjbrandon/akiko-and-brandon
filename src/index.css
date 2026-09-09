@@ -100,18 +100,6 @@ html.dark .day-date-pill-solid {
   background-color: #1c0a17f5;
   box-shadow: 0 2px 12px #00000059;
 }
-.day-date-pill-fade {
-  background: linear-gradient(90deg, #fff0, #ffffff8c);
-}
-html.dark .day-date-pill-fade {
-  background: linear-gradient(90deg, #1a052200, #1a0522e6);
-}
-.day-date-pill-solid + .day-date-pill-fade {
-  background: linear-gradient(90deg, #fdf5f700, #fdf5f7f2);
-}
-html.dark .day-date-pill-solid + .day-date-pill-fade {
-  background: linear-gradient(90deg, #1c0a1700, #1c0a17f5);
-}
 
 /* Hero gradient with film grain */
 .day-hero-gradient {
