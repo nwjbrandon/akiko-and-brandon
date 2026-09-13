@@ -1,7 +1,7 @@
 # Fukui, for Two
 
 A three-day itinerary site for a trip to Fukui, 21–23 November 2026 — Tsuruga,
-the Echizen Crab Festival, and the cliffs at Tojinbo.
+the Echizen Crab Festival, the Ichijōdani ruins and Eiheiji temple.
 
 Built with React 19, TypeScript, Vite and Tailwind CSS v4.
 
