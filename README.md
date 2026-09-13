@@ -46,9 +46,9 @@ through `/itinerary/2026-11-23`.
 
 The build in `dist/` is a static single-page app, so any static host works.
 Because routing happens in the browser, the host must rewrite unknown paths to
-`index.html` or a refresh on `/itinerary/2026-11-22` will 404. `vercel.json`
-already sets that rewrite for Vercel; on Netlify the equivalent is a
-`public/_redirects` file containing `/* /index.html 200`.
+`index.html` or a refresh on `/itinerary/2026-11-22` will 404. Both common
+hosts are covered: `public/_redirects` sets that rewrite for Netlify (Vite
+copies it into `dist/`), and `vercel.json` does the same for Vercel.
 
 ## Editing the itinerary
 
