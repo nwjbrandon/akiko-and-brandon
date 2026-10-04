@@ -2,10 +2,10 @@ import type { Lang, Localized } from "./types"
 
 const UI = {
   tripSubtitle: {
-    en: "Three days along the Sea of Japan",
-    ja: "日本海沿いの三日間",
+    en: "Three days along the Sea of Japan, and a dinner in Yokohama either side",
+    ja: "日本海沿いの三日間と、その前後の横浜ディナー",
   },
-  activities: { en: "Activities", ja: "予定" },
+  plans: { en: "Plans", ja: "予定" },
   start: { en: "Start", ja: "開始" },
   end: { en: "End", ja: "終了" },
   forecastUnavailable: {
@@ -14,6 +14,7 @@ const UI = {
   },
   loading: { en: "Loading…", ja: "読み込み中…" },
   route: { en: "Route", ja: "経路" },
+  openMap: { en: "Open in Google Maps", ja: "Googleマップで開く" },
   openReference: { en: "Open reference", ja: "リンクを開く" },
   closeDetails: { en: "Close details", ja: "閉じる" },
   dayNotFound: { en: "Day not found", ja: "該当する日程がありません" },

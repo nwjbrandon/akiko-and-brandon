@@ -32,6 +32,13 @@
   --radius-3xl: 1.5rem;
 }
 
+/* The fixed header and the sticky day selector; the day page lays itself out
+   around both. */
+:root {
+  --header-height: 4.875rem;
+  --selector-height: 4.5rem;
+}
+
 :root,
 html.light {
   color-scheme: light;
@@ -155,14 +162,6 @@ html.dark .day-hero-gradient::before {
   }
   .no-print {
     display: none !important;
-  }
-  .print-break {
-    break-after: page;
-    page-break-after: always;
-  }
-  .print-break:last-child {
-    break-after: auto;
-    page-break-after: auto;
   }
 
   /* The hero is a full-bleed sunset on screen; on paper it is just a heading. */

@@ -1,42 +1,45 @@
 import { useEffect, useState } from "react"
+import type { Localized } from "@/i18n/types"
 
 const ENDPOINT = "https://api.open-meteo.com/v1/forecast"
 
-const CONDITIONS: Record<number, string> = {
-  0: "Clear",
-  1: "Mainly clear",
-  2: "Partly cloudy",
-  3: "Overcast",
-  45: "Fog",
-  48: "Rime fog",
-  51: "Light drizzle",
-  53: "Drizzle",
-  55: "Dense drizzle",
-  56: "Freezing drizzle",
-  57: "Dense freezing drizzle",
-  61: "Slight rain",
-  63: "Rain",
-  65: "Heavy rain",
-  66: "Freezing rain",
-  67: "Heavy freezing rain",
-  71: "Slight snow",
-  73: "Snow",
-  75: "Heavy snow",
-  77: "Snow grains",
-  80: "Slight showers",
-  81: "Showers",
-  82: "Violent showers",
-  85: "Slight snow showers",
-  86: "Heavy snow showers",
-  95: "Thunderstorm",
-  96: "Thunderstorm with hail",
-  99: "Thunderstorm with heavy hail",
+const UNKNOWN_CONDITION: Localized = { en: "Conditions unavailable", ja: "天気不明" }
+
+const CONDITIONS: Record<number, Localized> = {
+  0: { en: "Clear", ja: "快晴" },
+  1: { en: "Mainly clear", ja: "晴れ" },
+  2: { en: "Partly cloudy", ja: "晴れ時々曇り" },
+  3: { en: "Overcast", ja: "曇り" },
+  45: { en: "Fog", ja: "霧" },
+  48: { en: "Rime fog", ja: "着氷性の霧" },
+  51: { en: "Light drizzle", ja: "弱い霧雨" },
+  53: { en: "Drizzle", ja: "霧雨" },
+  55: { en: "Dense drizzle", ja: "強い霧雨" },
+  56: { en: "Freezing drizzle", ja: "着氷性の霧雨" },
+  57: { en: "Dense freezing drizzle", ja: "強い着氷性の霧雨" },
+  61: { en: "Slight rain", ja: "小雨" },
+  63: { en: "Rain", ja: "雨" },
+  65: { en: "Heavy rain", ja: "大雨" },
+  66: { en: "Freezing rain", ja: "着氷性の雨" },
+  67: { en: "Heavy freezing rain", ja: "強い着氷性の雨" },
+  71: { en: "Slight snow", ja: "小雪" },
+  73: { en: "Snow", ja: "雪" },
+  75: { en: "Heavy snow", ja: "大雪" },
+  77: { en: "Snow grains", ja: "霧雪" },
+  80: { en: "Slight showers", ja: "弱いにわか雨" },
+  81: { en: "Showers", ja: "にわか雨" },
+  82: { en: "Violent showers", ja: "激しいにわか雨" },
+  85: { en: "Slight snow showers", ja: "弱いにわか雪" },
+  86: { en: "Heavy snow showers", ja: "強いにわか雪" },
+  95: { en: "Thunderstorm", ja: "雷雨" },
+  96: { en: "Thunderstorm with hail", ja: "ひょうを伴う雷雨" },
+  99: { en: "Thunderstorm with heavy hail", ja: "激しいひょうを伴う雷雨" },
 }
 
 export interface Forecast {
   tempMax: number
   tempMin: number
-  condition: string
+  condition: Localized
 }
 
 export type WeatherState =
@@ -81,7 +84,7 @@ export function useWeather(lat: number, lon: number, date: string) {
           forecast: {
             tempMax,
             tempMin,
-            condition: CONDITIONS[code] ?? "Conditions unavailable",
+            condition: CONDITIONS[code] ?? UNKNOWN_CONDITION,
           },
         })
       })

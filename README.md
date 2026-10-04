@@ -1,7 +1,8 @@
 # Fukui, for Two
 
-A three-day itinerary site for a trip to Fukui, 21–23 November 2026 — Tsuruga,
-the Echizen Crab Festival, the Ichijōdani ruins and Eiheiji temple.
+An itinerary site for a trip to Fukui, 21–23 November 2026 — Tsuruga, the
+Echizen Crab Festival, the Ichijōdani ruins and Eiheiji temple — with a dinner
+in Yokohama on either side, on the 20th and the 24th.
 
 Built with React 19, TypeScript, Vite and Tailwind CSS v4.
 
@@ -29,9 +30,10 @@ yarn install
 yarn dev
 ```
 
-Vite prints a local URL (http://localhost:5173 by default). Open it and the
-site redirects to the overview; each day lives at `/itinerary/2026-11-21`
-through `/itinerary/2026-11-23`.
+Vite prints a local URL (http://localhost:5173 by default). It opens on the
+overview; each day lives at `/itinerary/2026-11-20` through
+`/itinerary/2026-11-24`, and `/itinerary` jumps to today's day when the trip is
+underway.
 
 ## Other commands
 
@@ -52,10 +54,12 @@ copies it into `dist/`), and `vercel.json` does the same for Vercel.
 
 ## Editing the itinerary
 
-Everything shown on the site comes from [`src/data/itinerary.ts`](src/data/itinerary.ts),
-transcribed from `Japan 202611 - 11_21-23.csv`. Each day has a `summary` and a
-list of `blocks`; each block carries a start and end time, a `type`, and
-optional `location`, `note` and `link`.
+Everything shown on the site comes from [`src/data/itinerary.ts`](src/data/itinerary.ts).
+The 21st–23rd are transcribed from `Japan 202611 - 11_21-23.csv`; the Yokohama
+dinners on the 20th and 24th were added by hand. Each day has a `summary` and a
+list of `blocks`; each block carries a start and end time (`end: null` reads as
+"onwards"), a `type`, and optional `location`, `note` (the route, for travel),
+`map` (a Google Maps link) and `link` (a reference page such as Tabelog).
 
 ```ts
 {
@@ -64,6 +68,7 @@ optional `location`, `note` and `link`.
   type: "activity",
   title: { en: "Sightseeing", ja: "観光" },
   location: { en: "Avenue of Metasequoias", ja: "メタセコイア並木" },
+  map: "https://maps.app.goo.gl/NJMhFGfbmzcNMZX1A",
 }
 ```
 

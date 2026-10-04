@@ -2,9 +2,8 @@ import type { CSSProperties } from "react"
 
 /**
  * The horizon band at the foot of the hero: sunset over the Sea of Japan, a
- * torii, Tojinbo's basalt headland, and the two of you on the ridge watching
- * the light go. Drawn inline so the page ships without
- * image assets.
+ * torii, Eiheiji's cedars, and the two of you on the ridge watching the light
+ * go. Drawn inline so the page ships without image assets.
  *
  * It is a short strip on purpose — it sits entirely below the headline,
  * forecast and stats, so nothing here ever competes with the text.
@@ -65,18 +64,18 @@ export function HeroScene({
         <path d="M368.5 119.5 q5.5 -2.5 11 0 l1.8 22 h-14.6 z" />
       </g>
 
-      {/* Tojinbo headland, its columnar basalt suggested by the vertical seams */}
-      <path
-        d="M474 196 L492 178 L508 186 L524 172 L544 184 L562 168 L584 182 L606 174 L628 186 L654 176 L682 188 L710 180 L744 190 L744 240 L474 240 Z"
-        fill="#280a1d"
-        opacity="0.5"
-      />
-      <g opacity="0.2" stroke="#ffc0d5" strokeWidth="1.5">
-        <path d="M508 192 L508 230" />
-        <path d="M544 190 L544 232" />
-        <path d="M584 188 L584 230" />
-        <path d="M628 192 L628 234" />
-        <path d="M682 194 L682 232" />
+      {/* Eiheiji's cedars, a stand of tall sugi along the foot of the ridge */}
+      <g fill="#280a1d" opacity="0.5">
+        <path d="M462 240 C478 229 492 226 510 225 Q626 216 744 222 L744 240 Z" />
+        <path d="M496 190 L500.5 203.6 L498.8 203.6 L503.5 217.2 L501.5 217.2 L506 230 L486 230 L490.5 217.2 L488.5 217.2 L493.2 203.6 L491.5 203.6 Z" />
+        <path d="M522 172 L527.9 191.7 L525.6 191.7 L531.8 211.4 L529.1 211.4 L535 230 L509 230 L514.9 211.4 L512.2 211.4 L518.4 191.7 L516.1 191.7 Z" />
+        <path d="M548 184 L553 199.6 L551.1 199.6 L556.2 215.3 L554 215.3 L559 230 L537 230 L542 215.3 L539.8 215.3 L544.9 199.6 L543 199.6 Z" />
+        <path d="M578 164 L584.3 186.4 L581.9 186.4 L588.5 208.9 L585.7 208.9 L592 230 L564 230 L570.3 208.9 L567.5 208.9 L574.1 186.4 L571.7 186.4 Z" />
+        <path d="M608 178 L613.4 195.7 L611.4 195.7 L617 213.4 L614.6 213.4 L620 230 L596 230 L601.4 213.4 L599 213.4 L604.6 195.7 L602.6 195.7 Z" />
+        <path d="M640 168 L646.3 189.1 L643.9 189.1 L650.5 210.2 L647.7 210.2 L654 230 L626 230 L632.3 210.2 L629.5 210.2 L636.1 189.1 L633.7 189.1 Z" />
+        <path d="M672 186 L677 201 L675.1 201 L680.2 215.9 L678 215.9 L683 230 L661 230 L666 215.9 L663.8 215.9 L668.9 201 L667 201 Z" />
+        <path d="M702 174 L707.9 193 L705.6 193 L711.8 212.1 L709.1 212.1 L715 230 L689 230 L694.9 212.1 L692.2 212.1 L698.4 193 L696.1 193 Z" />
+        <path d="M732 190 L736.5 203.6 L734.8 203.6 L739.5 217.2 L737.5 217.2 L742 230 L722 230 L726.5 217.2 L724.5 217.2 L729.2 203.6 L727.5 203.6 Z" />
       </g>
 
       {/* Torii, for Kehi-jingu */}

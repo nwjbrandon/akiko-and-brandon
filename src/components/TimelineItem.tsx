@@ -54,6 +54,7 @@ export function TimelineItem({
   const Icon = blockIcon(block)
   const duration = blockDuration(block, lang)
   const isCurrent = status === "current"
+  const locationHref = block.map ?? block.link
 
   return (
     <li className="relative flex gap-4">
@@ -129,9 +130,9 @@ export function TimelineItem({
               ) : null}
               {block.location ? (
                 <p className="text-base leading-relaxed text-muted-foreground">
-                  {block.link ? (
+                  {locationHref ? (
                     <a
-                      href={block.link}
+                      href={locationHref}
                       target="_blank"
                       rel="noreferrer"
                       onClick={(event) => event.stopPropagation()}

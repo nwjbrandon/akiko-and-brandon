@@ -15,7 +15,7 @@ export function WeatherLine({
   className?: string
 }) {
   const state = useWeather(lat, lon, date)
-  const { ui } = useLang()
+  const { ui, tx } = useLang()
 
   if (state.status === "loading") {
     return (
@@ -56,7 +56,7 @@ export function WeatherLine({
       <span className="tabular-nums">
         {Math.round(forecast.tempMax)}° / {Math.round(forecast.tempMin)}°C
       </span>
-      <span className="font-medium opacity-80">{forecast.condition}</span>
+      <span className="font-medium opacity-80">{tx(forecast.condition)}</span>
     </p>
   )
 }
