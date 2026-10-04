@@ -19,7 +19,9 @@ export interface Block {
   location?: Localized
   /** Free-form detail from the itinerary's Memo column */
   note?: Localized
-  /** Google Maps / Tabelog reference from the Memo column */
+  /** Google Maps link for the location or route */
+  map?: string
+  /** Reference page for the place, such as its Tabelog listing */
   link?: string
 }
 

@@ -1,8 +1,9 @@
 import type { City, Trip } from "./types"
 
-// Source of truth: "Japan 202611 - 11_21-23.csv".
+// Source of truth for 11/21–23: "Japan 202611 - 11_21-23.csv".
 // The CSV labels its second day block "11/21"; it is 11/22 — the day opens by
 // checking out of the Tsuruga hotel checked into on 11/21.
+// The Yokohama dinners on 11/20 and 11/24 are not in the CSV.
 
 export const CITIES: Record<string, City> = {
   tsuruga: {
@@ -25,14 +26,14 @@ export const CITIES: Record<string, City> = {
   },
 }
 
-const DORMY_INN_URL = "https://maps.app.goo.gl/wWWnXj6HG3LYspV46"
+const DORMY_INN_MAP = "https://maps.app.goo.gl/wWWnXj6HG3LYspV46"
 const DORMY_INN = {
   en: "Dormy Inn Tsuruga Natural Hot Spring",
   ja: "ドーミーイン敦賀 天然温泉",
 }
-const RIVERGE_URL = "https://maps.app.goo.gl/MYWFwLYVuKHboFJg8"
+const RIVERGE_MAP = "https://maps.app.goo.gl/MYWFwLYVuKHboFJg8"
 const RIVERGE = { en: "Hotel Riverge Akebono", ja: "ホテルリバージュアケボノ" }
-const FUKUI_STATION_URL = "https://maps.app.goo.gl/SZ8QcsLqqYPr8ydi6"
+const FUKUI_STATION_MAP = "https://maps.app.goo.gl/SZ8QcsLqqYPr8ydi6"
 const FUKUI_STATION = { en: "Fukui Station", ja: "福井駅" }
 const COIN_LOCKER = {
   en: "Leave luggage in coin locker",
@@ -46,9 +47,29 @@ const DINNER = { en: "Dinner", ja: "夕食" }
 
 export const TRIP: Trip = {
   title: { en: "Fukui, for Two", ja: "ふたりの福井" },
-  startDate: "2026-11-21",
-  endDate: "2026-11-23",
+  startDate: "2026-11-20",
+  endDate: "2026-11-24",
   days: [
+    {
+      date: "2026-11-20",
+      cityId: "yokohama",
+      title: { en: "Pizza, the night before", ja: "出発前夜のピッツァ" },
+      summary: {
+        en: "The evening before we set off: dinner at Sisiliya in Kannai — rated very highly on Tabelog, and the wood-fired pizza looks wonderful.",
+        ja: "出発前夜は関内のシシリヤで夕食。食べログの評価がとても高く、薪窯で焼くピッツァがとてもおいしそう。",
+      },
+      blocks: [
+        {
+          start: "18:30",
+          end: null,
+          type: "meal",
+          title: DINNER,
+          location: { en: "Sisiliya, Kannai", ja: "シシリヤ 関内" },
+          link: "https://tabelog.com/kanagawa/A1401/A140104/14001040/",
+          map: "https://maps.app.goo.gl/gxoma1AdJTmyiJap7",
+        },
+      ],
+    },
     {
       date: "2026-11-21",
       cityId: "tsuruga",
@@ -67,7 +88,7 @@ export const TRIP: Trip = {
             ja: "ドトールコーヒーで待ち合わせ",
           },
           location: { en: "Yokohama Station", ja: "横浜駅" },
-          link: "https://maps.app.goo.gl/moK2cCDyWn3SPAW87",
+          map: "https://maps.app.goo.gl/moK2cCDyWn3SPAW87",
         },
         {
           start: "07:18",
@@ -91,7 +112,7 @@ export const TRIP: Trip = {
             ja: "ホテルに荷物を預ける",
           },
           location: DORMY_INN,
-          link: DORMY_INN_URL,
+          map: DORMY_INN_MAP,
         },
         {
           start: "11:00",
@@ -116,7 +137,7 @@ export const TRIP: Trip = {
             en: "Tsuruga Station → Makino Station → Makino-kogen-minshuku-mura → Avenue of Metasequoias",
             ja: "敦賀駅 → マキノ駅 → マキノ高原民宿村 → メタセコイア並木",
           },
-          link: "https://maps.app.goo.gl/zYQ78dYUZr9t39dv7",
+          map: "https://maps.app.goo.gl/zYQ78dYUZr9t39dv7",
         },
         {
           start: "13:21",
@@ -127,7 +148,7 @@ export const TRIP: Trip = {
             en: "Avenue of Metasequoias",
             ja: "メタセコイア並木",
           },
-          link: "https://maps.app.goo.gl/NJMhFGfbmzcNMZX1A",
+          map: "https://maps.app.goo.gl/NJMhFGfbmzcNMZX1A",
         },
         {
           start: "15:05",
@@ -148,7 +169,7 @@ export const TRIP: Trip = {
           type: "activity",
           title: SIGHTSEEING,
           location: { en: "Kehi-jingu Shrine", ja: "氣比神宮" },
-          link: "https://maps.app.goo.gl/BzcXZkNRrm9SHryz6",
+          map: "https://maps.app.goo.gl/BzcXZkNRrm9SHryz6",
         },
         {
           start: "17:30",
@@ -167,7 +188,7 @@ export const TRIP: Trip = {
           type: "lodging",
           title: CHECK_IN,
           location: DORMY_INN,
-          link: DORMY_INN_URL,
+          map: DORMY_INN_MAP,
         },
       ],
     },
@@ -186,7 +207,7 @@ export const TRIP: Trip = {
           type: "lodging",
           title: CHECK_OUT,
           location: DORMY_INN,
-          link: DORMY_INN_URL,
+          map: DORMY_INN_MAP,
         },
         {
           start: "08:04",
@@ -204,7 +225,7 @@ export const TRIP: Trip = {
           type: "logistics",
           title: COIN_LOCKER,
           location: FUKUI_STATION,
-          link: FUKUI_STATION_URL,
+          map: FUKUI_STATION_MAP,
         },
         {
           start: "09:35",
@@ -225,7 +246,7 @@ export const TRIP: Trip = {
           type: "activity",
           title: { en: "Fukui Crab Festival", ja: "越前かにまつり" },
           location: { en: "Roadside Station Echizen", ja: "道の駅越前" },
-          link: "https://maps.app.goo.gl/7eH8sETNF1oP9TnE8",
+          map: "https://maps.app.goo.gl/7eH8sETNF1oP9TnE8",
         },
         {
           start: "15:44",
@@ -254,7 +275,7 @@ export const TRIP: Trip = {
           type: "lodging",
           title: CHECK_IN,
           location: RIVERGE,
-          link: RIVERGE_URL,
+          map: RIVERGE_MAP,
         },
       ],
     },
@@ -263,8 +284,8 @@ export const TRIP: Trip = {
       cityId: "fukui",
       title: { en: "Ruins, a temple, then home", ja: "一乗谷と永平寺、そして帰り道" },
       summary: {
-        en: "An early morning among the ruins of the Asakura clan's town at Ichijōdani, the cedars and halls of Eiheiji, then a slow ride back east and one last dinner in Yokohama before we say goodnight.",
-        ja: "朝早くから一乗谷朝倉氏遺跡を歩き、杉木立に囲まれた大本山永平寺へ。午後はゆっくりと東へ戻り、横浜で最後の夕食を。",
+        en: "An early morning among the ruins of the Asakura clan's town at Ichijōdani, the cedars and halls of Eiheiji, then a slow ride back east and dinner in Yokohama before we say goodnight.",
+        ja: "朝早くから一乗谷朝倉氏遺跡を歩き、杉木立に囲まれた大本山永平寺へ。午後はゆっくりと東へ戻り、横浜で夕食を。",
       },
       blocks: [
         {
@@ -273,7 +294,7 @@ export const TRIP: Trip = {
           type: "lodging",
           title: CHECK_OUT,
           location: RIVERGE,
-          link: RIVERGE_URL,
+          map: RIVERGE_MAP,
         },
         {
           start: "07:30",
@@ -281,7 +302,7 @@ export const TRIP: Trip = {
           type: "logistics",
           title: COIN_LOCKER,
           location: FUKUI_STATION,
-          link: FUKUI_STATION_URL,
+          map: FUKUI_STATION_MAP,
         },
         {
           start: "07:59",
@@ -305,7 +326,7 @@ export const TRIP: Trip = {
             en: "Ichijōdani Asakura Clan Ruins",
             ja: "一乗谷朝倉氏遺跡",
           },
-          link: "https://maps.app.goo.gl/teLYodFrnSidtMKq5",
+          map: "https://maps.app.goo.gl/teLYodFrnSidtMKq5",
         },
         {
           start: "10:22",
@@ -326,7 +347,7 @@ export const TRIP: Trip = {
           type: "activity",
           title: SIGHTSEEING,
           location: { en: "Daihonzan Eiheiji", ja: "大本山永平寺" },
-          link: "https://maps.app.goo.gl/zewbjjW6Lu2Fc8Tz6",
+          map: "https://maps.app.goo.gl/zewbjjW6Lu2Fc8Tz6",
         },
         {
           start: "13:22",
@@ -374,7 +395,30 @@ export const TRIP: Trip = {
             en: "Unagi Yondaime Kikukawa, Yokohama Bay Quarter",
             ja: "うなぎ 四代目菊川 横浜ベイクォーター店",
           },
-          link: "https://maps.app.goo.gl/hmmwYKCeXER3VtbK7",
+          map: "https://maps.app.goo.gl/hmmwYKCeXER3VtbK7",
+        },
+      ],
+    },
+    {
+      date: "2026-11-24",
+      cityId: "yokohama",
+      title: { en: "Forty-six floors up", ja: "46階の夜景ディナー" },
+      summary: {
+        en: "One more evening once we're home: dinner on the 46th floor of The Tower Yokohama Kitanaka, with a night view and atmosphere that are hard to beat — and a dress to look forward to.",
+        ja: "旅のあとにもうひと晩。ザ・タワー横浜北仲の46階で、最高の夜景と雰囲気のなかディナー。ドレス姿も楽しみ。",
+      },
+      blocks: [
+        {
+          start: "19:00",
+          end: null,
+          type: "meal",
+          title: DINNER,
+          location: {
+            en: "THE YOKOHAMA BAY, The Tower Yokohama Kitanaka 46F",
+            ja: "THE YOKOHAMA BAY ザ・タワー横浜北仲 46階",
+          },
+          link: "https://tabelog.com/kanagawa/A1401/A140104/14080917/",
+          map: "https://maps.app.goo.gl/ugeqbSDTdiuCAiDV6",
         },
       ],
     },

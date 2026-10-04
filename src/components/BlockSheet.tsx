@@ -3,6 +3,12 @@ import { ExternalLink, MapPin, X } from "lucide-react"
 import type { Block } from "@/data/types"
 import { useLang } from "@/i18n/LanguageProvider"
 import { blockDuration, blockIcon, blockTimeRange, blockTypeLabel } from "@/lib/blocks"
+import { cn } from "@/lib/utils"
+
+const LINK_BUTTON =
+  "inline-flex w-full items-center justify-center gap-2 rounded-full px-5 py-3 text-base font-bold transition"
+const PRIMARY = "bg-primary text-primary-foreground hover:opacity-90"
+const SECONDARY = "border border-border hover:border-primary/60 hover:text-primary"
 
 /** Bottom sheet with the full detail of a single moment in the day. */
 export function BlockSheet({
@@ -89,16 +95,31 @@ export function BlockSheet({
           </div>
         ) : null}
 
-        {block.link ? (
-          <a
-            href={block.link}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-5 py-3 text-base font-bold text-primary-foreground transition-opacity hover:opacity-90"
-          >
-            <ExternalLink className="size-4" aria-hidden />
-            {ui("openReference")}
-          </a>
+        {block.map || block.link ? (
+          <div className="mt-5 flex flex-col gap-2">
+            {block.map ? (
+              <a
+                href={block.map}
+                target="_blank"
+                rel="noreferrer"
+                className={cn(LINK_BUTTON, PRIMARY)}
+              >
+                <MapPin className="size-4" aria-hidden />
+                {ui("openMap")}
+              </a>
+            ) : null}
+            {block.link ? (
+              <a
+                href={block.link}
+                target="_blank"
+                rel="noreferrer"
+                className={cn(LINK_BUTTON, block.map ? SECONDARY : PRIMARY)}
+              >
+                <ExternalLink className="size-4" aria-hidden />
+                {ui("openReference")}
+              </a>
+            ) : null}
+          </div>
         ) : null}
       </div>
     </div>

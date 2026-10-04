@@ -7,9 +7,6 @@ import { DayTimeline } from "@/components/DayTimeline"
 import { useLang } from "@/i18n/LanguageProvider"
 import { dayLabel } from "@/i18n/strings"
 
-const HEADER_HEIGHT = "4.875rem"
-const SELECTOR_HEIGHT = "4.5rem"
-
 const NAV_LINK =
   "inline-flex items-center justify-center rounded-full border border-border px-4 py-2.5 text-sm font-bold transition-colors hover:border-primary/60 hover:text-primary"
 
@@ -53,19 +50,17 @@ export function DayPage() {
 
   return (
     <div className="relative flex flex-col">
-      <div className="shrink-0" style={{ height: HEADER_HEIGHT }} aria-hidden />
+      <div className="h-(--header-height) shrink-0" aria-hidden />
 
-      <div className="no-print sticky top-[4.875rem] z-40 mx-auto w-full max-w-[480px] px-4 sm:px-6">
+      <div className="no-print sticky top-(--header-height) z-40 mx-auto w-full max-w-[480px] px-4 sm:px-6">
         <DaySelector activeDate={day.date} className="w-full" />
       </div>
 
       {/* Pull the hero up so the sunset sits behind the header and day selector. */}
-      <div
-        className="relative space-y-6"
-        style={{ marginTop: `calc(-1 * (${HEADER_HEIGHT} + ${SELECTOR_HEIGHT}))` }}
-      >
+      <div className="relative -mt-[calc(var(--header-height)+var(--selector-height))] space-y-6">
         <DayHero day={day} />
-        <DayTimeline day={day} />
+        {/* Keyed by date so an open detail sheet never carries over to another day. */}
+        <DayTimeline key={day.date} day={day} />
 
         <nav className="no-print mx-auto flex w-full max-w-[400px] flex-wrap items-center justify-between gap-3 px-4 pb-16 sm:px-0">
           {previous ? (

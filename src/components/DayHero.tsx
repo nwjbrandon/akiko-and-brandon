@@ -40,7 +40,7 @@ export function DayHero({ day, className }: { day: Day; className?: string }) {
           />
         </div>
 
-        <div className="relative z-10 mx-auto flex max-w-[480px] flex-col items-center px-4 pt-[calc(4.875rem+4.5rem+1.5rem+2rem)] pb-6 sm:px-6">
+        <div className="relative z-10 mx-auto flex max-w-[480px] flex-col items-center px-4 pt-[calc(var(--header-height)+var(--selector-height)+1.5rem+2rem)] pb-6 sm:px-6">
           <p className="text-xs font-bold tracking-wide text-iris">
             {dayLabel(dayIndex(day.date), lang)} · {tx(day.title)}
           </p>
@@ -63,9 +63,9 @@ export function DayHero({ day, className }: { day: Day; className?: string }) {
           </p>
 
           <dl className="mt-8 grid w-full max-w-sm grid-cols-3 gap-2 text-center">
-            <Stat label={ui("activities")} value={String(day.blocks.length)} />
+            <Stat label={ui("plans")} value={String(day.blocks.length)} />
             <Stat label={ui("start")} value={start} />
-            <Stat label={ui("end")} value={end} />
+            <Stat label={ui("end")} value={end ?? "—"} />
           </dl>
         </div>
       </div>

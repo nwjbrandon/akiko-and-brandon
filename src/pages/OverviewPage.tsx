@@ -5,7 +5,7 @@ import { DAYS, TRIP } from "@/data/itinerary"
 import { Badge } from "@/components/Badge"
 import { useLang } from "@/i18n/LanguageProvider"
 import { dayLabel } from "@/i18n/strings"
-import { dayBounds } from "@/lib/blocks"
+import { dayBounds, timeRange } from "@/lib/blocks"
 import { formatFullDate, formatShortDate } from "@/lib/date"
 
 export function OverviewPage() {
@@ -16,7 +16,7 @@ export function OverviewPage() {
   }, [lang])
 
   return (
-    <div className="mx-auto w-full max-w-[480px] px-4 pt-[6.5rem] pb-16 sm:px-6">
+    <div className="mx-auto w-full max-w-[480px] px-4 pt-[calc(var(--header-height)+1.625rem)] pb-16 sm:px-6">
       <header>
         <p className="flex items-center gap-1.5 text-xs font-bold tracking-wide text-primary uppercase">
           <Heart className="size-3.5 fill-current" aria-hidden />
@@ -57,7 +57,7 @@ export function OverviewPage() {
                   {tx(day.summary)}
                 </p>
                 <p className="mt-3 flex items-center gap-1.5 text-sm font-bold tabular-nums text-primary">
-                  {start} – {end}
+                  {timeRange(start, end, lang)}
                   <ArrowRight className="size-4" aria-hidden />
                 </p>
               </Link>

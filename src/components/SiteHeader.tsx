@@ -18,7 +18,7 @@ export function SiteHeader() {
     <header
       className={cn(
         // Transparent over the top of the hero; a scrim once content runs beneath it.
-        "no-print fixed inset-x-0 top-0 z-50 h-[4.875rem] transition-colors duration-200",
+        "no-print fixed inset-x-0 top-0 z-50 h-(--header-height) transition-colors duration-200",
         scrolled && "border-b border-border/60 bg-background/80 backdrop-blur-md",
       )}
     >

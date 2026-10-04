@@ -38,9 +38,14 @@ export function blockTypeLabel(block: Block, lang: Lang) {
   return translate(LABEL_KEYS[block.type], lang)
 }
 
+/** "18:30 – 20:30", or "18:30 onwards" / "18:30 〜" with no end. */
+export function timeRange(start: string, end: string | null, lang: Lang) {
+  if (end) return `${start} – ${end}`
+  return lang === "ja" ? `${start} 〜` : `${start} onwards`
+}
+
 export function blockTimeRange(block: Block, lang: Lang) {
-  if (block.end) return `${block.start} – ${block.end}`
-  return lang === "ja" ? `${block.start} 〜` : `${block.start} onwards`
+  return timeRange(block.start, block.end, lang)
 }
 
 export function blockDuration(block: Block, lang: Lang) {
@@ -72,11 +77,14 @@ export function timelineStatuses(
   })
 }
 
+/**
+ * When the day's plans begin and the last time anything is due to finish. A
+ * day made only of open-ended blocks, like a dinner with no fixed end, has no
+ * end at all.
+ */
 export function dayBounds(blocks: Block[]) {
-  const first = blocks[0]
-  const last = blocks[blocks.length - 1]
   return {
-    start: first?.start ?? "—",
-    end: last?.end ?? last?.start ?? "—",
+    start: blocks[0]?.start ?? "—",
+    end: blocks.findLast((block) => block.end)?.end ?? null,
   }
 }
