@@ -37,9 +37,6 @@ const IBIS = {
 const IBIS_MAP = mapsSearch("ibis Kuala Lumpur City Centre")
 const IBIS_LINK = "https://all.accor.com/hotel/8732/index.en.shtml"
 
-const KL_SENTRAL = { en: "KL Sentral", ja: "KLセントラル" }
-const KL_SENTRAL_MAP = mapsSearch("KL Sentral")
-
 const KSL = { en: "KSL Hotel & Resort", ja: "KSLホテル＆リゾート" }
 const KSL_MAP = mapsSearch("KSL Hotel & Resort, 33 Jalan Seladang, Johor Bahru")
 
@@ -189,8 +186,8 @@ export const MALAYSIA_SINGAPORE_2027: PlannedTrip = {
       cityId: "kuala-lumpur",
       title: { en: "Caves, temples and a mosque", ja: "洞窟と寺院とモスク" },
       summary: {
-        en: "Batu Caves first thing, Chinatown's temples and clam noodles, the Islamic Arts Museum and the National Mosque in its Friday visiting hour, a Malaysian supermarket for train snacks, then the evening ETS south to Johor Bahru.",
-        ja: "朝いちばんにバトゥ洞窟へ。チャイナタウンの寺院めぐりとララ（はまぐり）麺、イスラム美術館、金曜の見学時間に合わせて国立モスク。マレーシアのスーパーで車内の夕食を買い、夕方のETSでジョホールバルへ南下。",
+        en: "Batu Caves first thing, Chinatown's temples and clam noodles, the Islamic Arts Museum and the National Mosque in its Friday visiting hour, then the evening ETS south to Johor Bahru.",
+        ja: "朝いちばんにバトゥ洞窟へ。チャイナタウンの寺院めぐりとララ（はまぐり）麺、イスラム美術館、金曜の見学時間に合わせて国立モスク。夕方のETSでジョホールバルへ南下。",
       },
       blocks: [
         {
@@ -357,39 +354,26 @@ export const MALAYSIA_SINGAPORE_2027: PlannedTrip = {
           start: "15:45",
           end: "16:10",
           type: "commute",
-          title: { en: "National Mosque → NU Sentral", ja: "国立モスク → NUセントラル" },
+          title: { en: "National Mosque → KL Sentral", ja: "国立モスク → KLセントラル" },
           note: {
-            en: "Masjid Negara → NU Sentral (walk, about 25 minutes; or one stop on the KTM Komuter from Kuala Lumpur station to KL Sentral)",
-            ja: "マスジッド・ヌガラ → NUセントラル（徒歩約25分。またはクアラルンプール駅からKTMコミューターで1駅、KLセントラルへ）",
+            en: "Masjid Negara → KL Sentral (walk, about 25 minutes; or one stop on the KTM Komuter from Kuala Lumpur station)",
+            ja: "マスジッド・ヌガラ → KLセントラル（徒歩約25分。またはクアラルンプール駅からKTMコミューターで1駅）",
           },
         },
         {
           start: "16:10",
-          end: "16:40",
-          type: "activity",
-          title: { en: "A Malaysian supermarket", ja: "マレーシアのスーパーマーケット" },
-          location: {
-            en: "Sam's Groceria, NU Sentral (Lower Ground)",
-            ja: "サムズ・グロサリア（NUセントラル地下）",
-          },
-          note: {
-            en: "Local groceries from a Malaysian chain (halal, so no pork or alcohol). Pick up dinner and snacks for the train: its bistro sells out.",
-            ja: "マレーシア系チェーンのスーパー（ハラールのため豚肉・お酒はなし）。電車の夕食とおやつをここで。車内のビストロはすぐ売り切れます。",
-          },
-          map: mapsSearch("Sam's Groceria NU Sentral"),
-          link: "https://www.nusentral.com/sams-groceria/",
-        },
-        {
-          start: "16:40",
-          end: "17:00",
+          end: "16:25",
           type: "logistics",
-          title: { en: "Collect luggage, through the gates", ja: "荷物を受け取り、改札へ" },
-          location: KL_SENTRAL,
-          note: {
-            en: "KTMB asks for 30 minutes before departure and refuses boarding from 5 minutes before. Follow the KTM Intercity signs.",
-            ja: "KTMBは出発30分前の到着を推奨、5分前以降は乗車不可。「KTM Intercity」の案内に従って改札へ。",
+          title: { en: "Collect luggage", ja: "荷物を受け取る" },
+          location: {
+            en: "Dr. Locker, KL Sentral (Level 1)",
+            ja: "Dr. Locker（KLセントラル1階）",
           },
-          map: KL_SENTRAL_MAP,
+          note: {
+            en: "Time to buy dinner for the train before the gates; its bistro sells out. KTMB asks for 30 minutes before departure and refuses boarding from 5 minutes before. Follow the KTM Intercity signs.",
+            ja: "改札に入る前に車内の夕食を調達（車内のビストロはすぐ売り切れます）。KTMBは出発30分前の到着を推奨、5分前以降は乗車不可。「KTM Intercity」の案内に従って改札へ。",
+          },
+          map: mapsSearch("Dr Locker KL Sentral"),
         },
         {
           start: "17:35",
