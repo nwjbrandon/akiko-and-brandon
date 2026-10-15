@@ -111,6 +111,8 @@ and the data file uses the corrected date.
 **Home timeline.** The trips run down one rail in date order. A marker shows
 where today falls between them; a trip underway gets the pulsing dot instead,
 past trips fade back, and each upcoming trip counts down the days to its start.
+Once the list is longer than the screen, the page opens scrolled to that point,
+with the trips before it above and the trips to come below.
 
 **Language.** English and Japanese, toggled from the header and remembered in
 `localStorage`. With no saved preference the site guesses: the browser timezone

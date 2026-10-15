@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useRef, type Ref } from "react"
 import { Link } from "react-router-dom"
 import { ChevronRight, Heart } from "lucide-react"
 import { getCity } from "@/data/cities"
@@ -18,15 +18,32 @@ type Row = { kind: "trip"; trip: Trip; status: TimelineStatus } | { kind: "today
 /**
  * The trips in date order down one rail. Past trips fade back and a trip
  * underway gets the pulsing dot, as moments do on a day's timeline; between
- * trips, a marker shows where today falls.
+ * trips, a marker shows where today falls. However long the list grows, the
+ * page opens on that point.
  */
 export function HomePage() {
   const { lang, ui } = useLang()
   const { today } = useNow()
+  // The trip underway, or else the today marker.
+  const nowRef = useRef<HTMLLIElement>(null)
 
   useEffect(() => {
     document.title = translate("siteName", lang)
   }, [lang])
+
+  // Open on now rather than on the oldest trip. While it is already on screen,
+  // as it is until the list outgrows the viewport, leave the page at the top.
+  useEffect(() => {
+    const row = nowRef.current
+    if (!row) return
+    const root = getComputedStyle(document.documentElement)
+    // The fixed header covers the top of the viewport; --header-height is in rem.
+    const headerHeight =
+      parseFloat(root.getPropertyValue("--header-height")) * parseFloat(root.fontSize)
+    const { top, bottom } = row.getBoundingClientRect()
+    if (top >= headerHeight && bottom <= window.innerHeight) return
+    row.scrollIntoView({ block: "center" })
+  }, [])
 
   const rows: Row[] = TRIPS.map((trip) => ({
     kind: "trip",
@@ -58,10 +75,17 @@ export function HomePage() {
           const isFirst = index === 0
           const isLast = index === rows.length - 1
           return row.kind === "today" ? (
-            <TodayMarker key="today" today={today} isFirst={isFirst} isLast={isLast} />
+            <TodayMarker
+              key="today"
+              ref={nowRef}
+              today={today}
+              isFirst={isFirst}
+              isLast={isLast}
+            />
           ) : (
             <TripItem
               key={row.trip.id}
+              ref={row.status === "current" ? nowRef : undefined}
               trip={row.trip}
               status={row.status}
               today={today}
@@ -76,17 +100,19 @@ export function HomePage() {
 }
 
 function TodayMarker({
+  ref,
   today,
   isFirst,
   isLast,
 }: {
+  ref?: Ref<HTMLLIElement>
   today: string
   isFirst: boolean
   isLast: boolean
 }) {
   const { lang, ui } = useLang()
   return (
-    <li className="relative flex gap-4">
+    <li ref={ref} className="relative flex gap-4">
       <TimelineRail
         status="future"
         isFirst={isFirst}
@@ -111,12 +137,14 @@ const CARD: Record<TimelineStatus, string> = {
 }
 
 function TripItem({
+  ref,
   trip,
   status,
   today,
   isFirst,
   isLast,
 }: {
+  ref?: Ref<HTMLLIElement>
   trip: Trip
   status: TimelineStatus
   today: string
@@ -145,7 +173,7 @@ function TripItem({
     .join(lang === "ja" ? "・" : " · ")
 
   return (
-    <li className="relative flex gap-4">
+    <li ref={ref} className="relative flex gap-4">
       <TimelineRail status={status} isFirst={isFirst} isLast={isLast} />
       <Link
         to={tripPath(trip)}
