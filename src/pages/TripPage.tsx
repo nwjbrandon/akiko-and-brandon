@@ -1,43 +1,55 @@
 import { useEffect } from "react"
-import { Link } from "react-router-dom"
-import { ArrowRight, Heart } from "lucide-react"
-import { DAYS, TRIP } from "@/data/itinerary"
+import { Link, Navigate, useParams } from "react-router-dom"
+import { ArrowLeft, ArrowRight, Heart } from "lucide-react"
+import { dayPath, getTrip, tripEnd, tripStart } from "@/data/itinerary"
 import { Badge } from "@/components/Badge"
 import { useLang } from "@/i18n/LanguageProvider"
 import { dayLabel } from "@/i18n/strings"
 import { dayBounds, timeRange } from "@/lib/blocks"
-import { formatFullDate, formatShortDate } from "@/lib/date"
+import { formatDateSpan, formatFullDate } from "@/lib/date"
 
-export function OverviewPage() {
+/** One trip at a glance: a card per day, each leading to its timeline. */
+export function TripPage() {
+  const { tripId } = useParams()
   const { lang, ui, tx } = useLang()
+  const trip = getTrip(tripId)
 
   useEffect(() => {
-    document.title = TRIP.title[lang]
-  }, [lang])
+    if (trip) document.title = trip.title[lang]
+  }, [trip, lang])
+
+  if (!trip) return <Navigate to="/" replace />
 
   return (
     <div className="mx-auto w-full max-w-[480px] px-4 pt-[calc(var(--header-height)+1.625rem)] pb-16 sm:px-6">
-      <header>
+      <Link
+        to="/"
+        className="no-print inline-flex items-center gap-1.5 text-sm font-bold text-muted-foreground transition-colors hover:text-primary"
+      >
+        <ArrowLeft className="size-4" aria-hidden />
+        {ui("allTrips")}
+      </Link>
+
+      <header className="mt-5">
         <p className="flex items-center gap-1.5 text-xs font-bold tracking-wide text-primary uppercase">
           <Heart className="size-3.5 fill-current" aria-hidden />
-          {formatShortDate(TRIP.startDate, lang)} – {formatShortDate(TRIP.endDate, lang)}
-          {" · 2026"}
+          {formatDateSpan(tripStart(trip), tripEnd(trip), lang)}
         </p>
         <h1 className="mt-2 text-4xl font-extrabold tracking-tight">
-          {tx(TRIP.title)}
+          {tx(trip.title)}
         </h1>
         <p className="mt-2 text-lg leading-relaxed text-muted-foreground">
-          {ui("tripSubtitle")}
+          {tx(trip.subtitle)}
         </p>
       </header>
 
       <ul className="mt-8 list-none space-y-4 p-0">
-        {DAYS.map((day, index) => {
+        {trip.days.map((day, index) => {
           const { start, end } = dayBounds(day.blocks)
           return (
             <li key={day.date}>
               <Link
-                to={`/itinerary/${day.date}`}
+                to={dayPath(trip, day.date)}
                 className="block rounded-2xl border border-border bg-card p-5 shadow-sm transition hover:border-primary/50 hover:shadow-md"
               >
                 <div className="flex items-start justify-between gap-3">

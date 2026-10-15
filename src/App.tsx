@@ -1,14 +1,25 @@
-import { Navigate, Route, Routes } from "react-router-dom"
+import { Navigate, Route, Routes, useParams } from "react-router-dom"
 import { SiteHeader } from "@/components/SiteHeader"
-import { DAYS } from "@/data/itinerary"
+import { TRIPS, dayPath, findDay, tripStart } from "@/data/itinerary"
 import { todayInJapan } from "@/lib/date"
 import { DayPage } from "@/pages/DayPage"
-import { OverviewPage } from "@/pages/OverviewPage"
+import { HomePage } from "@/pages/HomePage"
+import { TripPage } from "@/pages/TripPage"
 
-/** The day being lived, or the first day when the trip is not underway. */
-function defaultDate() {
+/** The day being lived, else the first day of the next trip, else home. */
+function currentPath() {
   const today = todayInJapan()
-  return DAYS.find((day) => day.date === today)?.date ?? DAYS[0].date
+  const live = findDay(today)
+  if (live) return dayPath(live.trip, today)
+  const next = TRIPS.find((trip) => tripStart(trip) > today)
+  return next ? dayPath(next, tripStart(next)) : "/"
+}
+
+/** Days used to live at /itinerary/:date; keep those links working. */
+function LegacyDayRedirect() {
+  const { date = "" } = useParams()
+  const found = findDay(date)
+  return <Navigate to={found ? dayPath(found.trip, date) : "/"} replace />
 }
 
 export default function App() {
@@ -16,9 +27,11 @@ export default function App() {
     <>
       <SiteHeader />
       <Routes>
-        <Route path="/" element={<OverviewPage />} />
-        <Route path="/itinerary" element={<Navigate to={`/itinerary/${defaultDate()}`} replace />} />
-        <Route path="/itinerary/:date" element={<DayPage />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/itinerary" element={<Navigate to={currentPath()} replace />} />
+        <Route path="/itinerary/:date" element={<LegacyDayRedirect />} />
+        <Route path="/:tripId" element={<TripPage />} />
+        <Route path="/:tripId/:date" element={<DayPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>

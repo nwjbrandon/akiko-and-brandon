@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react"
+import type { HeroSceneVariant } from "@/data/types"
 
 /**
  * The horizon band at the foot of the hero: sunset over the Sea of Japan, a
@@ -7,11 +8,16 @@ import type { CSSProperties } from "react"
  *
  * It is a short strip on purpose — it sits entirely below the headline,
  * forecast and stats, so nothing here ever competes with the text.
+ *
+ * The torii and cedars belong to Fukui; the "plain" variant keeps only the
+ * sunset, the ridges and the two of you, for trips without a drawing yet.
  */
 export function HeroScene({
+  variant,
   className,
   style,
 }: {
+  variant: HeroSceneVariant
   className?: string
   style?: CSSProperties
 }) {
@@ -64,6 +70,14 @@ export function HeroScene({
         <path d="M368.5 119.5 q5.5 -2.5 11 0 l1.8 22 h-14.6 z" />
       </g>
 
+      {variant === "fukui" ? <FukuiLandmarks /> : null}
+    </svg>
+  )
+}
+
+function FukuiLandmarks() {
+  return (
+    <>
       {/* Eiheiji's cedars, a stand of tall sugi along the foot of the ridge */}
       <g fill="#280a1d" opacity="0.5">
         <path d="M462 240 C478 229 492 226 510 225 Q626 216 744 222 L744 240 Z" />
@@ -85,7 +99,6 @@ export function HeroScene({
         <rect x="202" y="164" width="88" height="7" rx="2" />
         <rect x="210" y="180" width="72" height="5" rx="1.5" />
       </g>
-
-    </svg>
+    </>
   )
 }

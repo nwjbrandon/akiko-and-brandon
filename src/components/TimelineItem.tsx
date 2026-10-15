@@ -11,6 +11,7 @@ import {
 import { useLang } from "@/i18n/LanguageProvider"
 import { cn } from "@/lib/utils"
 import { Badge } from "./Badge"
+import { TimelineRail } from "./TimelineRail"
 
 const card = cva(
   "relative -ml-3 mr-1 mb-8 w-full min-w-0 flex-1 cursor-pointer rounded-2xl border px-3 py-4 text-left shadow-lg backdrop-blur-xl transition-[box-shadow,transform,background-color] hover:-translate-y-0.5 hover:shadow-xl sm:-ml-4 sm:mr-0 sm:px-4 sm:py-5",
@@ -58,34 +59,7 @@ export function TimelineItem({
 
   return (
     <li className="relative flex gap-4">
-      {/* Rail */}
-      <div
-        className="relative -ml-2 flex w-6 shrink-0 flex-col items-center"
-        aria-hidden
-      >
-        {isFirst && isLast ? null : (
-          <span
-            className={cn(
-              "absolute left-1/2 w-0.5 -translate-x-1/2",
-              status === "past" ? "bg-border" : "bg-primary/25",
-              isFirst
-                ? "top-[1.6875rem] bottom-0 sm:top-[1.9375rem]"
-                : isLast
-                  ? "top-0 h-[1.6875rem] sm:h-[1.9375rem]"
-                  : "inset-y-0",
-            )}
-          />
-        )}
-        <span
-          className={cn(
-            "relative z-10 mt-5 size-3.5 shrink-0 rounded-full border-2 sm:mt-6",
-            isCurrent &&
-              "timeline-dot-current border-primary bg-primary ring-4 ring-primary/25",
-            status === "past" && "border-muted-foreground/35 bg-muted-foreground/35",
-            status === "future" && "border-primary/45 bg-transparent",
-          )}
-        />
-      </div>
+      <TimelineRail status={status} isFirst={isFirst} isLast={isLast} />
 
       <div
         role="button"
