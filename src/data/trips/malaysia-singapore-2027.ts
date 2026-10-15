@@ -48,6 +48,8 @@ const TRAVELODGE = {
 const TRAVELODGE_MAP = mapsSearch("Travelodge Harbourfront Singapore, 50 Telok Blangah Rd")
 const TRAVELODGE_LINK = "https://travelodgehotels.asia/travelodge-harbourfront/"
 
+const USS = { en: "Universal Studios Singapore", ja: "ユニバーサル・スタジオ・シンガポール" }
+
 const GARDENS_LINK =
   "https://www.gardensbythebay.com.sg/en/plan-your-visit/opening-hours.html"
 
@@ -596,8 +598,8 @@ export const MALAYSIA_SINGAPORE_2027: PlannedTrip = {
           start: "10:00",
           end: "12:30",
           type: "activity",
-          title: { en: "Universal Studios Singapore", ja: "ユニバーサル・スタジオ・シンガポール" },
-          location: { en: "Resorts World Sentosa", ja: "リゾート・ワールド・セントーサ" },
+          title: STILL_TO_PLAN,
+          location: USS,
           note: {
             en: "The last weekend of Singapore's school holidays, so expect crowds: Universal Express is worth it, and can only be bought together with the ticket.",
             ja: "シンガポールの学校休みの最終週末で混雑必至。ユニバーサル・エクスプレスがおすすめで、入場券と一緒にしか買えません。",
@@ -623,8 +625,8 @@ export const MALAYSIA_SINGAPORE_2027: PlannedTrip = {
           start: "13:15",
           end: "15:00",
           type: "activity",
-          title: { en: "Universal Studios, the afternoon", ja: "午後もユニバーサル・スタジオ" },
-          location: { en: "Resorts World Sentosa", ja: "リゾート・ワールド・セントーサ" },
+          title: STILL_TO_PLAN,
+          location: USS,
           map: mapsSearch("Universal Studios Singapore"),
         },
         {
