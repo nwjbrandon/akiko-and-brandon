@@ -1,18 +1,22 @@
 import { Navigate, Route, Routes, useParams } from "react-router-dom"
 import { SiteHeader } from "@/components/SiteHeader"
-import { TRIPS, dayPath, findDay, tripStart } from "@/data/itinerary"
+import { TRIPS, dayPath, findDay, isPlanned, tripPath, tripStart } from "@/data/itinerary"
 import { todayInJapan } from "@/lib/date"
 import { DayPage } from "@/pages/DayPage"
 import { HomePage } from "@/pages/HomePage"
 import { TripPage } from "@/pages/TripPage"
 
-/** The day being lived, else the first day of the next trip, else home. */
+/**
+ * The day being lived, else the first day of the next trip (its overview, if
+ * it is not planned yet), else home.
+ */
 function currentPath() {
   const today = todayInJapan()
   const live = findDay(today)
   if (live) return dayPath(live.trip, today)
   const next = TRIPS.find((trip) => tripStart(trip) > today)
-  return next ? dayPath(next, tripStart(next)) : "/"
+  if (!next) return "/"
+  return isPlanned(next) ? dayPath(next, tripStart(next)) : tripPath(next)
 }
 
 /** Days used to live at /itinerary/:date; keep those links working. */

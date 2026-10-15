@@ -1,14 +1,22 @@
 import { useEffect, useRef, type Ref } from "react"
 import { Link } from "react-router-dom"
 import { ChevronRight, Heart } from "lucide-react"
-import { getCity } from "@/data/cities"
-import { TRIPS, tripEnd, tripPath, tripStart, tripStatus } from "@/data/itinerary"
+import {
+  TRIPS,
+  isPlanned,
+  tripDayCount,
+  tripEnd,
+  tripPath,
+  tripPlaces,
+  tripStart,
+  tripStatus,
+} from "@/data/itinerary"
 import type { Trip } from "@/data/types"
 import { Badge } from "@/components/Badge"
 import { TimelineRail } from "@/components/TimelineRail"
 import { useNow } from "@/hooks/useNow"
 import { useLang } from "@/i18n/LanguageProvider"
-import { dayCount, inDays, translate } from "@/i18n/strings"
+import { dayCount, inDays, placeList, translate } from "@/i18n/strings"
 import type { TimelineStatus } from "@/lib/blocks"
 import { daysBetween, formatDateSpan, formatFullDate } from "@/lib/date"
 import { cn } from "@/lib/utils"
@@ -165,12 +173,8 @@ function TripItem({
             label: untilStart === 1 ? ui("startsTomorrow") : inDays(untilStart, lang),
           }
 
-  // Each place once, in the order the trip reaches it.
-  const places = [...new Set(trip.days.map((day) => day.cityId))]
-    .map((cityId) => getCity(cityId))
-    .filter((city) => city !== undefined)
-    .map((city) => tx(city.name))
-    .join(lang === "ja" ? "・" : " · ")
+  const places = placeList(tripPlaces(trip), lang)
+  const planned = isPlanned(trip)
 
   return (
     <li ref={ref} className="relative flex gap-4">
@@ -180,6 +184,8 @@ function TripItem({
         className={cn(
           "relative -ml-3 mr-1 mb-8 block w-full min-w-0 flex-1 rounded-2xl border px-3 py-4 shadow-lg backdrop-blur-xl transition-[box-shadow,transform,opacity] hover:-translate-y-0.5 hover:shadow-xl sm:-ml-4 sm:mr-0 sm:px-4 sm:py-5",
           CARD[status],
+          // A dashed edge for a trip still to be filled in.
+          !planned && "border-dashed",
         )}
       >
         <div className="flex items-start justify-between gap-3">
@@ -196,9 +202,14 @@ function TripItem({
         <p className="mt-1 text-base leading-relaxed text-muted-foreground">
           {tx(trip.subtitle)}
         </p>
+        {planned ? null : (
+          <Badge variant="muted" className="mt-3">
+            {ui("notPlannedYet")}
+          </Badge>
+        )}
         <div className="mt-3 flex items-end justify-between gap-2">
           <p className="text-sm font-semibold text-primary">
-            {dayCount(trip.days.length, lang)}
+            {dayCount(tripDayCount(trip), lang)}
             {places ? <span className="font-medium text-muted-foreground"> · {places}</span> : null}
           </p>
           <ChevronRight className="no-print size-5 shrink-0 text-primary" aria-hidden />

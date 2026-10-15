@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import { dayPath } from "@/data/itinerary"
-import type { Trip } from "@/data/types"
+import type { PlannedTrip } from "@/data/types"
 import { useScrolled } from "@/hooks/useScrolled"
 import { useLang } from "@/i18n/LanguageProvider"
 import { formatDayOfMonth, formatWeekdayShort } from "@/lib/date"
@@ -15,7 +15,7 @@ export function DaySelector({
   activeDate,
   className,
 }: {
-  trip: Trip
+  trip: PlannedTrip
   activeDate: string
   className?: string
 }) {

@@ -1,4 +1,4 @@
-import type { Trip } from "../types"
+import type { PlannedTrip } from "../types"
 import { CHECK_OUT, DINNER, LUNCH, MEET_AT_DOUTOR, SIGHTSEEING } from "./shared"
 
 // Source of truth for 11/21–23: "Japan 202611 - 11_21-23.csv".
@@ -21,7 +21,7 @@ const COIN_LOCKER = {
 }
 const CHECK_IN = { en: "Check-in and rest", ja: "チェックイン・休憩" }
 
-export const FUKUI_2026: Trip = {
+export const FUKUI_2026: PlannedTrip = {
   id: "fukui-2026",
   title: { en: "Fukui, for Two", ja: "ふたりの福井" },
   subtitle: {

@@ -1,6 +1,6 @@
 # Akiko & Brandon
 
-Itineraries for our trips around Japan, day by day:
+Itineraries for our trips, day by day:
 
 - **Our First Date**, 31 March 2026: sushi by Yokohama Station, coffee at
   BASEGATE Yokohama Kannai, and the light show at Wonderia Yokohama.
@@ -8,6 +8,14 @@ Itineraries for our trips around Japan, day by day:
   Matsumoto Castle, the Lake Suwa fireworks and a morning in Kamikochi.
 - **Fukui, for Two**, 20–24 November 2026: Tsuruga, the Echizen Crab Festival,
   the Ichijōdani ruins and Eiheiji temple, with a dinner in Yokohama either side.
+- **Malaysia & Singapore, for Two**, 18–22 March 2027: the Petronas Towers, Batu
+  Caves and the National Mosque in Kuala Lumpur, a morning in Johor Bahru, then
+  Universal Studios, the Night Safari and Marina Bay in Singapore.
+
+And one still to plan, with its dates and places set:
+
+- **Yamagata, for Two**, 19–24 February 2027: Yamagata and Ginzan Onsen, with
+  dinners in Yokohama.
 
 Built with React 19, TypeScript, Vite and Tailwind CSS v4.
 
@@ -74,13 +82,20 @@ order; the first and last days are the trip's dates.
 - [`fukui-2026.ts`](src/data/trips/fukui-2026.ts): the 21st–23rd are transcribed
   from `Japan 202611 - 11_21-23.csv`; the Yokohama dinners on the 20th and 24th
   were added by hand.
+- [`yamagata-2027.ts`](src/data/trips/yamagata-2027.ts): dates and places only,
+  not planned yet.
+- [`malaysia-singapore-2027.ts`](src/data/trips/malaysia-singapore-2027.ts):
+  planned in October 2026 around the flights, hotels and train already booked.
+  Opening hours, prices and routes were checked then; the comment at the top of
+  the file lists what to re-check the week before.
 
 Each day has a `summary`, a `cityId` (the place in
-[`src/data/cities.ts`](src/data/cities.ts) its weather forecast comes from) and
-a list of `blocks`. Each block carries a start and end time (`end: null` reads
-as "onwards"), a `type`, and optional `location`, `note` (the route, for travel),
-`map` (a Google Maps link) and `link` (a reference page such as Tabelog or the
-official site).
+[`src/data/cities.ts`](src/data/cities.ts) its weather forecast comes from, and
+whose time zone its times are in) and a list of `blocks`. Each block carries a
+start and end time (`end: null` reads as "onwards"), a `type`, and optional
+`location`, `note` (the route, for travel; a tip, for anything else), `map` (a
+Google Maps link) and `link` (a reference page such as Tabelog or the official
+site).
 
 ```ts
 {
@@ -96,6 +111,24 @@ official site).
 To add a trip, copy one of the trip files, give it a new `id`, add any new
 places to `cities.ts`, and list it in `TRIPS` in `itinerary.ts`. The home page
 timeline and the routes pick it up from there.
+
+A trip whose days are not planned yet gives only its dates and places, in place
+of `scene` and `days`:
+
+```ts
+export const YAMAGATA_2027: UnplannedTrip = {
+  id: "yamagata-2027",
+  title: { en: "Yamagata, for Two", ja: "ふたりの山形" },
+  subtitle: { en: "…", ja: "…" },
+  start: "2027-02-19",
+  end: "2027-02-24",
+  cityIds: ["yokohama", "yamagata", "ginzan-onsen"],
+}
+```
+
+It sits on the home timeline with a dashed edge and a "Not planned yet" pill,
+and its page says the plan is still to come. To plan it, swap `start`, `end` and
+`cityIds` for `days`, add a `scene`, and type it as a `PlannedTrip`.
 
 Every visible string is a `{ en, ja }` pair, so adding or changing an entry
 means writing both languages. Block `type` drives the icon, the label and the
@@ -124,8 +157,9 @@ nothing — see [`src/i18n/`](src/i18n/).
 `localStorage` and applied by an inline script in `index.html` so the page never
 flashes the wrong theme on load.
 
-**Day timeline progress.** Times are treated as Japan local time. On the day you are
-actually travelling, the block happening right now gets a pulsing dot, earlier
+**Day timeline progress.** Times are local to the day's place: each city in
+`cities.ts` carries its time zone, so Kuala Lumpur and Singapore run an hour
+behind Japan. On the day you are actually travelling, the block happening right now gets a pulsing dot, earlier
 blocks fade back, and later ones stay outlined. Refreshes every minute.
 
 **Weather.** Each day's hero fetches a forecast from Open-Meteo. Open-Meteo only

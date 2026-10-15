@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { Link, useParams } from "react-router-dom"
-import { dayPath, getTrip, tripPath } from "@/data/itinerary"
+import { dayPath, getTrip, isPlanned, tripPath } from "@/data/itinerary"
 import { DayHero } from "@/components/DayHero"
 import { DaySelector } from "@/components/DaySelector"
 import { DayTimeline } from "@/components/DayTimeline"
@@ -14,8 +14,10 @@ export function DayPage() {
   const { tripId, date = "" } = useParams()
   const { lang, ui, tx } = useLang()
   const trip = getTrip(tripId)
-  const index = trip ? trip.days.findIndex((day) => day.date === date) : -1
-  const day = trip?.days[index]
+  // A trip not planned yet has no days to show.
+  const days = trip && isPlanned(trip) ? trip.days : []
+  const index = days.findIndex((day) => day.date === date)
+  const day = days[index]
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -27,7 +29,7 @@ export function DayPage() {
     document.title = day ? `${dayLabel(index, lang)} · ${title}` : title
   }, [trip, day, index, lang])
 
-  if (!trip || !day) {
+  if (!trip || !isPlanned(trip) || !day) {
     return (
       <div className="mx-auto max-w-[480px] px-4 pt-40 pb-16 text-center sm:px-6">
         <h1 className="text-3xl font-extrabold tracking-tight">

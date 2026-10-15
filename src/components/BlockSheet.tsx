@@ -89,7 +89,7 @@ export function BlockSheet({
         {block.note ? (
           <div className="mt-4 rounded-2xl border border-border bg-muted/40 p-4">
             <p className="text-xs font-bold tracking-wide text-muted-foreground uppercase">
-              {ui("route")}
+              {block.type === "commute" ? ui("route") : ui("note")}
             </p>
             <p className="mt-1.5 text-base leading-relaxed">{tx(block.note)}</p>
           </div>

@@ -30,6 +30,8 @@ export interface City {
   name: Localized
   lat: number
   lon: number
+  /** IANA time zone, e.g. "Asia/Tokyo"; a day's times are read in its city's zone. */
+  timeZone: string
 }
 
 export interface Day {
@@ -44,12 +46,32 @@ export interface Day {
 /** Which drawing sits at the foot of a trip's day heroes. */
 export type HeroSceneVariant = "fukui" | "plain"
 
-export interface Trip {
+interface TripBase {
   /** URL slug, e.g. "fukui-2026" → /fukui-2026/2026-11-22 */
   id: string
   title: Localized
   subtitle: Localized
+}
+
+/** A trip with its day-by-day plan written. */
+export interface PlannedTrip extends TripBase {
   scene: HeroSceneVariant
   /** In date order; the first and last days are the trip's start and end. */
   days: Day[]
 }
+
+/**
+ * A trip whose dates and places are settled but whose days are not planned
+ * yet. Once they are, it becomes a PlannedTrip: `start`, `end` and `cityIds`
+ * give way to `days`, and it gains a hero `scene`.
+ */
+export interface UnplannedTrip extends TripBase {
+  /** ISO "YYYY-MM-DD" */
+  start: string
+  /** ISO "YYYY-MM-DD" */
+  end: string
+  /** The places it takes in, as ids in cities.ts */
+  cityIds: string[]
+}
+
+export type Trip = PlannedTrip | UnplannedTrip

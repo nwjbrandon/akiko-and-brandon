@@ -1,4 +1,4 @@
-import type { Trip } from "../types"
+import type { PlannedTrip } from "../types"
 import {
   CHECK_OUT,
   DINNER,
@@ -35,7 +35,7 @@ const MATSUMOTO_STATION_MAP = mapsSearch("松本駅")
 const FANTASY_SPRINGS = { en: "Fantasy Springs", ja: "ファンタジースプリングス" }
 const TDS_ATTRACTION = "https://www.tokyodisneyresort.jp/en/tds/attraction/detail"
 
-export const MATSUMOTO_2026: Trip = {
+export const MATSUMOTO_2026: PlannedTrip = {
   id: "matsumoto-2026",
   title: { en: "Matsumoto, for Two", ja: "ふたりの松本" },
   subtitle: {
