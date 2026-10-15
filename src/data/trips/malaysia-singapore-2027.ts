@@ -29,6 +29,7 @@ const SG_ARRIVAL_CARD =
   "https://www.ica.gov.sg/enter-transit-depart/entering-singapore/sg-arrival-card"
 
 const CHECK_IN = { en: "Check-in", ja: "チェックイン" }
+const STILL_TO_PLAN = { en: "Still to plan", ja: "予定はこれから" }
 
 const IBIS = {
   en: "ibis Kuala Lumpur City Centre",
@@ -408,145 +409,47 @@ export const MALAYSIA_SINGAPORE_2027: PlannedTrip = {
       cityId: "johor-bahru",
       title: { en: "Johor Bahru, then Singapore", ja: "ジョホールバルから、シンガポールへ" },
       summary: {
-        en: "Johor Bahru's old town and the Royal Botanical Garden in the morning, a little shopping and curry fish head at Kam Long, then the RTS Link to Singapore: an early hawker dinner at Geylang Bahru, the pink 'sakura' trees of Bishan, and the Night Safari after dark.",
-        ja: "朝はジョホールバル旧市街と王立植物園、少しお買い物をしてカムロンのカレーフィッシュヘッド。RTSリンクでシンガポールへ渡り、ゲイラン・バルのホーカーで早めの夕食、ビシャンのピンクの「桜」、夜はナイトサファリへ。",
+        en: "Dim sum at Pin Ming Xuan by the hotel, a Johor Bahru morning still to plan, then the RTS Link to Singapore at 13:00: an early hawker dinner at Maxwell and the Night Safari after dark.",
+        ja: "ホテル近くの品茗轩で点心の朝ごはん。午前のジョホールバルはこれから決めて、13:00にRTSリンクでシンガポールへ。マックスウェルのホーカーで早めの夕食をとって、夜はナイトサファリ。",
       },
       blocks: [
         {
-          start: "06:30",
-          end: "07:15",
+          start: "07:30",
+          end: "08:30",
           type: "meal",
           title: BREAKFAST,
-        },
-        {
-          start: "07:30",
-          end: "08:05",
-          type: "commute",
-          title: { en: "KSL → Johor Bahru old town", ja: "KSL → ジョホールバル旧市街" },
-          note: {
-            en: "KSL City → JB Sentral (J100 bus) → Old Chinese Temple (walk, about 10 minutes)",
-            ja: "KSLシティ → JBセントラル（J100バス）→ 柔佛古廟（徒歩約10分）",
-          },
-        },
-        {
-          start: "08:05",
-          end: "08:25",
-          type: "activity",
-          title: { en: "Old Chinese Temple", ja: "柔佛古廟" },
-          location: { en: "Jalan Trus", ja: "トラス通り" },
-          note: {
-            en: "Built in the 1870s and shared by five Chinese dialect groups. Free.",
-            ja: "1870年代に建てられ、5つの華人方言グループが共に守ってきた古廟。入場無料。",
-          },
-          map: mapsSearch("Johor Bahru Old Chinese Temple, Jalan Trus"),
-        },
-        {
-          start: "08:25",
-          end: "08:50",
-          type: "activity",
-          title: {
-            en: "Jalan Tan Hiok Nee and banana cake",
-            ja: "タン・ヒオック・ニー通りとバナナケーキ",
-          },
-          location: { en: "Hiap Joo Bakery", ja: "ヒャップジュー・ベーカリー" },
-          note: {
-            en: "The old town's heritage street. Hiap Joo has baked banana cake in a wood-fired oven since 1919, RM13 a box; the fresh batch comes out around noon.",
-            ja: "旧市街の歴史ある通り。ヒャップジューは1919年から薪窯でバナナケーキを焼くパン屋で、1箱RM13。焼きたては昼ごろ。",
-          },
-          map: mapsSearch("Hiap Joo Bakery, 13 Jalan Tan Hiok Nee, Johor Bahru"),
-        },
-        {
-          start: "08:50",
-          end: "09:15",
-          type: "commute",
-          title: {
-            en: "Old town → Royal Botanical Garden",
-            ja: "旧市街 → ジョホール王立植物園",
+          location: {
+            en: "Pin Ming Xuan (HQ KSL), Jalan Serigala",
+            ja: "品茗轩（ピンミンシュエン）KSL本店",
           },
           note: {
-            en: "Hiap Joo Bakery → Menara Tabung Haji (walk, about 12 minutes) → Taman Botani Diraja Johor (the garden's shuttle, every 15 minutes)",
-            ja: "ヒャップジュー → タブン・ハジ・タワー（徒歩約12分）→ ジョホール王立植物園（植物園のシャトル、15分間隔）",
+            en: "Dim sum, a 3-minute walk from the hotel. Opens at 07:30 Friday to Monday (08:00 midweek), and the queue starts before it opens.",
+            ja: "ホテルから徒歩3分の点心の店。金〜月曜は7:30開店（火〜木は8:00）、開店前から行列ができます。",
           },
+          map: "https://maps.app.goo.gl/z1FzvQUDfFxxSXXX6",
         },
         {
-          start: "09:15",
-          end: "10:05",
-          type: "activity",
-          title: {
-            en: "The Royal Botanical Garden and its Japanese House",
-            ja: "王立植物園と日本家屋",
-          },
-          location: { en: "Taman Botani Diraja Johor", ja: "ジョホール王立植物園" },
-          note: {
-            en: "On the Grand Palace grounds, opened in 2025. The Japanese House was a gift from the Emperor of Japan in the 1880s. Tickets online only (RM30), no walk-ins.",
-            ja: "王宮の敷地に2025年に開園。日本家屋は1880年代に明治天皇から贈られたもの。チケットはオンラインのみ（RM30）、当日窓口なし。",
-          },
-          map: mapsSearch("Taman Botani Diraja Johor"),
-          link: "https://tamanbotanidiraja.johor.gov.my/tiket/",
-        },
-        {
-          start: "10:05",
-          end: "10:55",
-          type: "commute",
-          title: { en: "Royal Botanical Garden → KSL", ja: "王立植物園 → KSL" },
-          note: {
-            en: "Taman Botani Diraja Johor → Menara Tabung Haji (the garden's shuttle) → JB Sentral (walk, about 20 minutes) → KSL City (J100 bus)",
-            ja: "ジョホール王立植物園 → タブン・ハジ・タワー（植物園のシャトル）→ JBセントラル（徒歩約20分）→ KSLシティ（J100バス）",
-          },
-        },
-        {
-          start: "10:55",
-          end: "11:30",
-          type: "activity",
-          title: { en: "A little shopping", ja: "ちょっとお買い物" },
-          location: { en: "KSL City Mall", ja: "KSLシティモール" },
-          note: {
-            en: "Next door to the hotel.",
-            ja: "ホテルの隣。",
-          },
-          map: mapsSearch("KSL City Mall, Johor Bahru"),
-        },
-        {
-          start: "11:30",
-          end: "11:40",
+          start: "08:30",
+          end: "08:45",
           type: "logistics",
           title: CHECK_OUT,
           location: KSL,
           map: KSL_MAP,
         },
         {
-          start: "11:40",
-          end: "12:15",
-          type: "commute",
-          title: { en: "KSL → JB Sentral", ja: "KSL → JBセントラル" },
-          note: {
-            en: "KSL City → JB Sentral (J100 bus) → Kam Long Ah Zai (walk, about 8 minutes)",
-            ja: "KSLシティ → JBセントラル（J100バス）→ カムロン（徒歩約8分）",
-          },
+          start: "08:45",
+          end: "13:00",
+          type: "activity",
+          title: STILL_TO_PLAN,
         },
         {
-          start: "12:15",
-          end: "13:15",
-          type: "meal",
-          title: LUNCH,
-          location: {
-            en: "Kam Long Ah Zai Curry Fish Head, Jalan Wong Ah Fook",
-            ja: "カムロン（金龍）のカレーフィッシュヘッド",
-          },
-          note: {
-            en: "Johor Bahru's famous curry fish head, from about RM31 a pot. Expect a queue; it can sell out by mid-afternoon.",
-            ja: "ジョホールバル名物のカレーフィッシュヘッド。一鍋RM31ほどから。行列覚悟で、午後には売り切れることも。",
-          },
-          map: mapsSearch("Kam Long Ah Zai Curry Fish Head, 74 Jalan Wong Ah Fook, Johor Bahru"),
-        },
-        {
-          start: "13:15",
+          start: "13:00",
           end: "13:30",
           type: "commute",
-          title: { en: "Kam Long → Bukit Chagar", ja: "カムロン → ブキッ・チャガー駅" },
+          title: { en: "Johor Bahru → Bukit Chagar", ja: "ジョホールバル → ブキッ・チャガー駅" },
           note: {
-            en: "Kam Long Ah Zai → Bukit Chagar RTS Station (walk, about 12 minutes)",
-            ja: "カムロン → ブキッ・チャガー駅（徒歩約12分）",
+            en: "From KSL City: JB Sentral (J100 bus) → Bukit Chagar RTS Station (walk, about 10 minutes)",
+            ja: "KSLシティから：JBセントラル（J100バス）→ ブキッ・チャガー駅（徒歩約10分）",
           },
         },
         {
@@ -597,62 +500,40 @@ export const MALAYSIA_SINGAPORE_2027: PlannedTrip = {
         },
         {
           start: "15:15",
-          end: "15:50",
+          end: "15:40",
+          type: "activity",
+          title: STILL_TO_PLAN,
+        },
+        {
+          start: "15:40",
+          end: "16:00",
           type: "commute",
-          title: { en: "HarbourFront → Geylang Bahru", ja: "ハーバーフロント → ゲイラン・バル" },
+          title: { en: "HarbourFront → Maxwell", ja: "ハーバーフロント → マックスウェル" },
           note: {
-            en: "HarbourFront → Chinatown (North East Line) → Geylang Bahru (Downtown Line) → Geylang Bahru Market & Food Centre (walk, about 3 minutes)",
-            ja: "ハーバーフロント → チャイナタウン（北東線）→ ゲイラン・バル（ダウンタウン線）→ ゲイラン・バル・マーケット＆フードセンター（徒歩約3分）",
+            en: "HarbourFront → Outram Park (North East Line) → Maxwell (Thomson–East Coast Line)",
+            ja: "ハーバーフロント → アウトラム・パーク（北東線）→ マックスウェル（トムソン・イーストコースト線）",
           },
         },
         {
           start: "16:00",
-          end: "16:45",
+          end: "16:50",
           type: "meal",
           title: DINNER,
-          location: {
-            en: "Geylang Bahru Market & Food Centre",
-            ja: "ゲイラン・バル・マーケット＆フードセンター",
-          },
+          location: { en: "Maxwell Food Centre", ja: "マックスウェル・フードセンター" },
           note: {
-            en: "An early hawker dinner. Hui Wei's chilli ban mian has a Michelin Bib Gourmand, and Red Stove's fried prawn mee runs until 22:00; some stalls sell out by the afternoon.",
-            ja: "ホーカーで早めの夕食。ミシュランのビブグルマンに選ばれた「輝味」のチリ板麺や、22:00まで営業の「Red Stove」のフライド・プロウン・ミーを。午後には売り切れる店も。",
+            en: "An early hawker dinner in Chinatown, by the MRT exit. Tian Tian's Hainanese chicken rice has a Michelin Bib Gourmand and is open until about 19:30 (closed Mondays); some other stalls close by the afternoon.",
+            ja: "チャイナタウンのホーカーで早めの夕食。MRT駅の出口のすぐそば。ミシュランのビブグルマンに選ばれた「天天」の海南チキンライスは19:30ごろまで営業（月曜定休）。午後には閉まる店も。",
           },
-          map: mapsSearch("Geylang Bahru Market and Food Centre"),
+          map: mapsSearch("Maxwell Food Centre"),
         },
         {
-          start: "16:45",
-          end: "17:10",
-          type: "commute",
-          title: { en: "Geylang Bahru → Bishan", ja: "ゲイラン・バル → ビシャン" },
-          note: {
-            en: "Geylang Bahru → MacPherson (Downtown Line) → Bishan (Circle Line) → Bishan Street 13 (walk, about 5 minutes)",
-            ja: "ゲイラン・バル → マクファーソン（ダウンタウン線）→ ビシャン（サークル線）→ ビシャン・ストリート13（徒歩約5分）",
-          },
-        },
-        {
-          start: "17:10",
-          end: "17:25",
-          type: "activity",
-          title: { en: "Singapore's pink 'sakura'", ja: "シンガポールのピンクの「桜」" },
-          location: {
-            en: "Trumpet trees, Bishan Street 13",
-            ja: "トランペットツリー（ビシャン・ストリート13）",
-          },
-          note: {
-            en: "Tabebuia trees that flower pink like cherry blossom, usually after heavy rain follows a dry spell, often in March and April. It isn't guaranteed, so check NParks' posts that week.",
-            ja: "桜のようなピンクの花を咲かせるタベブイアの木。乾季の後にまとまった雨が降ると咲き、3〜4月に多いものの確実ではないので、その週のNParksの投稿で開花状況を確認。",
-          },
-          map: mapsSearch("Bishan Street 13"),
-        },
-        {
-          start: "17:25",
+          start: "16:50",
           end: "18:00",
           type: "commute",
-          title: { en: "Bishan → Night Safari", ja: "ビシャン → ナイトサファリ" },
+          title: { en: "Maxwell → Night Safari", ja: "マックスウェル → ナイトサファリ" },
           note: {
-            en: "Bishan → Khatib (North–South Line) → Night Safari (Mandai Khatib bus M2, every 15 minutes, S$2.50 by card only)",
-            ja: "ビシャン → カティブ（南北線）→ ナイトサファリ（マンダイ・カティブ・バスM2、15分間隔、S$2.50・カードのみ）",
+            en: "Maxwell → Orchard (Thomson–East Coast Line) → Khatib (North–South Line) → Night Safari (Mandai Khatib bus M2, every 15 minutes, S$2.50 by card only)",
+            ja: "マックスウェル → オーチャード（トムソン・イーストコースト線）→ カティブ（南北線）→ ナイトサファリ（マンダイ・カティブ・バスM2、15分間隔、S$2.50・カードのみ）",
           },
         },
         {
