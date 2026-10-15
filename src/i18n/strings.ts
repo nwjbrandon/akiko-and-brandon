@@ -4,8 +4,13 @@ const UI = {
   siteName: { en: "Akiko & Brandon", ja: "Akiko & Brandon" },
   ourTrips: { en: "Our trips", ja: "ふたりの旅" },
   homeSubtitle: {
-    en: "Every trip we have planned, in order. Open one for the day-by-day plan.",
-    ja: "ふたりで計画した旅を日付順に。開くと毎日の予定が見られます。",
+    en: "Every trip, past and to come, in order. Open one for the day-by-day plan.",
+    ja: "これまでの旅とこれからの旅を日付順に。開くと毎日の予定が見られます。",
+  },
+  notPlannedYet: { en: "Not planned yet", ja: "プランはこれから" },
+  notPlannedBody: {
+    en: "We have the dates and where we are going. The day-by-day plan comes next.",
+    ja: "日程と行き先は決まりました。毎日の予定はこれから考えます。",
   },
   allTrips: { en: "All trips", ja: "旅の一覧" },
   today: { en: "Today", ja: "今日" },
@@ -25,6 +30,7 @@ const UI = {
   },
   loading: { en: "Loading…", ja: "読み込み中…" },
   route: { en: "Route", ja: "経路" },
+  note: { en: "Note", ja: "メモ" },
   openMap: { en: "Open in Google Maps", ja: "Googleマップで開く" },
   openReference: { en: "Open reference", ja: "リンクを開く" },
   closeDetails: { en: "Close details", ja: "閉じる" },
@@ -62,6 +68,11 @@ export function dayLabel(index: number, lang: Lang) {
 /** "In 36 days" / "あと36日" */
 export function inDays(days: number, lang: Lang) {
   return lang === "ja" ? `あと${days}日` : `In ${days} days`
+}
+
+/** "Yokohama · Tsuruga · Fukui" / "横浜・敦賀・福井" */
+export function placeList(places: Localized[], lang: Lang) {
+  return places.map((place) => place[lang]).join(lang === "ja" ? "・" : " · ")
 }
 
 /** "5 days" / "5日間" */

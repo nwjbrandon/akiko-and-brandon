@@ -1,6 +1,7 @@
 import type { Lang } from "@/i18n/types"
 
-const TZ = "Asia/Tokyo"
+/** The site keeps Japan time unless a place gives its own. */
+export const JAPAN_TIME_ZONE = "Asia/Tokyo"
 
 const LOCALES: Record<Lang, string> = { en: "en-GB", ja: "ja-JP" }
 
@@ -61,18 +62,23 @@ export function formatDayOfMonth(date: string) {
 
 /** Today in Japan, as "YYYY-MM-DD". */
 export function todayInJapan() {
+  return todayIn(JAPAN_TIME_ZONE)
+}
+
+/** Today in an IANA time zone, as "YYYY-MM-DD". */
+export function todayIn(timeZone: string) {
   return new Intl.DateTimeFormat("en-CA", {
-    timeZone: TZ,
+    timeZone,
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
   }).format(new Date())
 }
 
-/** Current wall-clock minutes since midnight in Japan. */
-export function nowMinutesInJapan() {
+/** Current wall-clock minutes since midnight in an IANA time zone. */
+export function nowMinutesIn(timeZone: string) {
   const time = new Intl.DateTimeFormat("en-GB", {
-    timeZone: TZ,
+    timeZone,
     hour: "2-digit",
     minute: "2-digit",
     hour12: false,

@@ -1,10 +1,10 @@
-import type { Trip } from "../types"
+import type { PlannedTrip } from "../types"
 import { LUNCH } from "./shared"
 
 // Where it started. The light show has no end time: Wonderia was open until
 // 19:00 that Tuesday, but when we left is not recorded.
 
-export const FIRST_DATE_2026: Trip = {
+export const FIRST_DATE_2026: PlannedTrip = {
   id: "first-date-2026",
   title: { en: "Our First Date", ja: "はじめてのデート" },
   subtitle: {

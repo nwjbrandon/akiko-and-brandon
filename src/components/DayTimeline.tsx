@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { getCity } from "@/data/cities"
 import type { Day } from "@/data/types"
 import { useNow } from "@/hooks/useNow"
 import { timelineStatuses } from "@/lib/blocks"
@@ -7,7 +8,8 @@ import { BlockSheet } from "./BlockSheet"
 import { TimelineItem } from "./TimelineItem"
 
 export function DayTimeline({ day, className }: { day: Day; className?: string }) {
-  const { today, minutes } = useNow()
+  // The day runs on its own place's clock: Malaysia and Singapore are an hour behind Japan.
+  const { today, minutes } = useNow(getCity(day.cityId)?.timeZone)
   const [selected, setSelected] = useState<number | null>(null)
   const statuses = timelineStatuses(day.blocks, day.date, today, minutes)
 

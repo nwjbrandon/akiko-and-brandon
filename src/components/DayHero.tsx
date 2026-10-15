@@ -1,5 +1,5 @@
 import { useRef } from "react"
-import type { Day, Trip } from "@/data/types"
+import type { Day, PlannedTrip } from "@/data/types"
 import { getCity } from "@/data/cities"
 import { useParallax } from "@/hooks/useParallax"
 import { useTheme } from "@/hooks/useTheme"
@@ -16,7 +16,7 @@ export function DayHero({
   day,
   className,
 }: {
-  trip: Trip
+  trip: PlannedTrip
   day: Day
   className?: string
 }) {

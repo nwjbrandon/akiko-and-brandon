@@ -3,6 +3,7 @@ import type { Localized } from "@/i18n/types"
 // Labels and places that more than one trip uses.
 
 export const SIGHTSEEING: Localized = { en: "Sightseeing", ja: "観光" }
+export const BREAKFAST: Localized = { en: "Breakfast", ja: "朝食" }
 export const LUNCH: Localized = { en: "Lunch", ja: "昼食" }
 export const DINNER: Localized = { en: "Dinner", ja: "夕食" }
 export const CHECK_OUT: Localized = { en: "Check-out", ja: "チェックアウト" }

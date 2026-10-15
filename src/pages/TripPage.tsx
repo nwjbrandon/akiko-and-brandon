@@ -1,14 +1,26 @@
 import { useEffect } from "react"
 import { Link, Navigate, useParams } from "react-router-dom"
-import { ArrowLeft, ArrowRight, Heart } from "lucide-react"
-import { dayPath, getTrip, tripEnd, tripStart } from "@/data/itinerary"
+import { ArrowLeft, ArrowRight, Heart, NotebookPen } from "lucide-react"
+import {
+  dayPath,
+  getTrip,
+  isPlanned,
+  tripDayCount,
+  tripEnd,
+  tripPlaces,
+  tripStart,
+} from "@/data/itinerary"
+import type { PlannedTrip, UnplannedTrip } from "@/data/types"
 import { Badge } from "@/components/Badge"
 import { useLang } from "@/i18n/LanguageProvider"
-import { dayLabel } from "@/i18n/strings"
+import { dayCount, dayLabel, placeList } from "@/i18n/strings"
 import { dayBounds, timeRange } from "@/lib/blocks"
 import { formatDateSpan, formatFullDate } from "@/lib/date"
 
-/** One trip at a glance: a card per day, each leading to its timeline. */
+/**
+ * One trip at a glance: a card per day, each leading to its timeline, or a
+ * note that the days are still to be planned.
+ */
 export function TripPage() {
   const { tripId } = useParams()
   const { lang, ui, tx } = useLang()
@@ -43,40 +55,71 @@ export function TripPage() {
         </p>
       </header>
 
-      <ul className="mt-8 list-none space-y-4 p-0">
-        {trip.days.map((day, index) => {
-          const { start, end } = dayBounds(day.blocks)
-          return (
-            <li key={day.date}>
-              <Link
-                to={dayPath(trip, day.date)}
-                className="block rounded-2xl border border-border bg-card p-5 shadow-sm transition hover:border-primary/50 hover:shadow-md"
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <p className="text-title font-extrabold tracking-tight">
-                      {dayLabel(index, lang)} · {tx(day.title)}
-                    </p>
-                    <p className="mt-0.5 text-caption font-semibold text-muted-foreground">
-                      {formatFullDate(day.date, lang)}
-                    </p>
-                  </div>
-                  <Badge variant="accent" className="shrink-0 tabular-nums">
-                    {day.blocks.length}
-                  </Badge>
+      {isPlanned(trip) ? <DayList trip={trip} /> : <NotPlanned trip={trip} />}
+    </div>
+  )
+}
+
+/** A card per day, each leading to its timeline. */
+function DayList({ trip }: { trip: PlannedTrip }) {
+  const { lang, tx } = useLang()
+  return (
+    <ul className="mt-8 list-none space-y-4 p-0">
+      {trip.days.map((day, index) => {
+        const { start, end } = dayBounds(day.blocks)
+        return (
+          <li key={day.date}>
+            <Link
+              to={dayPath(trip, day.date)}
+              className="block rounded-2xl border border-border bg-card p-5 shadow-sm transition hover:border-primary/50 hover:shadow-md"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="text-title font-extrabold tracking-tight">
+                    {dayLabel(index, lang)} · {tx(day.title)}
+                  </p>
+                  <p className="mt-0.5 text-caption font-semibold text-muted-foreground">
+                    {formatFullDate(day.date, lang)}
+                  </p>
                 </div>
-                <p className="mt-3 text-base leading-relaxed text-muted-foreground">
-                  {tx(day.summary)}
-                </p>
-                <p className="mt-3 flex items-center gap-1.5 text-sm font-bold tabular-nums text-primary">
-                  {timeRange(start, end, lang)}
-                  <ArrowRight className="size-4" aria-hidden />
-                </p>
-              </Link>
-            </li>
-          )
-        })}
-      </ul>
+                <Badge variant="accent" className="shrink-0 tabular-nums">
+                  {day.blocks.length}
+                </Badge>
+              </div>
+              <p className="mt-3 text-base leading-relaxed text-muted-foreground">
+                {tx(day.summary)}
+              </p>
+              <p className="mt-3 flex items-center gap-1.5 text-sm font-bold tabular-nums text-primary">
+                {timeRange(start, end, lang)}
+                <ArrowRight className="size-4" aria-hidden />
+              </p>
+            </Link>
+          </li>
+        )
+      })}
+    </ul>
+  )
+}
+
+/** Where the day cards will go once the trip is planned. */
+function NotPlanned({ trip }: { trip: UnplannedTrip }) {
+  const { lang, ui } = useLang()
+  return (
+    <div className="mt-8 rounded-2xl border border-dashed border-primary/40 bg-card/60 p-5">
+      <p className="flex items-center gap-2 text-title font-extrabold tracking-tight">
+        <NotebookPen className="size-5 shrink-0 text-primary" aria-hidden />
+        {ui("notPlannedYet")}
+      </p>
+      <p className="mt-2 text-base leading-relaxed text-muted-foreground">
+        {ui("notPlannedBody")}
+      </p>
+      <p className="mt-3 text-sm font-semibold text-primary">
+        {dayCount(tripDayCount(trip), lang)}
+        <span className="font-medium text-muted-foreground">
+          {" · "}
+          {placeList(tripPlaces(trip), lang)}
+        </span>
+      </p>
     </div>
   )
 }
