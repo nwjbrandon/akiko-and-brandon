@@ -1,6 +1,7 @@
 import { CloudSun } from "lucide-react"
 import { useWeather } from "@/hooks/useWeather"
 import { useLang } from "@/i18n/LanguageProvider"
+import { todayInJapan } from "@/lib/date"
 import { cn } from "@/lib/utils"
 
 export function WeatherLine({
@@ -39,7 +40,7 @@ export function WeatherLine({
           className,
         )}
       >
-        {ui("forecastUnavailable")}
+        {date < todayInJapan() ? ui("noWeatherRecord") : ui("forecastUnavailable")}
       </p>
     )
   }

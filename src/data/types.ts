@@ -41,9 +41,15 @@ export interface Day {
   blocks: Block[]
 }
 
+/** Which drawing sits at the foot of a trip's day heroes. */
+export type HeroSceneVariant = "fukui" | "plain"
+
 export interface Trip {
+  /** URL slug, e.g. "fukui-2026" → /fukui-2026/2026-11-22 */
+  id: string
   title: Localized
-  startDate: string
-  endDate: string
+  subtitle: Localized
+  scene: HeroSceneVariant
+  /** In date order; the first and last days are the trip's start and end. */
   days: Day[]
 }

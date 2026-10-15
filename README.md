@@ -1,8 +1,13 @@
-# Fukui, for Two
+# Akiko & Brandon
 
-An itinerary site for a trip to Fukui, 21–23 November 2026 — Tsuruga, the
-Echizen Crab Festival, the Ichijōdani ruins and Eiheiji temple — with a dinner
-in Yokohama on either side, on the 20th and the 24th.
+Itineraries for our trips around Japan, day by day:
+
+- **Our First Date**, 31 March 2026: sushi by Yokohama Station, coffee at
+  BASEGATE Yokohama Kannai, and the light show at Wonderia Yokohama.
+- **Matsumoto, for Two**, 11–16 August 2026: a day at Tokyo DisneySea, then
+  Matsumoto Castle, the Lake Suwa fireworks and a morning in Kamikochi.
+- **Fukui, for Two**, 20–24 November 2026: Tsuruga, the Echizen Crab Festival,
+  the Ichijōdani ruins and Eiheiji temple, with a dinner in Yokohama either side.
 
 Built with React 19, TypeScript, Vite and Tailwind CSS v4.
 
@@ -30,10 +35,13 @@ yarn install
 yarn dev
 ```
 
-Vite prints a local URL (http://localhost:5173 by default). It opens on the
-overview; each day lives at `/itinerary/2026-11-20` through
-`/itinerary/2026-11-24`, and `/itinerary` jumps to today's day when the trip is
-underway.
+Vite prints a local URL (http://localhost:5173 by default). It opens on a
+timeline of the trips. Each trip's overview lives at `/<trip-id>` (for example
+`/fukui-2026`) and each day at `/<trip-id>/<date>` (for example
+`/fukui-2026/2026-11-22`). `/itinerary` jumps to today's day when a trip is
+underway, or else to the first day of the next trip. Links from before there
+were several trips, `/itinerary/<date>`, still work: they redirect to the day's
+new address.
 
 ## Other commands
 
@@ -48,18 +56,31 @@ underway.
 
 The build in `dist/` is a static single-page app, so any static host works.
 Because routing happens in the browser, the host must rewrite unknown paths to
-`index.html` or a refresh on `/itinerary/2026-11-22` will 404. Both common
+`index.html` or a refresh on `/fukui-2026/2026-11-22` will 404. Both common
 hosts are covered: `public/_redirects` sets that rewrite for Netlify (Vite
 copies it into `dist/`), and `vercel.json` does the same for Vercel.
 
 ## Editing the itinerary
 
-Everything shown on the site comes from [`src/data/itinerary.ts`](src/data/itinerary.ts).
-The 21st–23rd are transcribed from `Japan 202611 - 11_21-23.csv`; the Yokohama
-dinners on the 20th and 24th were added by hand. Each day has a `summary` and a
-list of `blocks`; each block carries a start and end time (`end: null` reads as
-"onwards"), a `type`, and optional `location`, `note` (the route, for travel),
-`map` (a Google Maps link) and `link` (a reference page such as Tabelog).
+Each trip is its own file in [`src/data/trips/`](src/data/trips/), and
+[`src/data/itinerary.ts`](src/data/itinerary.ts) lists them. A trip has an `id`
+(its URL slug), a `title` and `subtitle`, a hero `scene`, and its `days` in date
+order; the first and last days are the trip's dates.
+
+- [`first-date-2026.ts`](src/data/trips/first-date-2026.ts): written from what
+  we remember of the day, with its map links.
+- [`matsumoto-2026.ts`](src/data/trips/matsumoto-2026.ts): transcribed from the
+  plan as written, with the places, links and routes looked up afterwards.
+- [`fukui-2026.ts`](src/data/trips/fukui-2026.ts): the 21st–23rd are transcribed
+  from `Japan 202611 - 11_21-23.csv`; the Yokohama dinners on the 20th and 24th
+  were added by hand.
+
+Each day has a `summary`, a `cityId` (the place in
+[`src/data/cities.ts`](src/data/cities.ts) its weather forecast comes from) and
+a list of `blocks`. Each block carries a start and end time (`end: null` reads
+as "onwards"), a `type`, and optional `location`, `note` (the route, for travel),
+`map` (a Google Maps link) and `link` (a reference page such as Tabelog or the
+official site).
 
 ```ts
 {
@@ -72,16 +93,26 @@ list of `blocks`; each block carries a start and end time (`end: null` reads as
 }
 ```
 
+To add a trip, copy one of the trip files, give it a new `id`, add any new
+places to `cities.ts`, and list it in `TRIPS` in `itinerary.ts`. The home page
+timeline and the routes pick it up from there.
+
 Every visible string is a `{ en, ja }` pair, so adding or changing an entry
 means writing both languages. Block `type` drives the icon, the label and the
 card's tint; the available types are `commute`, `meal`, `activity`, `lodging`,
 `meeting` and `logistics`.
 
-Note: the source CSV labels its second day `11/21`. That is a typo for `11/22`
+Note: the Fukui CSV labels its second day `11/21`. That is a typo for `11/22`
 — the day opens by checking out of the Tsuruga hotel checked into on the 21st —
 and the data file uses the corrected date.
 
 ## How a few things work
+
+**Home timeline.** The trips run down one rail in date order. A marker shows
+where today falls between them; a trip underway gets the pulsing dot instead,
+past trips fade back, and each upcoming trip counts down the days to its start.
+Once the list is longer than the screen, the page opens scrolled to that point,
+with the trips before it above and the trips to come below.
 
 **Language.** English and Japanese, toggled from the header and remembered in
 `localStorage`. With no saved preference the site guesses: the browser timezone
@@ -93,13 +124,14 @@ nothing — see [`src/i18n/`](src/i18n/).
 `localStorage` and applied by an inline script in `index.html` so the page never
 flashes the wrong theme on load.
 
-**Timeline progress.** Times are treated as Japan local time. On the day you are
+**Day timeline progress.** Times are treated as Japan local time. On the day you are
 actually travelling, the block happening right now gets a pulsing dot, earlier
 blocks fade back, and later ones stay outlined. Refreshes every minute.
 
 **Weather.** Each day's hero fetches a forecast from Open-Meteo. Open-Meteo only
-forecasts about 16 days ahead, so until November 2026 comes close this correctly
-reads "Forecast not yet available".
+forecasts about 16 days ahead, so until a trip comes close this correctly reads
+"Forecast not yet available". Days already gone use Open-Meteo's historical
+archive instead, so a past trip shows the weather it actually had.
 
 **Printing.** The printer button opens the browser print dialog with a
 print stylesheet that drops the chrome, so the itinerary saves cleanly to PDF.
@@ -109,9 +141,9 @@ print stylesheet that drops the chrome, so the itinerary saves cleanly to PDF.
 ```
 src/
   components/   Hero, day selector, timeline, detail sheet, header
-  data/         The itinerary itself, and its types
+  data/         The trips (one file each in trips/), places, and types
   hooks/        Theme, clock, scroll and parallax hooks
   i18n/         Language provider, UI strings, Japan geolocation check
   lib/          Date formatting, block helpers, class-name utility
-  pages/        Overview and single-day routes
+  pages/        Home timeline, trip overview, and single-day routes
 ```

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom"
-import { DAYS } from "@/data/itinerary"
+import { dayPath } from "@/data/itinerary"
+import type { Trip } from "@/data/types"
 import { useScrolled } from "@/hooks/useScrolled"
 import { useLang } from "@/i18n/LanguageProvider"
 import { formatDayOfMonth, formatWeekdayShort } from "@/lib/date"
@@ -10,9 +11,11 @@ import { cn } from "@/lib/utils"
  * bright top of the gradient and on the page background further down.
  */
 export function DaySelector({
+  trip,
   activeDate,
   className,
 }: {
+  trip: Trip
   activeDate: string
   className?: string
 }) {
@@ -27,12 +30,12 @@ export function DaySelector({
           scrolled && "day-date-pill-solid",
         )}
       >
-        {DAYS.map((day) => {
+        {trip.days.map((day) => {
           const isActive = day.date === activeDate
           return (
             <Link
               key={day.date}
-              to={`/itinerary/${day.date}`}
+              to={dayPath(trip, day.date)}
               aria-current={isActive ? "date" : undefined}
               className={cn(
                 "flex min-h-12 min-w-11 flex-col items-center justify-center px-2.5 py-1.5 text-center transition-colors",

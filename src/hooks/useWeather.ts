@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react"
 import type { Localized } from "@/i18n/types"
+import { todayInJapan } from "@/lib/date"
 
-const ENDPOINT = "https://api.open-meteo.com/v1/forecast"
+const FORECAST_ENDPOINT = "https://api.open-meteo.com/v1/forecast"
+const ARCHIVE_ENDPOINT = "https://archive-api.open-meteo.com/v1/archive"
 
 const UNKNOWN_CONDITION: Localized = { en: "Conditions unavailable", ja: "天気不明" }
 
@@ -50,6 +52,8 @@ export type WeatherState =
 /**
  * Open-Meteo only forecasts ~16 days out, so for a trip further away this
  * settles on "unavailable" — which the UI states plainly rather than hiding.
+ * Days already gone come from Open-Meteo's historical archive instead, so a
+ * trip we have taken shows the weather it actually had.
  */
 export function useWeather(lat: number, lon: number, date: string) {
   const [state, setState] = useState<WeatherState>({ status: "loading" })
@@ -58,7 +62,7 @@ export function useWeather(lat: number, lon: number, date: string) {
     const controller = new AbortController()
     setState({ status: "loading" })
 
-    const url = new URL(ENDPOINT)
+    const url = new URL(date < todayInJapan() ? ARCHIVE_ENDPOINT : FORECAST_ENDPOINT)
     url.searchParams.set("latitude", String(lat))
     url.searchParams.set("longitude", String(lon))
     url.searchParams.set("daily", "temperature_2m_max,temperature_2m_min,weather_code")

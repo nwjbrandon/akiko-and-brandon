@@ -1,16 +1,27 @@
 import type { Lang, Localized } from "./types"
 
 const UI = {
-  tripSubtitle: {
-    en: "Three days along the Sea of Japan, and a dinner in Yokohama either side",
-    ja: "日本海沿いの三日間と、その前後の横浜ディナー",
+  siteName: { en: "Akiko & Brandon", ja: "Akiko & Brandon" },
+  ourTrips: { en: "Our trips", ja: "ふたりの旅" },
+  homeSubtitle: {
+    en: "Every trip we have planned, in order. Open one for the day-by-day plan.",
+    ja: "ふたりで計画した旅を日付順に。開くと毎日の予定が見られます。",
   },
+  allTrips: { en: "All trips", ja: "旅の一覧" },
+  today: { en: "Today", ja: "今日" },
+  underway: { en: "Underway", ja: "旅行中" },
+  pastTrip: { en: "Past", ja: "終了" },
+  startsTomorrow: { en: "Tomorrow", ja: "明日から" },
   plans: { en: "Plans", ja: "予定" },
   start: { en: "Start", ja: "開始" },
   end: { en: "End", ja: "終了" },
   forecastUnavailable: {
     en: "Forecast not yet available",
     ja: "天気予報はまだ取得できません",
+  },
+  noWeatherRecord: {
+    en: "No weather record for this day",
+    ja: "この日の天気の記録はありません",
   },
   loading: { en: "Loading…", ja: "読み込み中…" },
   route: { en: "Route", ja: "経路" },
@@ -46,4 +57,15 @@ export function translate(key: UiKey, lang: Lang) {
 /** "Day 1" / "1日目" */
 export function dayLabel(index: number, lang: Lang) {
   return lang === "ja" ? `${index + 1}日目` : `Day ${index + 1}`
+}
+
+/** "In 36 days" / "あと36日" */
+export function inDays(days: number, lang: Lang) {
+  return lang === "ja" ? `あと${days}日` : `In ${days} days`
+}
+
+/** "5 days" / "5日間" */
+export function dayCount(days: number, lang: Lang) {
+  if (lang === "ja") return `${days}日間`
+  return days === 1 ? "1 day" : `${days} days`
 }

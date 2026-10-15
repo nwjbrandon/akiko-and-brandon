@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom"
+import { Link, useMatch } from "react-router-dom"
 import { Heart, Moon, Printer, Sun } from "lucide-react"
-import { TRIP } from "@/data/itinerary"
+import { getTrip, tripPath } from "@/data/itinerary"
 import { useScrolled } from "@/hooks/useScrolled"
 import { useTheme } from "@/hooks/useTheme"
 import { useLang } from "@/i18n/LanguageProvider"
@@ -13,6 +13,9 @@ export function SiteHeader() {
   const { theme, toggleTheme } = useTheme()
   const { lang, toggleLang, ui, tx } = useLang()
   const scrolled = useScrolled()
+  // Inside a trip the header names it and leads back to its overview; anywhere
+  // else it names the site and leads home.
+  const trip = getTrip(useMatch({ path: "/:tripId", end: false })?.params.tripId)
 
   return (
     <header
@@ -24,11 +27,11 @@ export function SiteHeader() {
     >
       <div className="mx-auto flex h-full max-w-[480px] items-center justify-between px-4 sm:px-6">
         <Link
-          to="/"
+          to={trip ? tripPath(trip) : "/"}
           className="flex items-center gap-1.5 text-base font-extrabold tracking-tight text-black drop-shadow-sm dark:text-white"
         >
           <Heart className="size-4 fill-current text-primary" aria-hidden />
-          {tx(TRIP.title)}
+          {trip ? tx(trip.title) : ui("siteName")}
         </Link>
 
         <div className="flex items-center gap-1">

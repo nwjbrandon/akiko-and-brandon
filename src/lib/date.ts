@@ -32,6 +32,20 @@ export function formatShortDate(date: string, lang: Lang) {
   return value.toLocaleDateString("en-GB", { day: "numeric", month: "short" })
 }
 
+/** "20 Nov – 24 Nov · 2026" / "11月20日 – 11月24日 · 2026", or one date for a single day. */
+export function formatDateSpan(start: string, end: string, lang: Lang) {
+  const year = parseISODate(start).getFullYear()
+  if (start === end) return `${formatShortDate(start, lang)} · ${year}`
+  return `${formatShortDate(start, lang)} – ${formatShortDate(end, lang)} · ${year}`
+}
+
+/** Whole calendar days from `from` to `to`, both "YYYY-MM-DD". */
+export function daysBetween(from: string, to: string) {
+  const ms = parseISODate(to).getTime() - parseISODate(from).getTime()
+  // Rounded, so a daylight-saving shift in the viewer's timezone cannot skew it.
+  return Math.round(ms / 86_400_000)
+}
+
 /** "SAT" / "土" — the weekday cap on the day-selector pill. */
 export function formatWeekdayShort(date: string, lang: Lang) {
   const value = parseISODate(date).toLocaleDateString(LOCALES[lang], {

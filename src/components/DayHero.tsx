@@ -1,6 +1,6 @@
 import { useRef } from "react"
-import type { Day } from "@/data/types"
-import { dayIndex, getCity } from "@/data/itinerary"
+import type { Day, Trip } from "@/data/types"
+import { getCity } from "@/data/cities"
 import { useParallax } from "@/hooks/useParallax"
 import { useTheme } from "@/hooks/useTheme"
 import { dayLabel } from "@/i18n/strings"
@@ -11,7 +11,15 @@ import { cn } from "@/lib/utils"
 import { HeroScene } from "./HeroScene"
 import { WeatherLine } from "./WeatherLine"
 
-export function DayHero({ day, className }: { day: Day; className?: string }) {
+export function DayHero({
+  trip,
+  day,
+  className,
+}: {
+  trip: Trip
+  day: Day
+  className?: string
+}) {
   const ref = useRef<HTMLDivElement>(null)
   const offset = useParallax(ref, { factor: 0.3, maxOffset: 100 })
   const { lang, ui, tx } = useLang()
@@ -31,6 +39,7 @@ export function DayHero({ day, className }: { day: Day; className?: string }) {
       >
         <div className="pointer-events-none absolute inset-x-0 top-[400px] z-1 mx-auto w-full max-w-3xl overflow-hidden">
           <HeroScene
+            variant={trip.scene}
             className="relative left-1/2 h-auto max-w-none will-change-transform"
             style={{
               width: 744,
@@ -42,7 +51,7 @@ export function DayHero({ day, className }: { day: Day; className?: string }) {
 
         <div className="relative z-10 mx-auto flex max-w-[480px] flex-col items-center px-4 pt-[calc(var(--header-height)+var(--selector-height)+1.5rem+2rem)] pb-6 sm:px-6">
           <p className="text-xs font-bold tracking-wide text-iris">
-            {dayLabel(dayIndex(day.date), lang)} · {tx(day.title)}
+            {dayLabel(trip.days.indexOf(day), lang)} · {tx(day.title)}
           </p>
           <h1 className="mt-1 text-center text-2xl font-bold tracking-tight text-black sm:text-3xl dark:text-white">
             {formatFullDate(day.date, lang)}
