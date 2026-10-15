@@ -32,9 +32,10 @@ export function formatShortDate(date: string, lang: Lang) {
   return value.toLocaleDateString("en-GB", { day: "numeric", month: "short" })
 }
 
-/** "20 Nov – 24 Nov · 2026" / "11月20日 – 11月24日 · 2026" */
+/** "20 Nov – 24 Nov · 2026" / "11月20日 – 11月24日 · 2026", or one date for a single day. */
 export function formatDateSpan(start: string, end: string, lang: Lang) {
   const year = parseISODate(start).getFullYear()
+  if (start === end) return `${formatShortDate(start, lang)} · ${year}`
   return `${formatShortDate(start, lang)} – ${formatShortDate(end, lang)} · ${year}`
 }
 

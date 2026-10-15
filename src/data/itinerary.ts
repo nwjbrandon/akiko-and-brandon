@@ -1,10 +1,11 @@
 import type { TimelineStatus } from "@/lib/blocks"
+import { FIRST_DATE_2026 } from "./trips/first-date-2026"
 import { FUKUI_2026 } from "./trips/fukui-2026"
 import { MATSUMOTO_2026 } from "./trips/matsumoto-2026"
 import type { Trip } from "./types"
 
 /** Every trip on the site, in date order. A new trip is added by listing it here. */
-export const TRIPS: Trip[] = [FUKUI_2026, MATSUMOTO_2026].sort((a, b) =>
+export const TRIPS: Trip[] = [FIRST_DATE_2026, MATSUMOTO_2026, FUKUI_2026].sort((a, b) =>
   tripStart(a).localeCompare(tripStart(b)),
 )
 

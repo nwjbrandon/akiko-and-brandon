@@ -2,6 +2,8 @@
 
 Itineraries for our trips around Japan, day by day:
 
+- **Our First Date**, 31 March 2026: sushi by Yokohama Station, coffee at
+  BASEGATE Yokohama Kannai, and the light show at Wonderia Yokohama.
 - **Matsumoto, for Two**, 11–16 August 2026: a day at Tokyo DisneySea, then
   Matsumoto Castle, the Lake Suwa fireworks and a morning in Kamikochi.
 - **Fukui, for Two**, 20–24 November 2026: Tsuruga, the Echizen Crab Festival,
@@ -65,6 +67,8 @@ Each trip is its own file in [`src/data/trips/`](src/data/trips/), and
 (its URL slug), a `title` and `subtitle`, a hero `scene`, and its `days` in date
 order; the first and last days are the trip's dates.
 
+- [`first-date-2026.ts`](src/data/trips/first-date-2026.ts): written from what
+  we remember of the day, with its map links.
 - [`matsumoto-2026.ts`](src/data/trips/matsumoto-2026.ts): transcribed from the
   plan as written, with the places, links and routes looked up afterwards.
 - [`fukui-2026.ts`](src/data/trips/fukui-2026.ts): the 21st–23rd are transcribed
