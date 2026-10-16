@@ -33,6 +33,31 @@ export function formatShortDate(date: string, lang: Lang) {
   return value.toLocaleDateString("en-GB", { day: "numeric", month: "short" })
 }
 
+/** "Sat 21 November" / "11月21日(土)", or with `month: "short"`, "Sat 21 Nov". */
+export function formatDayDate(date: string, lang: Lang, month: "long" | "short" = "long") {
+  const value = parseISODate(date)
+  if (lang === "ja") {
+    const weekday = value.toLocaleDateString("ja-JP", { weekday: "short" })
+    return `${value.getMonth() + 1}月${value.getDate()}日(${weekday})`
+  }
+  return value
+    .toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month })
+    .replace(",", "")
+}
+
+/** "22–23 Nov" / "11月22–23日", or one date for a single day. */
+export function formatShortSpan(start: string, end: string, lang: Lang) {
+  if (start === end) return formatShortDate(start, lang)
+  const from = parseISODate(start)
+  const to = parseISODate(end)
+  if (from.getMonth() !== to.getMonth()) {
+    return `${formatShortDate(start, lang)} – ${formatShortDate(end, lang)}`
+  }
+  if (lang === "ja") return `${from.getMonth() + 1}月${from.getDate()}–${to.getDate()}日`
+  const month = to.toLocaleDateString("en-GB", { month: "short" })
+  return `${from.getDate()}–${to.getDate()} ${month}`
+}
+
 /** "20 Nov – 24 Nov · 2026" / "11月20日 – 11月24日 · 2026", or one date for a single day. */
 export function formatDateSpan(start: string, end: string, lang: Lang) {
   const year = parseISODate(start).getFullYear()

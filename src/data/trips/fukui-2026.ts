@@ -1,5 +1,5 @@
 import type { PlannedTrip } from "../types"
-import { CHECK_OUT, DINNER, LUNCH, MEET_AT_DOUTOR, SIGHTSEEING } from "./shared"
+import { CHECK_OUT, DINNER, LUNCH, MEET_AT_DOUTOR, SIGHTSEEING, mapsSearch } from "./shared"
 
 // Source of truth for 11/21–23: "Japan 202611 - 11_21-23.csv".
 // The CSV labels its second day block "11/21"; it is 11/22 — the day opens by
@@ -69,13 +69,14 @@ export const FUKUI_2026: PlannedTrip = {
           start: "07:18",
           end: "10:27",
           type: "commute",
+          hop: true,
           title: {
             en: "Yokohama Station → Tsuruga Station",
             ja: "横浜駅 → 敦賀駅",
           },
           note: {
-            en: "Yokohama Station → Shin-Yokohama Station → Maibara Station → Tsuruga Station",
-            ja: "横浜駅 → 新横浜駅 → 米原駅 → 敦賀駅",
+            en: "Yokohama Station → Shin-Yokohama Station (Yokohama Line) → Maibara Station (Tokaido Shinkansen, Hikari 633) → Tsuruga Station (Limited Express Shirasagi 3)",
+            ja: "横浜駅 → 新横浜駅（横浜線）→ 米原駅（東海道新幹線 ひかり633号）→ 敦賀駅（特急しらさぎ3号）",
           },
         },
         {
@@ -98,6 +99,7 @@ export const FUKUI_2026: PlannedTrip = {
             en: "Tsuruga Europe-ken Honten",
             ja: "敦賀ヨーロッパ軒 本店",
           },
+          map: mapsSearch("敦賀ヨーロッパ軒 本店 敦賀市相生町2-7"),
           link: "https://tabelog.com/en/fukui/A1803/A180301/18000167/",
         },
         {
@@ -155,6 +157,7 @@ export const FUKUI_2026: PlannedTrip = {
             en: "Marusanya Tsuruga Ekimae",
             ja: "まるさん屋 敦賀駅前",
           },
+          map: mapsSearch("まるさん屋 敦賀駅前 敦賀市白銀町6-41"),
           link: "https://tabelog.com/en/fukui/A1803/A180301/18000158/",
         },
         {
@@ -188,6 +191,7 @@ export const FUKUI_2026: PlannedTrip = {
           start: "08:04",
           end: "08:45",
           type: "commute",
+          hop: true,
           title: { en: "Tsuruga Station → Fukui Station", ja: "敦賀駅 → 福井駅" },
           note: {
             en: "Tsuruga Station → Fukui Station",
@@ -206,6 +210,7 @@ export const FUKUI_2026: PlannedTrip = {
           start: "09:35",
           end: "11:17",
           type: "commute",
+          by: "bus",
           title: {
             en: "Fukui Station → Roadside Station Echizen",
             ja: "福井駅 → 道の駅越前",
@@ -227,6 +232,7 @@ export const FUKUI_2026: PlannedTrip = {
           start: "15:44",
           end: "17:34",
           type: "commute",
+          by: "bus",
           title: {
             en: "Roadside Station Echizen → Fukui Station",
             ja: "道の駅越前 → 福井駅",
@@ -242,6 +248,7 @@ export const FUKUI_2026: PlannedTrip = {
           type: "meal",
           title: DINNER,
           location: { en: "Uoshin Sakoten", ja: "魚心" },
+          map: mapsSearch("魚心 福井市文京6"),
           link: "https://tabelog.com/en/fukui/A1801/A180101/18000770/",
         },
         {
@@ -283,6 +290,7 @@ export const FUKUI_2026: PlannedTrip = {
           start: "07:59",
           end: "08:31",
           type: "commute",
+          by: "bus",
           title: {
             en: "Fukui Station → Ichijōdani Asakura Clan Ruins",
             ja: "福井駅 → 一乗谷朝倉氏遺跡",
@@ -307,6 +315,7 @@ export const FUKUI_2026: PlannedTrip = {
           start: "10:22",
           end: "10:59",
           type: "commute",
+          by: "bus",
           title: {
             en: "Ichijōdani Asakura Clan Ruins → Daihonzan Eiheiji",
             ja: "一乗谷朝倉氏遺跡 → 大本山永平寺",
@@ -328,6 +337,7 @@ export const FUKUI_2026: PlannedTrip = {
           start: "13:22",
           end: "14:00",
           type: "commute",
+          by: "bus",
           title: {
             en: "Daihonzan Eiheiji → Fukui Station",
             ja: "大本山永平寺 → 福井駅",
@@ -346,12 +356,14 @@ export const FUKUI_2026: PlannedTrip = {
             en: "Europe-ken Souhonten",
             ja: "ヨーロッパ軒 総本店",
           },
+          map: mapsSearch("ヨーロッパ軒 総本店 福井市順化1-7-4"),
           link: "https://tabelog.com/en/fukui/A1801/A180101/18000015/",
         },
         {
           start: "15:23",
           end: "19:08",
           type: "commute",
+          hop: true,
           title: {
             en: "Fukui Station → Yokohama Station",
             ja: "福井駅 → 横浜駅",

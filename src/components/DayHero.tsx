@@ -5,8 +5,8 @@ import { useParallax } from "@/hooks/useParallax"
 import { useTheme } from "@/hooks/useTheme"
 import { dayLabel } from "@/i18n/strings"
 import { useLang } from "@/i18n/LanguageProvider"
-import { dayBounds } from "@/lib/blocks"
-import { formatFullDate } from "@/lib/date"
+import { travelMinutes } from "@/lib/blocks"
+import { formatDuration, formatFullDate } from "@/lib/date"
 import { cn } from "@/lib/utils"
 import { HeroScene } from "./HeroScene"
 import { WeatherLine } from "./WeatherLine"
@@ -25,7 +25,8 @@ export function DayHero({
   const { lang, ui, tx } = useLang()
   const { theme } = useTheme()
   const city = getCity(day.cityId)
-  const { start, end } = dayBounds(day.blocks)
+  const start = day.blocks[0]?.start ?? "—"
+  const travel = travelMinutes(day.blocks)
   // The scene is a silhouette: against the pale light-mode sunset it needs to
   // sit back further than it does against the dark one.
   const sceneOpacity = (theme === "light" ? 0.62 : 0.85) - (offset / 100) * 0.4
@@ -49,11 +50,11 @@ export function DayHero({
           />
         </div>
 
-        <div className="relative z-10 mx-auto flex max-w-[480px] flex-col items-center px-4 pt-[calc(var(--header-height)+var(--selector-height)+1.5rem+2rem)] pb-6 sm:px-6">
+        <div className="relative z-10 mx-auto flex max-w-[480px] flex-col items-center px-4 lg:max-w-[720px] pt-[calc(var(--header-height)+var(--selector-height)+1.5rem+2rem)] pb-6 sm:px-6">
           <p className="text-xs font-bold tracking-wide text-iris">
             {dayLabel(trip.days.indexOf(day), lang)} · {tx(day.title)}
           </p>
-          <h1 className="mt-1 text-center text-2xl font-bold tracking-tight text-black sm:text-3xl dark:text-white">
+          <h1 className="mt-1 text-center text-2xl font-bold tracking-tight text-black sm:text-3xl lg:text-4xl dark:text-white">
             {formatFullDate(day.date, lang)}
           </h1>
 
@@ -67,14 +68,17 @@ export function DayHero({
             )}
           </div>
 
-          <p className="mt-4 max-w-sm text-center text-base leading-relaxed text-black dark:text-white">
+          <p className="mt-4 max-w-sm text-center text-base leading-relaxed lg:max-w-xl lg:text-lg text-black dark:text-white">
             {tx(day.summary)}
           </p>
 
           <dl className="mt-8 grid w-full max-w-sm grid-cols-3 gap-2 text-center">
             <Stat label={ui("plans")} value={String(day.blocks.length)} />
             <Stat label={ui("start")} value={start} />
-            <Stat label={ui("end")} value={end ?? "—"} />
+            <Stat
+              label={ui("travelTime")}
+              value={travel > 0 ? formatDuration(0, travel, lang) : "—"}
+            />
           </dl>
         </div>
       </div>

@@ -8,6 +8,9 @@ export type BlockType =
   | "meeting"
   | "logistics"
 
+/** How a journey is made. */
+export type TravelBy = "train" | "bus" | "walk" | "plane"
+
 export interface Block {
   /** 24h "HH:MM" */
   start: string
@@ -23,6 +26,14 @@ export interface Block {
   map?: string
   /** Reference page for the place, such as its Tabelog listing */
   link?: string
+  /** For a journey: how we go, for its icon. Unset means by train. */
+  by?: TravelBy
+  /**
+   * For a journey: marks it as the one that takes us on to the trip's next
+   * city, so the trip page can give each hop between cities its date and
+   * time. Mark one journey per hop, or none.
+   */
+  hop?: boolean
 }
 
 export interface City {

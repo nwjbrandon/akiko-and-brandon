@@ -91,6 +91,7 @@ export const MALAYSIA_SINGAPORE_2027: PlannedTrip = {
           start: "17:00",
           end: "18:15",
           type: "commute",
+          by: "plane",
           title: {
             en: "Changi Airport → KLIA",
             ja: "チャンギ国際空港 → クアラルンプール国際空港",
@@ -151,6 +152,7 @@ export const MALAYSIA_SINGAPORE_2027: PlannedTrip = {
           start: "21:15",
           end: "21:40",
           type: "commute",
+          by: "walk",
           title: { en: "KLCC → Jalan Alor", ja: "KLCC → アロー通り" },
           note: {
             en: "KLCC Park → Pavilion (KLCC–Bukit Bintang walkway, covered) → Jalan Alor (walk, about 25 minutes)",
@@ -316,6 +318,7 @@ export const MALAYSIA_SINGAPORE_2027: PlannedTrip = {
           start: "13:00",
           end: "13:20",
           type: "commute",
+          by: "walk",
           title: {
             en: "Chinatown → Islamic Arts Museum",
             ja: "チャイナタウン → イスラム美術館",
@@ -379,6 +382,7 @@ export const MALAYSIA_SINGAPORE_2027: PlannedTrip = {
           start: "17:35",
           end: "21:55",
           type: "commute",
+          hop: true,
           title: { en: "KL Sentral → JB Sentral", ja: "KLセントラル → JBセントラル" },
           note: {
             en: "KL Sentral → Seremban → Gemas → Kluang → JB Sentral (ETS)",
@@ -390,6 +394,7 @@ export const MALAYSIA_SINGAPORE_2027: PlannedTrip = {
           start: "21:55",
           end: "22:30",
           type: "commute",
+          by: "bus",
           title: { en: "JB Sentral → KSL Hotel & Resort", ja: "JBセントラル → KSLホテル＆リゾート" },
           note: {
             en: "JB Sentral → KSL City (J100 bus, every 15 minutes until 23:00, RM2.10 by cash or card) → KSL Hotel & Resort",
@@ -448,6 +453,7 @@ export const MALAYSIA_SINGAPORE_2027: PlannedTrip = {
           start: "13:00",
           end: "13:30",
           type: "commute",
+          by: "bus",
           title: { en: "Johor Bahru → Bukit Chagar", ja: "ジョホールバル → ブキッ・チャガー駅" },
           note: {
             en: "From KSL City: JB Sentral (J100 bus) → Bukit Chagar RTS Station (walk, about 10 minutes)",
@@ -471,6 +477,7 @@ export const MALAYSIA_SINGAPORE_2027: PlannedTrip = {
           start: "13:50",
           end: "14:00",
           type: "commute",
+          hop: true,
           title: { en: "Bukit Chagar → Woodlands North", ja: "ブキッ・チャガー → ウッドランズ・ノース" },
           note: {
             en: "Bukit Chagar → Woodlands North (RTS Link). If it has not opened yet: JB Sentral → Woodlands Train Checkpoint on the 14:00 Shuttle Tebrau, booked ahead with KTMB, then a 24-minute walk to Marsiling MRT.",
@@ -816,6 +823,7 @@ export const MALAYSIA_SINGAPORE_2027: PlannedTrip = {
           start: "10:45",
           end: null,
           type: "commute",
+          by: "plane",
           title: { en: "Flight from Changi", ja: "チャンギから出発" },
         },
       ],

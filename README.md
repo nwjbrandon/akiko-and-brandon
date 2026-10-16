@@ -108,6 +108,28 @@ site).
 }
 ```
 
+A block's `map` also pins it on the day's map, which needs the place's
+coordinates: [`src/data/places.ts`](src/data/places.ts) gives them for each
+link, written the same way the trip writes it, a short link as it is and a
+search link as the same `mapsSearch("…")` call:
+
+```ts
+"https://maps.app.goo.gl/NJMhFGfbmzcNMZX1A": [35.48747, 136.03723], // Avenue of Metasequoias
+[mapsSearch("松本城")]: [36.23865, 137.96887],
+```
+
+To find a place's coordinates, right-click it in Google Maps: the first line of
+the menu is its latitude and longitude, and clicking it copies them. Until a
+link has its line, its block is left off the map and the dev console says so. A
+journey (`type: "commute"`) is never pinned, even with a `map`.
+
+A journey can also say how we go, with `by`: `"train"` (the default), `"bus"`,
+`"walk"` or `"plane"`, which sets its icon. The journey that takes us on to the
+trip's next city also says `hop: true`, and the trip page then shows that hop
+between the days with its date and time. Mark one journey for each hop, or
+none: the marks are paired with the hops in order, so a missing or extra one
+leaves every hop unmarked, and the dev console says so.
+
 To add a trip, copy one of the trip files, give it a new `id`, add any new
 places to `cities.ts`, and list it in `TRIPS` in `itinerary.ts`. The home page
 timeline and the routes pick it up from there.
@@ -141,11 +163,21 @@ and the data file uses the corrected date.
 
 ## How a few things work
 
-**Home timeline.** The trips run down one rail in date order. A marker shows
-where today falls between them; a trip underway gets the pulsing dot instead,
-past trips fade back, and each upcoming trip counts down the days to its start.
-Once the list is longer than the screen, the page opens scrolled to that point,
-with the trips before it above and the trips to come below.
+**Home timeline.** The trips run down one rail in date order, under a heading
+for each year. A marker shows where today falls between them; a trip underway
+gets the pulsing dot instead. Past trips shrink to a line or two and fade back.
+The trip underway, or else the next one, gets a larger card with the days to go
+and its first plan (or which day of the trip today is) and its stops from city
+to city; the trips after it count down the days to their start. Once the list is
+longer than the screen, the page opens scrolled to that point, with the trips
+before it above and the trips to come below.
+
+**Trip page.** Under the map on a phone, and beside it on a wide screen, where
+the map stays in view as the days scroll past, the days run down a rail like
+the home page's. Each day's card has a thin bar showing the shape of the day,
+each plan as long as it lasts and coloured by its kind, and between the days
+sit the hops to each new city. Before the trip a marker at the top counts down
+to it; during it, today's card gets the pulsing dot.
 
 **Language.** English and Japanese, toggled from the header and remembered in
 `localStorage`. With no saved preference the site guesses: the browser timezone
@@ -167,6 +199,25 @@ forecasts about 16 days ahead, so until a trip comes close this correctly reads
 "Forecast not yet available". Days already gone use Open-Meteo's historical
 archive instead, so a past trip shows the weather it actually had.
 
+**Maps.** Each trip's page has a map with a numbered pin for each of its
+cities, in the order the trip reaches them, each named beside its pin and
+opening on the days spent there. Each day's page has one with a numbered pin
+for each place the day goes, opening on what we do there and when, with a link
+to Google Maps. A place we come back to, like the hotel, keeps one pin, and so
+do places within about 75 m of each other, like a shop inside the building
+before it. Each plan on the day's timeline with a place has a "Show on the map"
+button carrying its pin's number, which zooms the map in on that pin and opens
+it. On a phone the map comes first; on a wide screen it sits beside the timeline
+and stays in view as the timeline scrolls past. The button in the map's corner
+opens it over the whole screen; Escape or "Close the map" puts it back. Inline
+on a phone, one finger scrolls the page past the map and two move it; opened
+up, it takes both. The maps are drawn with [Leaflet](https://leafletjs.com/) on
+OpenStreetMap's own tiles, which need no key, and the dark theme darkens the
+tiles with a CSS filter. Their tile server asks sites to keep traffic light,
+which a site for two easily does. See
+[`src/components/PinMap.tsx`](src/components/PinMap.tsx) and
+[`src/lib/maps.ts`](src/lib/maps.ts).
+
 **Printing.** The printer button opens the browser print dialog with a
 print stylesheet that drops the chrome, so the itinerary saves cleanly to PDF.
 
@@ -174,10 +225,10 @@ print stylesheet that drops the chrome, so the itinerary saves cleanly to PDF.
 
 ```
 src/
-  components/   Hero, day selector, timeline, detail sheet, header
+  components/   Hero, day selector, timeline, detail sheet, header, map
   data/         The trips (one file each in trips/), places, and types
   hooks/        Theme, clock, scroll and parallax hooks
   i18n/         Language provider, UI strings, Japan geolocation check
-  lib/          Date formatting, block helpers, class-name utility
+  lib/          Date formatting, block helpers, map pins, class-name utility
   pages/        Home timeline, trip overview, and single-day routes
 ```

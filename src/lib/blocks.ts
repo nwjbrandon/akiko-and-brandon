@@ -1,13 +1,16 @@
 import {
   BedDouble,
+  Bus,
   Camera,
+  Footprints,
   Heart,
   Luggage,
+  Plane,
   TrainFront,
   UtensilsCrossed,
   type LucideIcon,
 } from "lucide-react"
-import type { Block, BlockType } from "@/data/types"
+import type { Block, BlockType, TravelBy } from "@/data/types"
 import { translate, type UiKey } from "@/i18n/strings"
 import type { Lang } from "@/i18n/types"
 import { formatDuration, toMinutes } from "./date"
@@ -30,7 +33,15 @@ const LABEL_KEYS: Record<BlockType, UiKey> = {
   logistics: "typeLogistics",
 }
 
+const TRAVEL_ICONS: Record<TravelBy, LucideIcon> = {
+  train: TrainFront,
+  bus: Bus,
+  walk: Footprints,
+  plane: Plane,
+}
+
 export function blockIcon(block: Block) {
+  if (block.type === "commute") return TRAVEL_ICONS[block.by ?? "train"]
   return ICONS[block.type]
 }
 
@@ -87,4 +98,55 @@ export function dayBounds(blocks: Block[]) {
     start: blocks[0]?.start ?? "—",
     end: blocks.findLast((block) => block.end)?.end ?? null,
   }
+}
+
+/** Minutes the day spends getting from one place to the next. */
+export function travelMinutes(blocks: Block[]) {
+  return blocks.reduce((total, block) => {
+    if (block.type !== "commute" || !block.end) return total
+    return total + Math.max(0, toMinutes(block.end) - toMinutes(block.start))
+  }, 0)
+}
+
+/** The kinds of time a day's bar tells apart. */
+export type ShapeKind = "travel" | "meal" | "activity" | "hotel" | "other"
+
+const SHAPE_KINDS: Record<BlockType, ShapeKind> = {
+  commute: "travel",
+  meal: "meal",
+  activity: "activity",
+  lodging: "hotel",
+  meeting: "other",
+  logistics: "other",
+}
+
+export interface ShapeStretch {
+  /** What the time is spent on, or "free" for a gap between plans. */
+  kind: ShapeKind | "free"
+  /** How long it lasts, or null for a last block that runs on with no end. */
+  minutes: number | null
+}
+
+/**
+ * The day as stretches of time, for its bar on the trip page: each block for
+ * as long as it lasts, and any gap before it as free time. A block with no end
+ * lasts until the next one starts; the last one runs on.
+ */
+export function dayShape(blocks: Block[]): ShapeStretch[] {
+  const stretches: ShapeStretch[] = []
+  let reached: number | null = null
+  blocks.forEach((block, index) => {
+    const start = toMinutes(block.start)
+    if (reached !== null && start > reached) {
+      stretches.push({ kind: "free", minutes: start - reached })
+    }
+    const next = blocks[index + 1]
+    const end = block.end ? toMinutes(block.end) : next ? toMinutes(next.start) : null
+    stretches.push({
+      kind: SHAPE_KINDS[block.type],
+      minutes: end === null ? null : Math.max(0, end - start),
+    })
+    if (end !== null) reached = Math.max(reached ?? end, end)
+  })
+  return stretches
 }
