@@ -1,3 +1,4 @@
+import type { ReactNode } from "react"
 import type { TimelineStatus } from "@/lib/blocks"
 import { cn } from "@/lib/utils"
 
@@ -17,12 +18,15 @@ export function TimelineRail({
   isFirst,
   isLast,
   dotClassName,
+  marker,
 }: {
   status: TimelineStatus
   isFirst: boolean
   isLast: boolean
   /** Replaces the status styling, for markers that are not themselves a moment. */
   dotClassName?: string
+  /** Replaces the dot altogether, centred where it would sit: a year's tick, a journey's icon. */
+  marker?: ReactNode
 }) {
   return (
     <div
@@ -42,12 +46,20 @@ export function TimelineRail({
           )}
         />
       )}
-      <span
-        className={cn(
-          "relative z-10 mt-5 size-3.5 shrink-0 rounded-full border-2 sm:mt-6",
-          dotClassName ?? DOT[status],
-        )}
-      />
+      {marker ? (
+        <span className="relative z-10 mt-5 size-3.5 shrink-0 sm:mt-6">
+          <span className="absolute top-1/2 left-1/2 grid -translate-1/2 place-items-center">
+            {marker}
+          </span>
+        </span>
+      ) : (
+        <span
+          className={cn(
+            "relative z-10 mt-5 size-3.5 shrink-0 rounded-full border-2 sm:mt-6",
+            dotClassName ?? DOT[status],
+          )}
+        />
+      )}
     </div>
   )
 }

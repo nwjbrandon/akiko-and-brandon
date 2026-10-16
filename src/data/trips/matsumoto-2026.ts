@@ -33,6 +33,7 @@ const MATSUMOTO_STATION = { en: "Matsumoto Station", ja: "松本駅" }
 const MATSUMOTO_STATION_MAP = mapsSearch("松本駅")
 
 const FANTASY_SPRINGS = { en: "Fantasy Springs", ja: "ファンタジースプリングス" }
+const FANTASY_SPRINGS_MAP = mapsSearch("ファンタジースプリングス 東京ディズニーシー")
 const TDS_ATTRACTION = "https://www.tokyodisneyresort.jp/en/tds/attraction/detail"
 
 export const MATSUMOTO_2026: PlannedTrip = {
@@ -81,6 +82,7 @@ export const MATSUMOTO_2026: PlannedTrip = {
             ja: "ピーターパンのネバーランドアドベンチャー",
           },
           location: FANTASY_SPRINGS,
+          map: FANTASY_SPRINGS_MAP,
           link: `${TDS_ATTRACTION}/257/`,
         },
         {
@@ -89,6 +91,7 @@ export const MATSUMOTO_2026: PlannedTrip = {
           type: "activity",
           title: { en: "Toy Story Mania!", ja: "トイ・ストーリー・マニア！" },
           location: { en: "American Waterfront", ja: "アメリカンウォーターフロント" },
+          map: mapsSearch("アメリカンウォーターフロント 東京ディズニーシー"),
           link: `${TDS_ATTRACTION}/218/`,
         },
         {
@@ -112,6 +115,7 @@ export const MATSUMOTO_2026: PlannedTrip = {
             ja: "ラプンツェルのランタンフェスティバル",
           },
           location: FANTASY_SPRINGS,
+          map: FANTASY_SPRINGS_MAP,
           link: `${TDS_ATTRACTION}/256/`,
         },
         {
@@ -120,6 +124,7 @@ export const MATSUMOTO_2026: PlannedTrip = {
           type: "activity",
           title: { en: "The Magic Lamp Theater", ja: "マジックランプシアター" },
           location: { en: "Arabian Coast", ja: "アラビアンコースト" },
+          map: mapsSearch("アラビアンコースト 東京ディズニーシー"),
           link: `${TDS_ATTRACTION}/226/`,
         },
         {
@@ -137,6 +142,7 @@ export const MATSUMOTO_2026: PlannedTrip = {
             ja: "アナとエルサのフローズンジャーニー",
           },
           location: FANTASY_SPRINGS,
+          map: FANTASY_SPRINGS_MAP,
           link: `${TDS_ATTRACTION}/255/`,
         },
         {
@@ -147,6 +153,7 @@ export const MATSUMOTO_2026: PlannedTrip = {
             en: "Tokyo DisneySea → Yokohama Station",
             ja: "東京ディズニーシー → 横浜駅",
           },
+          to: "Yokohama Station",
           note: {
             en: "Tokyo DisneySea → Maihama Station → Yokohama Station",
             ja: "東京ディズニーシー → 舞浜駅 → 横浜駅",
@@ -173,6 +180,7 @@ export const MATSUMOTO_2026: PlannedTrip = {
           start: "05:43",
           end: "09:30",
           type: "commute",
+          hop: true,
           title: { en: "Yokohama Station → Matsumoto Station", ja: "横浜駅 → 松本駅" },
           note: {
             en: "Yokohama Station → Hachioji Station → Matsumoto Station",
@@ -282,6 +290,8 @@ export const MATSUMOTO_2026: PlannedTrip = {
           start: "06:30",
           end: "08:15",
           type: "commute",
+          hop: true,
+          by: "bus",
           title: {
             en: "Matsumoto Station → Kamikochi Bus Terminal",
             ja: "松本駅 → 上高地バスターミナル",
@@ -315,6 +325,7 @@ export const MATSUMOTO_2026: PlannedTrip = {
           start: "12:40",
           end: "14:35",
           type: "commute",
+          by: "bus",
           title: {
             en: "Kamikochi Bus Terminal → Yohashira Shrine",
             ja: "上高地バスターミナル → 四柱神社",

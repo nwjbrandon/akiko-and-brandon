@@ -7,7 +7,7 @@ import { useLang } from "@/i18n/LanguageProvider"
 import { cn } from "@/lib/utils"
 
 const BUTTON =
-  "grid size-9 place-items-center rounded-full text-black/70 transition-colors hover:bg-white/25 hover:text-black dark:text-white/75 dark:hover:bg-white/10 dark:hover:text-white"
+  "grid size-11 place-items-center rounded-full text-black/70 transition-colors hover:bg-white/25 hover:text-black dark:text-white/75 dark:hover:bg-white/10 dark:hover:text-white"
 
 export function SiteHeader() {
   const { theme, toggleTheme } = useTheme()
@@ -39,7 +39,7 @@ export function SiteHeader() {
             type="button"
             onClick={toggleLang}
             aria-label={ui("switchLanguage")}
-            className="rounded-full px-2.5 py-1.5 text-xs font-extrabold tracking-wide text-black/70 transition-colors hover:bg-white/25 hover:text-black dark:text-white/75 dark:hover:bg-white/10 dark:hover:text-white"
+            className="h-11 rounded-full px-2.5 text-xs font-extrabold tracking-wide text-black/70 transition-colors hover:bg-white/25 hover:text-black dark:text-white/75 dark:hover:bg-white/10 dark:hover:text-white"
           >
             {lang === "ja" ? "EN" : "日本語"}
           </button>

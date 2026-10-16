@@ -91,6 +91,7 @@ export const MALAYSIA_SINGAPORE_2027: PlannedTrip = {
           start: "17:00",
           end: "18:15",
           type: "commute",
+          by: "plane",
           title: {
             en: "Changi Airport → KLIA",
             ja: "チャンギ国際空港 → クアラルンプール国際空港",
@@ -151,6 +152,7 @@ export const MALAYSIA_SINGAPORE_2027: PlannedTrip = {
           start: "21:15",
           end: "21:40",
           type: "commute",
+          by: "walk",
           title: { en: "KLCC → Jalan Alor", ja: "KLCC → アロー通り" },
           note: {
             en: "KLCC Park → Pavilion (KLCC–Bukit Bintang walkway, covered) → Jalan Alor (walk, about 25 minutes)",
@@ -177,6 +179,7 @@ export const MALAYSIA_SINGAPORE_2027: PlannedTrip = {
           end: "23:10",
           type: "commute",
           title: { en: "Jalan Alor → ibis Kuala Lumpur City Centre", ja: `アロー通り → ${IBIS.ja}` },
+          to: "ibis Kuala Lumpur City Centre",
           note: {
             en: "Jalan Alor → Bukit Bintang (walk) → Tun Razak Exchange (MRT Kajang Line) → Ampang Park (MRT Putrajaya Line) → ibis Kuala Lumpur City Centre (walk)",
             ja: "アロー通り → ブキッ・ビンタン駅（徒歩）→ トゥン・ラザク・エクスチェンジ駅（MRTカジャン線）→ アンパン・パーク駅（MRTプトラジャヤ線）→ イビス（徒歩）",
@@ -316,6 +319,7 @@ export const MALAYSIA_SINGAPORE_2027: PlannedTrip = {
           start: "13:00",
           end: "13:20",
           type: "commute",
+          by: "walk",
           title: {
             en: "Chinatown → Islamic Arts Museum",
             ja: "チャイナタウン → イスラム美術館",
@@ -379,7 +383,9 @@ export const MALAYSIA_SINGAPORE_2027: PlannedTrip = {
           start: "17:35",
           end: "21:55",
           type: "commute",
+          hop: true,
           title: { en: "KL Sentral → JB Sentral", ja: "KLセントラル → JBセントラル" },
+          to: "JB Sentral",
           note: {
             en: "KL Sentral → Seremban → Gemas → Kluang → JB Sentral (ETS)",
             ja: "KLセントラル → スレンバン → グマス → クルアン → JBセントラル（ETS）",
@@ -390,7 +396,9 @@ export const MALAYSIA_SINGAPORE_2027: PlannedTrip = {
           start: "21:55",
           end: "22:30",
           type: "commute",
+          by: "bus",
           title: { en: "JB Sentral → KSL Hotel & Resort", ja: "JBセントラル → KSLホテル＆リゾート" },
+          from: "JB Sentral",
           note: {
             en: "JB Sentral → KSL City (J100 bus, every 15 minutes until 23:00, RM2.10 by cash or card) → KSL Hotel & Resort",
             ja: "JBセントラル → KSLシティ（J100バス、23:00まで15分間隔、RM2.10・現金またはカード）→ KSLホテル＆リゾート",
@@ -448,6 +456,7 @@ export const MALAYSIA_SINGAPORE_2027: PlannedTrip = {
           start: "13:00",
           end: "13:30",
           type: "commute",
+          by: "bus",
           title: { en: "Johor Bahru → Bukit Chagar", ja: "ジョホールバル → ブキッ・チャガー駅" },
           note: {
             en: "From KSL City: JB Sentral (J100 bus) → Bukit Chagar RTS Station (walk, about 10 minutes)",
@@ -471,7 +480,9 @@ export const MALAYSIA_SINGAPORE_2027: PlannedTrip = {
           start: "13:50",
           end: "14:00",
           type: "commute",
+          hop: true,
           title: { en: "Bukit Chagar → Woodlands North", ja: "ブキッ・チャガー → ウッドランズ・ノース" },
+          to: "Woodlands North MRT Station",
           note: {
             en: "Bukit Chagar → Woodlands North (RTS Link). If it has not opened yet: JB Sentral → Woodlands Train Checkpoint on the 14:00 Shuttle Tebrau, booked ahead with KTMB, then a 24-minute walk to Marsiling MRT.",
             ja: "ブキッ・チャガー → ウッドランズ・ノース（RTSリンク）。未開業なら、JBセントラル14:00発のシャトル・テブラウでウッドランズ駅へ（KTMBで事前予約）、マーシリンMRT駅まで徒歩24分。",
@@ -482,6 +493,7 @@ export const MALAYSIA_SINGAPORE_2027: PlannedTrip = {
           end: "15:00",
           type: "commute",
           title: { en: "Woodlands North → HarbourFront", ja: "ウッドランズ・ノース → ハーバーフロント" },
+          from: "Woodlands North MRT Station",
           note: {
             en: "Woodlands North → Outram Park (Thomson–East Coast Line) → HarbourFront (North East Line) → Travelodge Harbourfront (walk)",
             ja: "ウッドランズ・ノース → アウトラム・パーク（トムソン・イーストコースト線）→ ハーバーフロント（北東線）→ トラベロッジ（徒歩）",
@@ -556,6 +568,7 @@ export const MALAYSIA_SINGAPORE_2027: PlannedTrip = {
           end: "22:00",
           type: "commute",
           title: { en: "Night Safari → HarbourFront", ja: "ナイトサファリ → ハーバーフロント" },
+          to: "HarbourFront MRT Station",
           note: {
             en: "Night Safari → Khatib (Mandai Khatib bus M2) → Dhoby Ghaut (North–South Line) → HarbourFront (North East Line)",
             ja: "ナイトサファリ → カティブ（マンダイ・カティブ・バスM2）→ ドービー・ゴート（南北線）→ ハーバーフロント（北東線）",
@@ -816,6 +829,7 @@ export const MALAYSIA_SINGAPORE_2027: PlannedTrip = {
           start: "10:45",
           end: null,
           type: "commute",
+          by: "plane",
           title: { en: "Flight from Changi", ja: "チャンギから出発" },
         },
       ],

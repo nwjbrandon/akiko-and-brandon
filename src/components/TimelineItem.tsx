@@ -1,4 +1,4 @@
-import { ChevronRight, MapPin } from "lucide-react"
+import { ChevronRight, Map as MapIcon, MapPin } from "lucide-react"
 import { cva } from "class-variance-authority"
 import type { Block } from "@/data/types"
 import {
@@ -27,14 +27,19 @@ const card = cva(
         logistics: "border-border/60 bg-card/45",
       },
       active: { true: "", false: "" },
+      onMap: { true: "", false: "" },
     },
     compoundVariants: [
+      {
+        onMap: true,
+        class: "border-primary/60 bg-card ring-4 ring-primary/10",
+      },
       {
         active: true,
         class: "border-primary/60 bg-card shadow-xl ring-1 ring-primary/25",
       },
     ],
-    defaultVariants: { variant: "activity", active: false },
+    defaultVariants: { variant: "activity", active: false, onMap: false },
   },
 )
 
@@ -44,14 +49,20 @@ export function TimelineItem({
   isFirst,
   isLast,
   onSelect,
+  onMap,
+  onShowOnMap,
 }: {
   block: Block
   status: TimelineStatus
   isFirst: boolean
   isLast: boolean
   onSelect: () => void
+  /** For a journey the day's map can show: whether the map is showing it. */
+  onMap?: boolean
+  /** Shows the journey on the day's map; unset for anything the map cannot show. */
+  onShowOnMap?: () => void
 }) {
-  const { lang, tx } = useLang()
+  const { lang, ui, tx } = useLang()
   const Icon = blockIcon(block)
   const duration = blockDuration(block, lang)
   const isCurrent = status === "current"
@@ -59,6 +70,14 @@ export function TimelineItem({
 
   return (
     <li className="relative flex gap-4">
+      {/* On a wide screen the times run down a column of their own, left of the rail. */}
+      <p className="hidden w-13 shrink-0 pt-[1.375rem] text-right text-base font-extrabold tabular-nums lg:block">
+        {block.start}
+        {block.end ? (
+          <span className="block text-sm font-medium text-muted-foreground">{block.end}</span>
+        ) : null}
+      </p>
+
       <TimelineRail status={status} isFirst={isFirst} isLast={isLast} />
 
       <div
@@ -66,66 +85,86 @@ export function TimelineItem({
         tabIndex={0}
         onClick={onSelect}
         onKeyDown={(event) => {
+          // Keys pressed on the links and buttons inside are theirs.
+          if (event.target !== event.currentTarget) return
           if (event.key === "Enter" || event.key === " ") {
             event.preventDefault()
             onSelect()
           }
         }}
-        className={cn(card({ variant: block.type, active: isCurrent }))}
+        className={cn(card({ variant: block.type, active: isCurrent, onMap: Boolean(onMap) }))}
       >
-        <div className="flex flex-col gap-1">
-          <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0 flex-1">
-              <p className="text-base font-semibold tabular-nums text-muted-foreground">
-                {blockTimeRange(block, lang)}
-                {duration ? (
-                  <span className="font-normal opacity-70"> · {duration}</span>
-                ) : null}
-              </p>
-              <h3 className="mt-1 text-xl leading-snug font-bold sm:text-2xl">
-                {tx(block.title)}
-              </h3>
-            </div>
-            <Badge
-              variant={isCurrent ? "secondary" : "muted"}
-              className="shrink-0 gap-1.5 capitalize"
-            >
-              <Icon className="size-3.5 shrink-0" aria-hidden />
-              {blockTypeLabel(block, lang)}
-            </Badge>
-          </div>
+        {/* The time and the kind of moment share the top line; the title gets the full width under them. */}
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-3 gap-y-1">
+          <p className="col-start-1 row-start-1 text-base font-semibold tabular-nums text-muted-foreground lg:hidden">
+            {blockTimeRange(block, lang)}
+            {duration ? <span className="font-normal opacity-70"> · {duration}</span> : null}
+          </p>
+          <Badge
+            variant={isCurrent ? "secondary" : "muted"}
+            className="col-start-2 row-start-1 shrink-0 gap-1.5 justify-self-end capitalize"
+          >
+            <Icon className="size-3.5 shrink-0" aria-hidden />
+            {blockTypeLabel(block, lang)}
+          </Badge>
+          <h3 className="col-span-2 row-start-2 text-xl leading-snug font-bold sm:text-2xl lg:col-span-1 lg:col-start-1 lg:row-start-1 lg:text-xl">
+            {tx(block.title)}
+            {duration ? (
+              <span className="hidden text-sm font-medium text-muted-foreground lg:inline">
+                {" "}
+                · {duration}
+              </span>
+            ) : null}
+          </h3>
+        </div>
 
-          <div className="flex items-end gap-2">
-            <div className="min-w-0 flex-1 space-y-0.5">
-              {block.note ? (
-                <p className="text-sm leading-snug text-muted-foreground">
-                  {tx(block.note)}
-                </p>
-              ) : null}
-              {block.location ? (
-                <p className="text-base leading-relaxed text-muted-foreground">
-                  {locationHref ? (
-                    <a
-                      href={locationHref}
-                      target="_blank"
-                      rel="noreferrer"
-                      onClick={(event) => event.stopPropagation()}
-                      className="inline-flex items-start gap-1.5 underline-offset-4 hover:text-primary hover:underline"
-                    >
-                      <MapPin className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden />
-                      <span>{tx(block.location)}</span>
-                    </a>
-                  ) : (
-                    <span className="inline-flex items-start gap-1.5">
-                      <MapPin className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden />
-                      <span>{tx(block.location)}</span>
-                    </span>
-                  )}
-                </p>
-              ) : null}
-            </div>
-            <ChevronRight className="no-print size-5 shrink-0 text-primary" aria-hidden />
+        <div className="mt-1 flex items-end gap-2">
+          <div className="min-w-0 flex-1 space-y-0.5">
+            {block.note ? (
+              <p className="text-sm leading-snug text-muted-foreground">{tx(block.note)}</p>
+            ) : null}
+            {block.location ? (
+              <p className="text-base leading-relaxed text-muted-foreground">
+                {locationHref ? (
+                  <a
+                    href={locationHref}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={(event) => event.stopPropagation()}
+                    className="inline-flex items-start gap-1.5 underline-offset-4 hover:text-primary hover:underline"
+                  >
+                    <MapPin className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden />
+                    <span>{tx(block.location)}</span>
+                  </a>
+                ) : (
+                  <span className="inline-flex items-start gap-1.5">
+                    <MapPin className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden />
+                    <span>{tx(block.location)}</span>
+                  </span>
+                )}
+              </p>
+            ) : null}
+            {onShowOnMap ? (
+              <button
+                type="button"
+                aria-pressed={Boolean(onMap)}
+                onClick={(event) => {
+                  event.stopPropagation()
+                  onShowOnMap()
+                }}
+                className={cn(
+                  "no-print mt-2 inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3 text-sm font-bold transition-colors",
+                  onMap
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "border-border bg-card text-primary hover:border-primary/60",
+                )}
+              >
+                <MapIcon className="size-4" aria-hidden />
+                {onMap ? ui("onMap") : ui("showOnMap")}
+              </button>
+            ) : null}
           </div>
+          <ChevronRight className="no-print size-5 shrink-0 text-primary" aria-hidden />
         </div>
       </div>
     </li>

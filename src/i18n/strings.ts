@@ -19,7 +19,6 @@ const UI = {
   startsTomorrow: { en: "Tomorrow", ja: "明日から" },
   plans: { en: "Plans", ja: "予定" },
   start: { en: "Start", ja: "開始" },
-  end: { en: "End", ja: "終了" },
   forecastUnavailable: {
     en: "Forecast not yet available",
     ja: "天気予報はまだ取得できません",
@@ -32,6 +31,24 @@ const UI = {
   route: { en: "Route", ja: "経路" },
   note: { en: "Note", ja: "メモ" },
   openMap: { en: "Open in Google Maps", ja: "Googleマップで開く" },
+  dayMap: { en: "Map of the day", ja: "この日の地図" },
+  tripMap: { en: "Map of the trip", ja: "旅の地図" },
+  showOnMap: { en: "Show on the map", ja: "地図で見る" },
+  onMap: { en: "On the map", ja: "地図に表示中" },
+  placesToday: { en: "Places today", ja: "この日の場所" },
+  theDay: { en: "The day", ja: "この日の予定" },
+  dayByDay: { en: "Day by day", ja: "毎日の予定" },
+  otherDays: { en: "Other days", ja: "ほかの日" },
+  travelTime: { en: "Travel", ja: "移動時間" },
+  nextUp: { en: "Next up", ja: "次の旅" },
+  firstUp: { en: "First up", ja: "最初の予定" },
+  open: { en: "Open", ja: "開く" },
+  dayBarKey: { en: "What the day bars show", ja: "バーの色の見方" },
+  keyTravel: { en: "Travel", ja: "移動" },
+  keyMeal: { en: "Meal", ja: "食事" },
+  keyActivity: { en: "Sightseeing", ja: "観光" },
+  keyHotel: { en: "Hotel", ja: "宿泊" },
+  keyOther: { en: "Other", ja: "その他" },
   openReference: { en: "Open reference", ja: "リンクを開く" },
   closeDetails: { en: "Close details", ja: "閉じる" },
   dayNotFound: { en: "Day not found", ja: "該当する日程がありません" },
@@ -79,4 +96,33 @@ export function placeList(places: Localized[], lang: Lang) {
 export function dayCount(days: number, lang: Lang) {
   if (lang === "ja") return `${days}日間`
   return days === 1 ? "1 day" : `${days} days`
+}
+
+/** "days to go" / "日後に出発", beside a count of them in large type. */
+export function daysToGo(days: number, lang: Lang) {
+  if (lang === "ja") return "日後に出発"
+  return days === 1 ? "day to go" : "days to go"
+}
+
+/** "Day 3 of 5" / "5日間の3日目" */
+export function dayOfTrip(index: number, days: number, lang: Lang) {
+  return lang === "ja" ? `${days}日間の${index + 1}日目` : `Day ${index + 1} of ${days}`
+}
+
+/** "8 plans" / "予定8件" */
+export function planCount(plans: number, lang: Lang) {
+  if (lang === "ja") return `予定${plans}件`
+  return plans === 1 ? "1 plan" : `${plans} plans`
+}
+
+/** "3 journeys" / "3回の移動" */
+export function journeyCount(journeys: number, lang: Lang) {
+  if (lang === "ja") return `${journeys}回の移動`
+  return journeys === 1 ? "1 journey" : `${journeys} journeys`
+}
+
+/** "3 places" / "3か所" */
+export function placeCount(places: number, lang: Lang) {
+  if (lang === "ja") return `${places}か所`
+  return places === 1 ? "1 place" : `${places} places`
 }
