@@ -150,6 +150,12 @@ those ends as Google Maps searches:
 }
 ```
 
+`from` and `to` also steer Google's planner when it would take another way.
+Google's embedded maps cannot be routed through stops by train, so a journey
+starts its map where the line we want begins: the Tsuruga train is mapped from
+Shin-Yokohama, since from Yokohama Station Google sends it through Tokyo rather
+than west to Maibara.
+
 The journey that takes us on to the trip's next city also says `hop: true`. The
 trip page then shows that hop between the days with its date and time, and
 routes it on the trip's map the way the journey goes rather than from city to
@@ -227,21 +233,20 @@ forecasts about 16 days ahead, so until a trip comes close this correctly reads
 "Forecast not yet available". Days already gone use Open-Meteo's historical
 archive instead, so a past trip shows the weather it actually had.
 
-**Maps.** Each day's page opens with an embedded Google Map of its journeys,
-above the timeline on a phone and beside it, with the day's places, on a wide
-screen; each trip's page opens with one of the hops between its cities, beside
-the days on a wide screen. Google's
-embedded maps can only route one journey at a time by train, bus or on foot, so
-the journeys are listed under the map, with their times and stops, and picking
-one routes it; the map opens on the first. Each journey on the day's timeline,
-and each hop on the trip's, also has a "Show on the map" button that picks it
-and scrolls the map into view. Trains and buses use Google's transit planner,
-which plans from now rather than from the trip's times, so its journey times
-include any wait for the next train. Google draws no line for a flight, so a
-flight shows the airport it lands at. A day without journeys lists its places
-instead. Without an API key the maps and their buttons are left out. Google's own box in the map's
-top-left corner is hidden by running the map taller than its frame. See
-[`src/lib/maps.ts`](src/lib/maps.ts).
+**Maps.** Each day's page opens with an embedded Google Map of its journeys, and
+each trip's page with one of the hops between its cities. On a phone the map
+comes first; on a wide screen it sits beside the timeline and stays in view as
+the timeline scrolls past. Google's embedded maps can only route one journey at
+a time by train, bus or on foot, so the journeys are listed under the map, with
+their times and stops, and picking one routes it; the map opens on the first.
+Each journey on the day's timeline, and each hop on the trip's, also has a "Show
+on the map" button that picks it and scrolls the map into view. Trains and
+buses use Google's transit planner, which plans from now rather than from the
+trip's times, so its journey times include any wait for the next train. Google
+draws no line for a flight, so a flight shows the airport it lands at. A day
+without journeys lists its places instead. Without an API key the maps and their
+buttons are left out. Google's own box in the map's top-left corner is hidden by
+running the map taller than its frame. See [`src/lib/maps.ts`](src/lib/maps.ts).
 
 **Printing.** The printer button opens the browser print dialog with a
 print stylesheet that drops the chrome, so the itinerary saves cleanly to PDF.

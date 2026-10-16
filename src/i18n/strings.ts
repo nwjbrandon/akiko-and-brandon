@@ -35,7 +35,6 @@ const UI = {
   tripMap: { en: "Map of the trip", ja: "旅の地図" },
   showOnMap: { en: "Show on the map", ja: "地図で見る" },
   onMap: { en: "On the map", ja: "地図に表示中" },
-  placesToday: { en: "Places today", ja: "この日の場所" },
   theDay: { en: "The day", ja: "この日の予定" },
   dayByDay: { en: "Day by day", ja: "毎日の予定" },
   otherDays: { en: "Other days", ja: "ほかの日" },

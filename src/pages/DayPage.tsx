@@ -1,17 +1,13 @@
-import { useEffect, useId, useState } from "react"
+import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
-import { MapPin } from "lucide-react"
 import { dayPath, getTrip, isPlanned, tripPath } from "@/data/itinerary"
-import { mapsSearch } from "@/data/trips/shared"
-import type { Day } from "@/data/types"
 import { DayHero } from "@/components/DayHero"
 import { DaySelector } from "@/components/DaySelector"
 import { DAY_MAP_ID, DayMap } from "@/components/DayMap"
 import { DayTimeline } from "@/components/DayTimeline"
 import { useLang } from "@/i18n/LanguageProvider"
 import { dayLabel } from "@/i18n/strings"
-import { MAPS_ENABLED, dayJourneys, dayPlaces, revealMap } from "@/lib/maps"
-import { cn } from "@/lib/utils"
+import { MAPS_ENABLED, dayJourneys, revealMap } from "@/lib/maps"
 
 const NAV_LINK =
   "inline-flex min-h-11 items-center justify-center rounded-full border border-border px-4 py-2.5 text-sm font-bold transition-colors hover:border-primary/60 hover:text-primary"
@@ -64,7 +60,6 @@ export function DayPage() {
   // Without a maps key there is no map, so no journey offers to show itself on one.
   const mapKeys = MAPS_ENABLED ? journeys.map(({ block }) => block.start) : []
   const mapKey = onMap?.date === day.date ? onMap.key : mapKeys[0]
-  const hasMap = MAPS_ENABLED && (journeys.length > 0 || dayPlaces(day).length > 0)
 
   return (
     <div className="relative flex flex-col">
@@ -80,27 +75,19 @@ export function DayPage() {
 
         {/*
           On a phone the map comes first, then the timeline. On a wide screen
-          the map sits beside the timeline, on the right; it comes first in the
-          page so that it is first when the two stack.
+          the map sits beside the timeline, on the right, and stays in view
+          below the day selector while the timeline scrolls past, so a journey
+          picked from it shows without leaving its place; it comes first in the
+          page so that it is first when the two stack. Should the window be too
+          short for all of it, it scrolls on its own.
         */}
         <div className="mx-auto mt-6 flex w-full max-w-[480px] flex-col gap-9 px-4 pb-16 sm:px-6 lg:max-w-[1120px] lg:flex-row-reverse lg:items-start lg:gap-10">
-          {hasMap || journeys.length > 0 ? (
-            <aside
-              className={cn(
-                "flex flex-col gap-7 lg:w-[400px] lg:shrink-0 xl:w-[440px]",
-                // Without a map, all that is left here is the list of places, which is for wide screens.
-                !hasMap && "hidden lg:flex",
-              )}
-            >
-              <DayMap
-                day={day}
-                selected={mapKey}
-                onSelect={(key) => setOnMap({ date: day.date, key })}
-                className="scroll-mt-[calc(var(--header-height)+var(--selector-height)+1rem)]"
-              />
-              {journeys.length > 0 ? <DayPlaces day={day} className="hidden lg:block" /> : null}
-            </aside>
-          ) : null}
+          <DayMap
+            day={day}
+            selected={mapKey}
+            onSelect={(key) => setOnMap({ date: day.date, key })}
+            className="scroll-mt-[calc(var(--header-height)+var(--selector-height)+1rem)] lg:sticky lg:top-[calc(var(--header-height)+var(--selector-height)+1rem)] lg:max-h-[calc(100dvh-var(--header-height)-var(--selector-height)-2rem)] lg:w-[400px] lg:shrink-0 lg:overflow-y-auto xl:w-[440px]"
+          />
 
           <div className="min-w-0 flex-1">
             <h2 className="text-title font-extrabold tracking-tight">{ui("theDay")}</h2>
@@ -138,42 +125,5 @@ export function DayPage() {
         </div>
       </div>
     </div>
-  )
-}
-
-/** The day's places, each a link to Google Maps, under the map on a wide screen. */
-function DayPlaces({ day, className }: { day: Day; className?: string }) {
-  const { ui, tx } = useLang()
-  const headingId = useId()
-  const places = dayPlaces(day)
-  if (places.length === 0) return null
-
-  return (
-    <section aria-labelledby={headingId} className={cn("no-print", className)}>
-      <h2
-        id={headingId}
-        className="text-xs font-extrabold tracking-[0.08em] text-muted-foreground uppercase"
-      >
-        {ui("placesToday")}
-      </h2>
-      <ul className="mt-2.5 list-none overflow-hidden rounded-2xl border border-border bg-card/70 p-0">
-        {places.map(({ block, place }) => (
-          <li key={block.start} className="border-t border-border/70 first:border-t-0">
-            <a
-              href={block.map ?? mapsSearch(place)}
-              target="_blank"
-              rel="noreferrer"
-              className="flex min-h-12 items-center gap-2.5 px-4 py-2 text-[15px] font-semibold transition-colors hover:bg-muted/60 hover:text-primary"
-            >
-              <MapPin className="size-4 shrink-0 text-primary" aria-hidden />
-              <span className="min-w-0 flex-1">{tx(block.location ?? block.title)}</span>
-              <span className="text-sm font-semibold tabular-nums text-muted-foreground">
-                {block.start}
-              </span>
-            </a>
-          </li>
-        ))}
-      </ul>
-    </section>
   )
 }
