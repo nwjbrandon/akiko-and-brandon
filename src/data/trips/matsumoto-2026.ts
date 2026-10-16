@@ -153,7 +153,6 @@ export const MATSUMOTO_2026: PlannedTrip = {
             en: "Tokyo DisneySea → Yokohama Station",
             ja: "東京ディズニーシー → 横浜駅",
           },
-          to: "Yokohama Station",
           note: {
             en: "Tokyo DisneySea → Maihama Station → Yokohama Station",
             ja: "東京ディズニーシー → 舞浜駅 → 横浜駅",

@@ -1,4 +1,4 @@
-import { ChevronRight, Map as MapIcon, MapPin } from "lucide-react"
+import { ChevronRight, MapPin } from "lucide-react"
 import { cva } from "class-variance-authority"
 import type { Block } from "@/data/types"
 import {
@@ -27,19 +27,14 @@ const card = cva(
         logistics: "border-border/60 bg-card/45",
       },
       active: { true: "", false: "" },
-      onMap: { true: "", false: "" },
     },
     compoundVariants: [
-      {
-        onMap: true,
-        class: "border-primary/60 bg-card ring-4 ring-primary/10",
-      },
       {
         active: true,
         class: "border-primary/60 bg-card shadow-xl ring-1 ring-primary/25",
       },
     ],
-    defaultVariants: { variant: "activity", active: false, onMap: false },
+    defaultVariants: { variant: "activity", active: false },
   },
 )
 
@@ -49,7 +44,7 @@ export function TimelineItem({
   isFirst,
   isLast,
   onSelect,
-  onMap,
+  pin,
   onShowOnMap,
 }: {
   block: Block
@@ -57,9 +52,9 @@ export function TimelineItem({
   isFirst: boolean
   isLast: boolean
   onSelect: () => void
-  /** For a journey the day's map can show: whether the map is showing it. */
-  onMap?: boolean
-  /** Shows the journey on the day's map; unset for anything the map cannot show. */
+  /** The number of its pin on the day's map, for a plan the map shows. */
+  pin?: number
+  /** Opens its pin on the day's map; unset for anything the map cannot show. */
   onShowOnMap?: () => void
 }) {
   const { lang, ui, tx } = useLang()
@@ -92,7 +87,7 @@ export function TimelineItem({
             onSelect()
           }
         }}
-        className={cn(card({ variant: block.type, active: isCurrent, onMap: Boolean(onMap) }))}
+        className={cn(card({ variant: block.type, active: isCurrent }))}
       >
         {/* The time and the kind of moment share the top line; the title gets the full width under them. */}
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-3 gap-y-1">
@@ -144,23 +139,20 @@ export function TimelineItem({
                 )}
               </p>
             ) : null}
-            {onShowOnMap ? (
+            {pin && onShowOnMap ? (
               <button
                 type="button"
-                aria-pressed={Boolean(onMap)}
                 onClick={(event) => {
                   event.stopPropagation()
                   onShowOnMap()
                 }}
-                className={cn(
-                  "no-print mt-2 inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3 text-sm font-bold transition-colors",
-                  onMap
-                    ? "border-primary bg-primary text-primary-foreground"
-                    : "border-border bg-card text-primary hover:border-primary/60",
-                )}
+                className="no-print mt-2 inline-flex min-h-9 items-center gap-2 rounded-full border border-border bg-card py-1 pr-3 pl-1 text-sm font-bold text-primary transition-colors hover:border-primary/60"
               >
-                <MapIcon className="size-4" aria-hidden />
-                {onMap ? ui("onMap") : ui("showOnMap")}
+                {/* The pin's number, as the map shows it. */}
+                <span className="grid size-7 place-items-center rounded-full bg-primary text-xs font-extrabold tabular-nums text-primary-foreground">
+                  {pin}
+                </span>
+                {ui("showOnMap")}
               </button>
             ) : null}
           </div>

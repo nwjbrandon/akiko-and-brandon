@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { Link, Navigate, useParams } from "react-router-dom"
 import { ArrowLeft, Heart, NotebookPen } from "lucide-react"
 import {
@@ -11,26 +11,24 @@ import {
 } from "@/data/itinerary"
 import { Badge } from "@/components/Badge"
 import { TripBadge } from "@/components/TripBadge"
-import { TRIP_MAP_ID, TripMap } from "@/components/TripMap"
+import { TripMap } from "@/components/TripMap"
 import { TripTimeline } from "@/components/TripTimeline"
 import { useNow } from "@/hooks/useNow"
 import { useLang } from "@/i18n/LanguageProvider"
 import { dayCount, placeList } from "@/i18n/strings"
 import { formatDateSpan } from "@/lib/date"
-import { MAPS_ENABLED, revealMap, tripLegs } from "@/lib/maps"
+import { tripLegs } from "@/lib/maps"
 
 /**
- * One trip at a glance: the way between its cities on a map, then its days
- * down a rail with the hops between them, each day leading to its timeline,
- * or a note that the days are still to be planned.
+ * One trip at a glance: its cities on a map, then its days down a rail with
+ * the hops between them, each day leading to its timeline, or a note that the
+ * days are still to be planned.
  */
 export function TripPage() {
   const { tripId } = useParams()
   const { lang, ui, tx } = useLang()
   const { today } = useNow()
   const trip = getTrip(tripId)
-  // The hop on the trip's map, kept with its trip so another trip opens on its own first hop.
-  const [onMap, setOnMap] = useState<{ tripId: string; key: string }>()
 
   useEffect(() => {
     if (trip) document.title = trip.title[lang]
@@ -39,8 +37,6 @@ export function TripPage() {
   if (!trip) return <Navigate to="/" replace />
 
   const legs = tripLegs(trip)
-  const mapKey = onMap?.tripId === trip.id ? onMap.key : legs.length > 0 ? "0" : undefined
-  const pick = (key: string) => setOnMap({ tripId: trip.id, key })
 
   return (
     <div className="mx-auto w-full max-w-[480px] px-4 pt-[calc(var(--header-height)+1.625rem)] pb-16 sm:px-6 lg:max-w-[1120px]">
@@ -74,33 +70,19 @@ export function TripPage() {
       {/*
         On a phone the map comes first, then the days. On a wide screen the
         map sits beside the days, on the right, and stays in view while they
-        scroll past, so a hop picked from between them shows without leaving
-        its place; it comes first in the page so that it is first when the two
-        stack. Should the window be too short for all of it, it scrolls on its own.
+        scroll past; it comes first in the page so that it is first when the
+        two stack. Should the window be too short for all of it, it scrolls on
+        its own.
       */}
       <div className="mt-8 flex flex-col gap-10 lg:flex-row-reverse lg:items-start">
         <TripMap
           trip={trip}
-          selected={mapKey}
-          onSelect={pick}
-          className="scroll-mt-[calc(var(--header-height)+1rem)] lg:sticky lg:top-[calc(var(--header-height)+1rem)] lg:max-h-[calc(100dvh-var(--header-height)-2rem)] lg:w-[400px] lg:shrink-0 lg:overflow-y-auto xl:w-[440px]"
+          className="lg:sticky lg:top-[calc(var(--header-height)+1rem)] lg:max-h-[calc(100dvh-var(--header-height)-2rem)] lg:w-[400px] lg:shrink-0 lg:overflow-y-auto xl:w-[440px]"
         />
 
         <div className="min-w-0 flex-1">
           {isPlanned(trip) ? (
-            <TripTimeline
-              trip={trip}
-              legs={legs}
-              mapKey={mapKey}
-              onShowOnMap={
-                MAPS_ENABLED
-                  ? (key) => {
-                      pick(key)
-                      revealMap(TRIP_MAP_ID)
-                    }
-                  : undefined
-              }
-            />
+            <TripTimeline trip={trip} legs={legs} />
           ) : (
             <NotPlanned />
           )}

@@ -1,76 +1,58 @@
 import { getCity } from "@/data/cities"
 import { isPlanned } from "@/data/itinerary"
-import { SHORT_LINK_PLACES } from "@/data/places"
-import { mapsSearch } from "@/data/trips/shared"
-import type { Block, City, Day, TravelBy, Trip } from "@/data/types"
-import type { Lang } from "@/i18n/types"
+import { PLACES, type Coordinates } from "@/data/places"
+import type { Block, City, Day, Trip } from "@/data/types"
 
-const EMBED_ENDPOINT = "https://www.google.com/maps/embed/v1"
-
-const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
-
-/** Whether the pages can embed maps at all: without an API key they leave them out. */
-export const MAPS_ENABLED = Boolean(API_KEY)
-
-/** The Maps Embed travel mode for each way we go overland. */
-const TRAVEL_MODES: Record<Exclude<TravelBy, "plane">, string> = {
-  train: "transit",
-  bus: "transit",
-  walk: "walking",
-}
-
-/** Getting from one place to another, as Google Maps searches, and how. */
-export interface Leg {
-  from: string
-  to: string
-  by: TravelBy
-}
+/** Places closer than this share a pin, like a shop inside the building before it. */
+const SAME_PLACE_METRES = 75
 
 /**
- * Where a block happens, as a search Google Maps can place: the query of its
- * search link, or what its short link points to. A journey has no single
- * place, and a block without a map link has none to show.
+ * Where a block happens, from its map link. A journey has no single place,
+ * and a block without a map link has none to show.
  */
-export function blockPlace(block: Block) {
+export function blockCoordinates(block: Block): Coordinates | undefined {
   if (!block.map || block.type === "commute") return undefined
-  const place =
-    SHORT_LINK_PLACES[block.map] ?? new URL(block.map).searchParams.get("query") ?? undefined
-  if (!place && import.meta.env.DEV) {
-    console.warn(`No place for ${block.map}; add it to SHORT_LINK_PLACES in src/data/places.ts`)
+  const at = PLACES[block.map]
+  if (!at && import.meta.env.DEV) {
+    console.warn(`No coordinates for ${block.map}; add them to PLACES in src/data/places.ts`)
   }
-  return place
+  return at
+}
+
+/** One pin on the day's map: a place, and the plans there in the day's order. */
+export interface DayPin {
+  at: Coordinates
+  blocks: Block[]
 }
 
 /**
- * The day's journeys that can be mapped: each runs from the place before it
- * to the place after it, unless it gives its own `from` or `to`. A journey
- * with an end that cannot be placed, like a flight home, is left out.
+ * The day's places, a pin each, in the order the day first reaches them: a
+ * hotel left in the morning and come back to at night is one pin.
  */
-export function dayJourneys(day: Day) {
-  const places = day.blocks.map(blockPlace)
-  return day.blocks.flatMap((block, index) => {
-    if (block.type !== "commute") return []
-    const from = block.from ?? places.slice(0, index).findLast((place) => place !== undefined)
-    const to = block.to ?? places.slice(index + 1).find((place) => place !== undefined)
-    if (!from || !to) return []
-    const leg: Leg = { from, to, by: block.by ?? "train" }
-    return [{ block, leg }]
-  })
-}
-
-/** The day's blocks with a place, each run of the same place counted once. */
-export function dayPlaces(day: Day) {
-  return day.blocks
-    .map((block) => ({ block, place: blockPlace(block) }))
-    .filter((stop): stop is { block: Block; place: string } => stop.place !== undefined)
-    .filter((stop, index, stops) => stop.place !== stops[index - 1]?.place)
+export function dayPins(day: Day) {
+  const pins: DayPin[] = []
+  for (const block of day.blocks) {
+    const at = blockCoordinates(block)
+    if (!at) continue
+    const pin = pins.find((other) => metresBetween(other.at, at) < SAME_PLACE_METRES)
+    if (pin) pin.blocks.push(block)
+    else pins.push({ at, blocks: [block] })
+  }
+  return pins
 }
 
 /** One stay on a trip: a city and, for a planned trip, the run of days there. */
 export interface TripStop {
   city: City
   /** The first and last days there, by index into the trip's days and by date. */
-  days?: { first: number; last: number; start: string; end: string }
+  days?: TripStay
+}
+
+export interface TripStay {
+  first: number
+  last: number
+  start: string
+  end: string
 }
 
 /** The trip's stays, in the order it reaches them, coming home included. */
@@ -97,16 +79,31 @@ export function tripStops(trip: Trip): TripStop[] {
   return stops
 }
 
-/** The trip's cities, in the order it reaches them, coming home included. */
-export function tripCities(trip: Trip) {
-  return tripStops(trip).map((stop) => stop.city)
+/** One pin on the trip's map: a city, and each stay there. */
+export interface TripPin {
+  city: City
+  /** For a planned trip, each run of days there: coming home is a second stay where it set off. */
+  stays: TripStay[]
+}
+
+/** The trip's cities, a pin each, in the order it first reaches them. */
+export function tripPins(trip: Trip) {
+  const pins: TripPin[] = []
+  for (const stop of tripStops(trip)) {
+    let pin = pins.find((other) => other.city.id === stop.city.id)
+    if (!pin) {
+      pin = { city: stop.city, stays: [] }
+      pins.push(pin)
+    }
+    if (stop.days) pin.stays.push(stop.days)
+  }
+  return pins
 }
 
 /** A hop from one of the trip's cities to the next. */
 export interface TripLeg {
   from: City
   to: City
-  leg: Leg
   /** The journey that makes the hop and its day, when the days mark it with `hop`. */
   journey?: { block: Block; day: Day }
   /** For a planned trip: the index of the first day in `to`. */
@@ -114,9 +111,8 @@ export interface TripLeg {
 }
 
 /**
- * Each hop from one of the trip's cities to the next. When the days mark the
- * journey that makes each hop, the hop is routed the way that journey goes;
- * otherwise it runs from city to city by train.
+ * Each hop from one of the trip's cities to the next, with the journey that
+ * makes it when the days mark one.
  */
 export function tripLegs(trip: Trip): TripLeg[] {
   const stops = tripStops(trip)
@@ -132,20 +128,15 @@ export function tripLegs(trip: Trip): TripLeg[] {
       `${trip.id} marks ${journeys.length} journeys with hop but has ${stops.length - 1} hops between cities`,
     )
   }
-  return stops.slice(1).map((stop, index) => {
-    const from = stops[index].city
-    const journey = paired ? journeys[index] : undefined
-    const routed = journey && dayJourneys(journey.day).find(({ block }) => block === journey.block)
-    const leg: Leg = routed?.leg ?? {
-      from: cityPlace(from),
-      to: cityPlace(stop.city),
-      by: journey?.block.by ?? "train",
-    }
-    return { from, to: stop.city, leg, journey, arrivalDay: stop.days?.first }
-  })
+  return stops.slice(1).map((stop, index) => ({
+    from: stops[index].city,
+    to: stop.city,
+    journey: paired ? journeys[index] : undefined,
+    arrivalDay: stop.days?.first,
+  }))
 }
 
-/** Scroll a page's map into view, as when a journey elsewhere on the page asks to be shown on it. */
+/** Scroll a page's map into view, as when a plan elsewhere on the page asks to be shown on it. */
 export function revealMap(id: string) {
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
   document
@@ -153,47 +144,11 @@ export function revealMap(id: string) {
     ?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "nearest" })
 }
 
-/** Google Maps opened on a leg, routed the way we make it, or on where a flight lands. */
-export function legLink({ from, to, by }: Leg) {
-  if (by === "plane") return mapsSearch(to)
-  const params = new URLSearchParams({
-    api: "1",
-    origin: from,
-    destination: to,
-    travelmode: TRAVEL_MODES[by],
-  })
-  return `https://www.google.com/maps/dir/?${params}`
+/** How far apart two places are, as the crow flies. */
+function metresBetween([lat1, lng1]: Coordinates, [lat2, lng2]: Coordinates) {
+  const r = Math.PI / 180
+  const a =
+    Math.sin(((lat2 - lat1) * r) / 2) ** 2 +
+    Math.cos(lat1 * r) * Math.cos(lat2 * r) * Math.sin(((lng2 - lng1) * r) / 2) ** 2
+  return 12_742_000 * Math.asin(Math.sqrt(a))
 }
-
-/** A city as a search Google Maps can place. */
-export function cityPlace(city: City) {
-  return city.name.en
-}
-
-/** A map pinning one place. */
-export function placeEmbed(place: string, lang: Lang) {
-  return embed("place", { q: place }, lang)
-}
-
-/**
- * A map of one leg, routed the way we make it: Google's transit plan for a
- * train or bus, or a walking route. Google draws no line for a flight and
- * frames the two airports poorly, so a flight shows where it lands.
- */
-export function legEmbed({ from, to, by }: Leg, lang: Lang) {
-  if (by === "plane") return placeEmbed(to, lang)
-  return embed("directions", { origin: from, destination: to, mode: TRAVEL_MODES[by] }, lang)
-}
-
-/** A Google Maps embed, or none without an API key. */
-function embed<Mode extends "place" | "directions">(
-  mode: Mode,
-  query: Record<string, string>,
-  lang: Lang,
-) {
-  if (!API_KEY) return undefined
-  const params = new URLSearchParams({ key: API_KEY, language: lang, ...query })
-  return { mode, src: `${EMBED_ENDPOINT}/${mode}?${params}` }
-}
-
-export type Embed = NonNullable<ReturnType<typeof embed>>

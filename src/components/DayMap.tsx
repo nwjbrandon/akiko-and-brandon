@@ -1,69 +1,80 @@
-import { MapPin } from "lucide-react"
-import { mapsSearch } from "@/data/trips/shared"
-import type { Day } from "@/data/types"
+import type { Ref } from "react"
+import { ExternalLink } from "lucide-react"
 import { useLang } from "@/i18n/LanguageProvider"
-import { journeyCount, placeCount } from "@/i18n/strings"
-import { blockDuration, blockIcon, blockTimeRange } from "@/lib/blocks"
-import { dayJourneys, dayPlaces, legEmbed, legLink, placeEmbed } from "@/lib/maps"
-import { MapPicker, type MapChoice } from "./MapPicker"
+import { placeCount } from "@/i18n/strings"
+import type { DayPin } from "@/lib/maps"
+import { PinMap, type MapPin, type PinMapHandle } from "./PinMap"
 
-/** What the day's map answers to, for a journey on the timeline to bring it into view. */
+/** What the day's map answers to, for a plan on the timeline to bring it into view. */
 export const DAY_MAP_ID = "day-map"
 
 /**
- * The day on a map, one journey at a time, each routed the way we make it. A
- * day without journeys, spent in one neighbourhood, shows its places instead.
- * Each choice is keyed by its block's start, which is how the timeline asks
- * for one.
+ * Where the day goes: a numbered pin for each place, in the order we reach
+ * it, opening on what we do there. Each pin is keyed by its place in `pins`,
+ * as a string, which is how the timeline asks for one.
  */
 export function DayMap({
-  day,
-  selected,
-  onSelect,
+  ref,
+  pins,
   className,
 }: {
-  day: Day
-  selected: string | undefined
-  onSelect: (key: string) => void
+  ref?: Ref<PinMapHandle>
+  /** The day's places, from `dayPins`. */
+  pins: DayPin[]
   className?: string
 }) {
   const { lang, ui, tx } = useLang()
-  const journeys = dayJourneys(day)
 
-  const choices: MapChoice[] =
-    journeys.length > 0
-      ? journeys.map(({ block, leg }) => {
-          const title = tx(block.title)
-          const stops = block.note ? tx(block.note) : undefined
-          return {
-            key: block.start,
-            icon: blockIcon(block),
-            title,
-            when: blockTimeRange(block, lang),
-            duration: blockDuration(block, lang) ?? undefined,
-            // The stops on the way, unless they only say again where it starts and ends.
-            detail: stops === title ? undefined : stops,
-            embed: legEmbed(leg, lang),
-            href: legLink(leg),
-          }
-        })
-      : dayPlaces(day).map(({ block, place }) => ({
-          key: block.start,
-          icon: MapPin,
-          title: tx(block.location ?? block.title),
-          when: blockTimeRange(block, lang),
-          embed: placeEmbed(place, lang),
-          href: block.map ?? mapsSearch(place),
-        }))
+  const mapPins: MapPin[] = pins.map(({ at, blocks }, index) => {
+    // Named for where it is, if any plan there says; otherwise for what we do there.
+    const place = blocks.find((block) => block.location)?.location
+    const name = tx(place ?? blocks[0].title)
+    const href = blocks.find((block) => block.map)?.map
+    return {
+      key: String(index),
+      at,
+      number: index + 1,
+      title: name,
+      popup: (
+        <div>
+          <p className="pr-2 text-base leading-snug font-bold">{name}</p>
+          <ul className="mt-1.5 space-y-1">
+            {blocks.map((block) => (
+              <li key={block.start} className="flex gap-2.5 text-sm leading-snug">
+                <span className="shrink-0 font-semibold tabular-nums text-muted-foreground">
+                  {block.start}
+                </span>
+                <span>
+                  {tx(block.title)}
+                  {block.location && block.location !== place ? ` · ${tx(block.location)}` : null}
+                </span>
+              </li>
+            ))}
+          </ul>
+          {href ? (
+            <a
+              href={href}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-2.5 inline-flex items-center gap-1 text-sm font-bold"
+            >
+              {ui("openMap")}
+              <ExternalLink className="size-3.5" aria-hidden />
+            </a>
+          ) : null}
+        </div>
+      ),
+    }
+  })
 
   return (
-    <MapPicker
+    <PinMap
+      ref={ref}
       id={DAY_MAP_ID}
       heading={ui("dayMap")}
-      count={journeys.length > 0 ? journeyCount(journeys.length, lang) : placeCount(choices.length, lang)}
-      choices={choices}
-      selected={selected}
-      onSelect={onSelect}
+      count={placeCount(pins.length, lang)}
+      pins={mapPins}
+      maxZoom={16}
       className={className}
     />
   )

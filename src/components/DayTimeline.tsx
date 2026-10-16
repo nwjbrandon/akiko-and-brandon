@@ -3,23 +3,22 @@ import { getCity } from "@/data/cities"
 import type { Day } from "@/data/types"
 import { useNow } from "@/hooks/useNow"
 import { timelineStatuses } from "@/lib/blocks"
+import type { DayPin } from "@/lib/maps"
 import { cn } from "@/lib/utils"
 import { BlockSheet } from "./BlockSheet"
 import { TimelineItem } from "./TimelineItem"
 
 export function DayTimeline({
   day,
-  mapKeys,
-  mapKey,
+  pins,
   onShowOnMap,
   className,
 }: {
   day: Day
-  /** The start times of the journeys the day's map can show, which are their keys on it. */
-  mapKeys?: string[]
-  /** The journey the map is showing. */
-  mapKey?: string
-  onShowOnMap?: (key: string) => void
+  /** The pins on the day's map, from `dayPins`. */
+  pins?: DayPin[]
+  /** Opens a pin on the day's map, by its place in `pins`. */
+  onShowOnMap?: (index: number) => void
   className?: string
 }) {
   // The day runs on its own place's clock: Malaysia and Singapore are an hour behind Japan.
@@ -31,7 +30,7 @@ export function DayTimeline({
     <section className={cn("w-full", className)}>
       <ol className="list-none p-0">
         {day.blocks.map((block, index) => {
-          const onMap = onShowOnMap && mapKeys?.includes(block.start)
+          const pin = pins?.findIndex((other) => other.blocks.includes(block)) ?? -1
           return (
             <TimelineItem
               key={`${day.date}-${index}-${block.type}`}
@@ -40,8 +39,8 @@ export function DayTimeline({
               isFirst={index === 0}
               isLast={index === day.blocks.length - 1}
               onSelect={() => setSelected(index)}
-              onMap={onMap ? block.start === mapKey : undefined}
-              onShowOnMap={onMap ? () => onShowOnMap(block.start) : undefined}
+              pin={pin >= 0 ? pin + 1 : undefined}
+              onShowOnMap={onShowOnMap && pin >= 0 ? () => onShowOnMap(pin) : undefined}
             />
           )
         })}

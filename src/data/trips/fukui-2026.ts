@@ -78,10 +78,6 @@ export const FUKUI_2026: PlannedTrip = {
             en: "Yokohama Station → Shin-Yokohama Station (Yokohama Line) → Maibara Station (Tokaido Shinkansen, Hikari 633) → Tsuruga Station (Limited Express Shirasagi 3)",
             ja: "横浜駅 → 新横浜駅（横浜線）→ 米原駅（東海道新幹線 ひかり633号）→ 敦賀駅（特急しらさぎ3号）",
           },
-          // Mapped from Shin-Yokohama, where the shinkansen leaves: from Yokohama
-          // Station, Google's planner sends it through Tokyo and up the Hokuriku
-          // Shinkansen instead of west to Maibara.
-          from: "Shin-Yokohama Station",
         },
         {
           start: "10:27",

@@ -37,20 +37,6 @@ Built with React 19, TypeScript, Vite and Tailwind CSS v4.
 yarn install
 ```
 
-The maps need a Google Maps API key. Without one the site works the same, just
-without maps. In [Google Cloud Console](https://console.cloud.google.com/),
-enable the **Maps Embed API** (it is free, with no usage limit), create a key,
-and put it in `.env.local`, which git ignores:
-
-```bash
-VITE_GOOGLE_MAPS_API_KEY=AIza…
-```
-
-The key ends up in the page, as it does on any site with a Google Map, so
-restrict it in the console: to the Maps Embed API, and to the site's addresses
-(`http://localhost:5173/*` and the deployed domain). Restart `yarn dev` after
-adding or changing it.
-
 ## Run
 
 ```bash
@@ -81,10 +67,6 @@ Because routing happens in the browser, the host must rewrite unknown paths to
 `index.html` or a refresh on `/fukui-2026/2026-11-22` will 404. Both common
 hosts are covered: `public/_redirects` sets that rewrite for Netlify (Vite
 copies it into `dist/`), and `vercel.json` does the same for Vercel.
-
-`.env.local` is not deployed, so set `VITE_GOOGLE_MAPS_API_KEY` in the host's
-environment variables too. Vite builds it into the page, so a change only takes
-effect after a redeploy.
 
 ## Editing the itinerary
 
@@ -126,42 +108,27 @@ site).
 }
 ```
 
-A block's `map` also places it on the day's map, where each journey runs from
-the place before it to the place after it. A search link made with
-`mapsSearch("…")` works as it is. A `maps.app.goo.gl` short link, copied from
-the Maps app, also needs a line in
-[`src/data/places.ts`](src/data/places.ts) saying what to search for, because
-the embedded map cannot open short links; until it has one, the block is left
-off the map and the dev console says so.
-
-A journey (`type: "commute"`) can also say how we go, with `by`: `"train"` (the
-default), `"bus"`, `"walk"` or `"plane"`. That sets its icon and how its map is
-drawn. When the places either side of it are not where it starts or ends, as
-when two journeys run back to back or the day ends on one, `from` and `to` give
-those ends as Google Maps searches:
+A block's `map` also pins it on the day's map, which needs the place's
+coordinates: [`src/data/places.ts`](src/data/places.ts) gives them for each
+link, written the same way the trip writes it, a short link as it is and a
+search link as the same `mapsSearch("…")` call:
 
 ```ts
-{
-  start: "17:35",
-  end: "21:55",
-  type: "commute",
-  title: { en: "KL Sentral → JB Sentral", ja: "KLセントラル → JBセントラル" },
-  to: "JB Sentral",
-}
+"https://maps.app.goo.gl/NJMhFGfbmzcNMZX1A": [35.48747, 136.03723], // Avenue of Metasequoias
+[mapsSearch("松本城")]: [36.23865, 137.96887],
 ```
 
-`from` and `to` also steer Google's planner when it would take another way.
-Google's embedded maps cannot be routed through stops by train, so a journey
-starts its map where the line we want begins: the Tsuruga train is mapped from
-Shin-Yokohama, since from Yokohama Station Google sends it through Tokyo rather
-than west to Maibara.
+To find a place's coordinates, right-click it in Google Maps: the first line of
+the menu is its latitude and longitude, and clicking it copies them. Until a
+link has its line, its block is left off the map and the dev console says so. A
+journey (`type: "commute"`) is never pinned, even with a `map`.
 
-The journey that takes us on to the trip's next city also says `hop: true`. The
-trip page then shows that hop between the days with its date and time, and
-routes it on the trip's map the way the journey goes rather than from city to
-city. Mark one journey for each hop, or none: the marks are paired with the hops
-in order, so a missing or extra one leaves every hop unmarked, and the dev
-console says so.
+A journey can also say how we go, with `by`: `"train"` (the default), `"bus"`,
+`"walk"` or `"plane"`, which sets its icon. The journey that takes us on to the
+trip's next city also says `hop: true`, and the trip page then shows that hop
+between the days with its date and time. Mark one journey for each hop, or
+none: the marks are paired with the hops in order, so a missing or extra one
+leaves every hop unmarked, and the dev console says so.
 
 To add a trip, copy one of the trip files, give it a new `id`, add any new
 places to `cities.ts`, and list it in `TRIPS` in `itinerary.ts`. The home page
@@ -207,11 +174,10 @@ before it above and the trips to come below.
 
 **Trip page.** Under the map on a phone, and beside it on a wide screen, where
 the map stays in view as the days scroll past, the days run down a rail like
-the home page's. Each
-day's card has a thin bar showing the shape of the day, each plan as long as it
-lasts and coloured by its kind, and between the days sit the hops to each new
-city, which show themselves on the map. Before the trip a marker at the top
-counts down to it; during it, today's card gets the pulsing dot.
+the home page's. Each day's card has a thin bar showing the shape of the day,
+each plan as long as it lasts and coloured by its kind, and between the days
+sit the hops to each new city. Before the trip a marker at the top counts down
+to it; during it, today's card gets the pulsing dot.
 
 **Language.** English and Japanese, toggled from the header and remembered in
 `localStorage`. With no saved preference the site guesses: the browser timezone
@@ -233,20 +199,24 @@ forecasts about 16 days ahead, so until a trip comes close this correctly reads
 "Forecast not yet available". Days already gone use Open-Meteo's historical
 archive instead, so a past trip shows the weather it actually had.
 
-**Maps.** Each day's page opens with an embedded Google Map of its journeys, and
-each trip's page with one of the hops between its cities. On a phone the map
-comes first; on a wide screen it sits beside the timeline and stays in view as
-the timeline scrolls past. Google's embedded maps can only route one journey at
-a time by train, bus or on foot, so the journeys are listed under the map, with
-their times and stops, and picking one routes it; the map opens on the first.
-Each journey on the day's timeline, and each hop on the trip's, also has a "Show
-on the map" button that picks it and scrolls the map into view. Trains and
-buses use Google's transit planner, which plans from now rather than from the
-trip's times, so its journey times include any wait for the next train. Google
-draws no line for a flight, so a flight shows the airport it lands at. A day
-without journeys lists its places instead. Without an API key the maps and their
-buttons are left out. Google's own box in the map's top-left corner is hidden by
-running the map taller than its frame. See [`src/lib/maps.ts`](src/lib/maps.ts).
+**Maps.** Each trip's page has a map with a numbered pin for each of its
+cities, in the order the trip reaches them, each named beside its pin and
+opening on the days spent there. Each day's page has one with a numbered pin
+for each place the day goes, opening on what we do there and when, with a link
+to Google Maps. A place we come back to, like the hotel, keeps one pin, and so
+do places within about 75 m of each other, like a shop inside the building
+before it. Each plan on the day's timeline with a place has a "Show on the map"
+button carrying its pin's number, which zooms the map in on that pin and opens
+it. On a phone the map comes first; on a wide screen it sits beside the timeline
+and stays in view as the timeline scrolls past. The button in the map's corner
+opens it over the whole screen; Escape or "Close the map" puts it back. Inline
+on a phone, one finger scrolls the page past the map and two move it; opened
+up, it takes both. The maps are drawn with [Leaflet](https://leafletjs.com/) on
+OpenStreetMap's own tiles, which need no key, and the dark theme darkens the
+tiles with a CSS filter. Their tile server asks sites to keep traffic light,
+which a site for two easily does. See
+[`src/components/PinMap.tsx`](src/components/PinMap.tsx) and
+[`src/lib/maps.ts`](src/lib/maps.ts).
 
 **Printing.** The printer button opens the browser print dialog with a
 print stylesheet that drops the chrome, so the itinerary saves cleanly to PDF.
@@ -259,6 +229,6 @@ src/
   data/         The trips (one file each in trips/), places, and types
   hooks/        Theme, clock, scroll and parallax hooks
   i18n/         Language provider, UI strings, Japan geolocation check
-  lib/          Date formatting, block helpers, map embeds, class-name utility
+  lib/          Date formatting, block helpers, map pins, class-name utility
   pages/        Home timeline, trip overview, and single-day routes
 ```

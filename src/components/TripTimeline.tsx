@@ -1,6 +1,6 @@
 import { useId } from "react"
 import { Link } from "react-router-dom"
-import { ChevronRight, Map as MapIcon, TrainFront } from "lucide-react"
+import { ChevronRight, TrainFront } from "lucide-react"
 import { getCity } from "@/data/cities"
 import { dayPath } from "@/data/itinerary"
 import type { PlannedTrip } from "@/data/types"
@@ -33,24 +33,18 @@ function statusOn(date: string, today: string): TimelineStatus {
 /**
  * The trip's days down one rail, as on the home page and a day's page: a card
  * per day leading to its timeline and, before the first day in each new city,
- * the hop that gets us there, which shows itself on the trip's map. Before the
+ * the hop that gets us there. Before the
  * trip a marker at the top counts down to it; during it, today's card gets the
  * pulsing dot.
  */
 export function TripTimeline({
   trip,
   legs,
-  mapKey,
-  onShowOnMap,
   className,
 }: {
   trip: PlannedTrip
   /** The hops between the trip's cities, from `tripLegs`. */
   legs: TripLeg[]
-  /** The hop the trip's map is showing, by its place in `legs`. */
-  mapKey?: string
-  /** Shows a hop on the trip's map; unset when there is no map. */
-  onShowOnMap?: (key: string) => void
   className?: string
 }) {
   const { lang, ui } = useLang()
@@ -89,16 +83,13 @@ export function TripTimeline({
             )
           }
           if (row.kind === "hop") {
-            const key = String(row.index)
             return (
               <HopItem
-                key={`hop-${key}`}
+                key={`hop-${row.index}`}
                 hop={legs[row.index]}
                 status={statusOn(trip.days[legs[row.index].arrivalDay ?? 0].date, today)}
                 isFirst={isFirst}
                 isLast={isLast}
-                onMap={key === mapKey}
-                onShowOnMap={onShowOnMap ? () => onShowOnMap(key) : undefined}
               />
             )
           }
@@ -179,43 +170,22 @@ function DayItem({
   )
 }
 
-const HOP =
-  "-ml-3 mr-1 mb-6 flex min-h-[3.375rem] w-full min-w-0 flex-1 items-center justify-between gap-3 rounded-2xl border px-3 py-2 text-left sm:-ml-4 sm:mr-0 sm:min-h-[3.875rem] sm:px-4"
-
 /** A hop to the next city, between the days: where from and to, and when, if the days say. */
 function HopItem({
   hop,
   status,
   isFirst,
   isLast,
-  onMap,
-  onShowOnMap,
 }: {
   hop: TripLeg
   status: TimelineStatus
   isFirst: boolean
   isLast: boolean
-  onMap: boolean
-  onShowOnMap?: () => void
 }) {
-  const { lang, ui, tx } = useLang()
+  const { lang, tx } = useLang()
   const { journey } = hop
   const Icon = journey ? blockIcon(journey.block) : TrainFront
   const duration = journey ? blockDuration(journey.block, lang) : null
-
-  const content = (
-    <span className="min-w-0">
-      <span className="block text-sm font-bold">
-        {tx(hop.from.name)} → {tx(hop.to.name)}
-      </span>
-      {journey ? (
-        <span className="block text-sm font-medium tabular-nums text-muted-foreground">
-          {formatDayDate(journey.day.date, lang, "short")} · {journey.block.start}
-          {duration ? ` · ${duration}` : null}
-        </span>
-      ) : null}
-    </span>
-  )
 
   return (
     <li className="relative flex gap-4">
@@ -229,26 +199,19 @@ function HopItem({
           </span>
         }
       />
-      {onShowOnMap ? (
-        <button
-          type="button"
-          aria-pressed={onMap}
-          onClick={onShowOnMap}
-          className={cn(
-            HOP,
-            "transition-colors",
-            onMap ? "border-primary bg-secondary" : "border-border bg-card/70 hover:border-primary/60",
-          )}
-        >
-          {content}
-          <span className="no-print inline-flex shrink-0 items-center gap-1.5 text-xs font-bold text-primary">
-            <MapIcon className="size-3.5" aria-hidden />
-            {onMap ? ui("onMap") : ui("showOnMap")}
+      <div className="-ml-3 mr-1 mb-6 flex min-h-[3.375rem] w-full min-w-0 flex-1 items-center rounded-2xl border border-border/70 bg-card/45 px-3 py-2 sm:-ml-4 sm:mr-0 sm:min-h-[3.875rem] sm:px-4">
+        <p className="min-w-0">
+          <span className="block text-sm font-bold">
+            {tx(hop.from.name)} → {tx(hop.to.name)}
           </span>
-        </button>
-      ) : (
-        <div className={cn(HOP, "border-border/70 bg-card/45")}>{content}</div>
-      )}
+          {journey ? (
+            <span className="block text-sm font-medium tabular-nums text-muted-foreground">
+              {formatDayDate(journey.day.date, lang, "short")} · {journey.block.start}
+              {duration ? ` · ${duration}` : null}
+            </span>
+          ) : null}
+        </p>
+      </div>
     </li>
   )
 }

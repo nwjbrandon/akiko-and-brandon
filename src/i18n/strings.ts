@@ -34,7 +34,8 @@ const UI = {
   dayMap: { en: "Map of the day", ja: "この日の地図" },
   tripMap: { en: "Map of the trip", ja: "旅の地図" },
   showOnMap: { en: "Show on the map", ja: "地図で見る" },
-  onMap: { en: "On the map", ja: "地図に表示中" },
+  expandMap: { en: "Expand the map", ja: "地図を大きく表示" },
+  closeMap: { en: "Close the map", ja: "地図を閉じる" },
   theDay: { en: "The day", ja: "この日の予定" },
   dayByDay: { en: "Day by day", ja: "毎日の予定" },
   otherDays: { en: "Other days", ja: "ほかの日" },
@@ -81,6 +82,12 @@ export function dayLabel(index: number, lang: Lang) {
   return lang === "ja" ? `${index + 1}日目` : `Day ${index + 1}`
 }
 
+/** "Day 2" / "2日目", or "Days 2–3" / "2–3日目" for a run of them. */
+export function dayRangeLabel(first: number, last: number, lang: Lang) {
+  if (first === last) return dayLabel(first, lang)
+  return lang === "ja" ? `${first + 1}–${last + 1}日目` : `Days ${first + 1}–${last + 1}`
+}
+
 /** "In 36 days" / "あと36日" */
 export function inDays(days: number, lang: Lang) {
   return lang === "ja" ? `あと${days}日` : `In ${days} days`
@@ -112,12 +119,6 @@ export function dayOfTrip(index: number, days: number, lang: Lang) {
 export function planCount(plans: number, lang: Lang) {
   if (lang === "ja") return `予定${plans}件`
   return plans === 1 ? "1 plan" : `${plans} plans`
-}
-
-/** "3 journeys" / "3回の移動" */
-export function journeyCount(journeys: number, lang: Lang) {
-  if (lang === "ja") return `${journeys}回の移動`
-  return journeys === 1 ? "1 journey" : `${journeys} journeys`
 }
 
 /** "3 places" / "3か所" */
