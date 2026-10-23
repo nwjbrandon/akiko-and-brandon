@@ -7,6 +7,8 @@ import { BREAKFAST, CHECK_OUT, DINNER, LUNCH, mapsSearch } from "./shared"
 // then; worth re-checking the week before:
 // - The RTS Link was due to open in February 2027. If it has not, 3/20 crosses
 //   on the KTM Shuttle Tebrau from JB Sentral instead.
+// - Legoland Malaysia's theme park opens 10:00–18:00, closed Wednesdays. The
+//   size of its lockers was not confirmed: worth checking a suitcase fits.
 // - Universal Studios had not published its March 2027 hours; it usually opens
 //   at 10:00.
 // - 3/20 is probably Earth Hour, when Marina Bay has switched its lights off
@@ -17,9 +19,9 @@ import { BREAKFAST, CHECK_OUT, DINNER, LUNCH, mapsSearch } from "./shared"
 //   at its food hall instead.
 //
 // Getting around is by train and on foot. The only buses are the J100 between
-// JB Sentral and the KSL (an hour's walk otherwise), the garden's own shuttle in
-// Johor Bahru, and the Mandai bus from Khatib to the Night Safari, which no
-// train reaches.
+// JB Sentral and the KSL (an hour's walk otherwise) and the Mandai bus from
+// Khatib to the Night Safari, which no train reaches. The only cars are the two
+// Grabs to and from Legoland, out in Iskandar Puteri, with the luggage.
 //
 // Kuala Lumpur and Johor Bahru keep Malaysian time and Singapore its own; both
 // are an hour behind Japan.
@@ -50,6 +52,9 @@ const TRAVELODGE_LINK = "https://travelodgehotels.asia/travelodge-harbourfront/"
 
 const USS = { en: "Universal Studios Singapore", ja: "ユニバーサル・スタジオ・シンガポール" }
 
+const LEGOLAND_MAP = mapsSearch("LEGOLAND Malaysia Resort")
+const NIGHT_SAFARI_MAP = mapsSearch("Night Safari Singapore, 80 Mandai Lake Rd")
+
 const GARDENS_LINK =
   "https://www.gardensbythebay.com.sg/en/plan-your-visit/opening-hours.html"
 
@@ -60,8 +65,8 @@ export const MALAYSIA_SINGAPORE_2027: PlannedTrip = {
     ja: "ふたりのマレーシア・シンガポール",
   },
   subtitle: {
-    en: "The Petronas Towers by night, Batu Caves first thing, a morning in Johor Bahru, then Sentosa, the Night Safari and Marina Bay",
-    ja: "夜のペトロナスツインタワー、朝いちばんのバトゥ洞窟、ジョホールバルの朝、そしてセントーサ島、ナイトサファリ、マリーナベイ",
+    en: "The Petronas Towers by night, Batu Caves first thing, a day at Legoland Malaysia, then Sentosa, the Night Safari and Marina Bay",
+    ja: "夜のペトロナスツインタワー、朝いちばんのバトゥ洞窟、レゴランド・マレーシア、そしてセントーサ島、ナイトサファリ、マリーナベイ",
   },
   scene: "plain",
   days: [
@@ -414,10 +419,10 @@ export const MALAYSIA_SINGAPORE_2027: PlannedTrip = {
     {
       date: "2027-03-20",
       cityId: "johor-bahru",
-      title: { en: "Johor Bahru, then Singapore", ja: "ジョホールバルから、シンガポールへ" },
+      title: { en: "Legoland, then Singapore", ja: "レゴランドから、シンガポールへ" },
       summary: {
-        en: "Dim sum at Pin Ming Xuan by the hotel, a Johor Bahru morning still to plan, then the RTS Link to Singapore at 13:00: an early hawker dinner at Maxwell and the Night Safari after dark.",
-        ja: "ホテル近くの品茗轩で点心の朝ごはん。午前のジョホールバルはこれから決めて、13:00にRTSリンクでシンガポールへ。マックスウェルのホーカーで早めの夕食をとって、夜はナイトサファリ。",
+        en: "Dim sum at Pin Ming Xuan by the hotel, a day at Legoland Malaysia, then the RTS Link to Singapore in the afternoon and the bags dropped at the hotel: the Night Safari from its first tram at 19:00, and dinner at its restaurant before heading back.",
+        ja: "ホテル近くの品茗轩で点心の朝ごはん。昼間はレゴランド・マレーシアで遊んで、午後にRTSリンクでシンガポールへ。ホテルに荷物を置いて、19:00の始発トラムからナイトサファリを楽しんで、園内のレストランで夕食をとってから帰ります。",
       },
       blocks: [
         {
@@ -445,48 +450,86 @@ export const MALAYSIA_SINGAPORE_2027: PlannedTrip = {
         },
         {
           start: "08:45",
-          end: "13:00",
-          type: "activity",
-          title: STILL_TO_PLAN,
-        },
-        {
-          start: "13:00",
-          end: "13:30",
+          end: "09:30",
           type: "commute",
-          by: "bus",
-          title: { en: "Johor Bahru → Bukit Chagar", ja: "ジョホールバル → ブキッ・チャガー駅" },
+          by: "car",
+          title: { en: "KSL Hotel & Resort → Legoland", ja: "KSLホテル＆リゾート → レゴランド" },
           note: {
-            en: "From KSL City: JB Sentral (J100 bus) → Bukit Chagar RTS Station (walk, about 10 minutes)",
-            ja: "KSLシティから：JBセントラル（J100バス）→ ブキッ・チャガー駅（徒歩約10分）",
+            en: "KSL Hotel & Resort → LEGOLAND Malaysia, Iskandar Puteri (Grab, about 35 minutes, roughly RM40–60). The buses from JB Sentral take over an hour and a change, which is a lot with the luggage.",
+            ja: "KSLホテル＆リゾート → レゴランド・マレーシア（イスカンダル・プテリ）（Grab、約35分、RM40〜60ほど）。JBセントラルからのバスは乗り換えありで1時間以上かかるので、荷物があるとたいへん。",
           },
         },
         {
-          start: "13:30",
-          end: "13:50",
+          start: "09:30",
+          end: "09:50",
+          type: "logistics",
+          title: { en: "Leave luggage in a locker", ja: "ロッカーに荷物を預ける" },
+          location: { en: "LEGOLAND Malaysia, main entrance", ja: "レゴランド・マレーシア正面入口" },
+          note: {
+            en: "Lockers by the main entrance, about RM20–40 a day by size. Worth checking a suitcase fits before the trip.",
+            ja: "正面入口そばのロッカー、サイズにより1日RM20〜40ほど。スーツケースが入るか事前に確認を。",
+          },
+          map: LEGOLAND_MAP,
+        },
+        {
+          start: "10:00",
+          end: "14:00",
+          type: "activity",
+          title: { en: "LEGOLAND Malaysia", ja: "レゴランド・マレーシア" },
+          location: { en: "Iskandar Puteri", ja: "イスカンダル・プテリ" },
+          note: {
+            en: "The theme park, 10:00–18:00 (closed Wednesdays, so Saturday is fine). Miniland's Asian landmarks in Lego, the rides and lunch in the park; tickets are cheaper online. Leaving at 14:00 leaves time to check in at HarbourFront before the Night Safari.",
+            ja: "テーマパークは10:00〜18:00（水曜休園、土曜は営業）。アジアの名所をレゴで再現したミニランド、アトラクション、ランチもパーク内で。チケットはオンラインが割安。14:00に出れば、ハーバーフロントでチェックインしてからナイトサファリに向かえます。",
+          },
+          map: LEGOLAND_MAP,
+          link: "https://www.legoland.com.my/",
+        },
+        {
+          start: "14:00",
+          end: "14:15",
+          type: "logistics",
+          title: { en: "Collect luggage", ja: "荷物を受け取る" },
+          location: { en: "LEGOLAND Malaysia, main entrance", ja: "レゴランド・マレーシア正面入口" },
+          map: LEGOLAND_MAP,
+        },
+        {
+          start: "14:15",
+          end: "15:15",
+          type: "commute",
+          by: "car",
+          title: { en: "Legoland → Bukit Chagar", ja: "レゴランド → ブキッ・チャガー駅" },
+          note: {
+            en: "LEGOLAND Malaysia → Bukit Chagar RTS Station (Grab, about 40 minutes; an hour allowed for Saturday traffic towards the causeway)",
+            ja: "レゴランド・マレーシア → ブキッ・チャガー駅（Grab、約40分。土曜はコーズウェイ方面が混むので1時間みています）",
+          },
+        },
+        {
+          start: "15:15",
+          end: "16:00",
           type: "logistics",
           title: { en: "Immigration for both countries", ja: "出国・入国審査" },
           location: { en: "Bukit Chagar RTS Station", ja: "ブキッ・チャガー駅" },
           note: {
-            en: "Malaysian exit and Singapore entry both happen here, before boarding. A Japanese passport needs the free SG Arrival Card, filed in the 3 days before (from 18 March).",
-            ja: "マレーシア出国とシンガポール入国の審査をどちらもこの駅で、乗車前に済ませます。日本のパスポートはSGアライバルカード（無料）を3日前から（3/18以降）提出。",
+            en: "Malaysian exit and Singapore entry both happen here, before boarding; the end of the school holidays may mean queues. A Japanese passport needs the free SG Arrival Card, filed in the 3 days before (from 18 March).",
+            ja: "マレーシア出国とシンガポール入国の審査をどちらもこの駅で、乗車前に済ませます。学校休みの最終週末で混むかもしれません。日本のパスポートはSGアライバルカード（無料）を3日前から（3/18以降）提出。",
           },
           map: mapsSearch("Bukit Chagar RTS Station"),
           link: SG_ARRIVAL_CARD,
         },
         {
-          start: "13:50",
-          end: "14:00",
+          start: "16:00",
+          end: "16:10",
           type: "commute",
           hop: true,
           title: { en: "Bukit Chagar → Woodlands North", ja: "ブキッ・チャガー → ウッドランズ・ノース" },
           note: {
-            en: "Bukit Chagar → Woodlands North (RTS Link). If it has not opened yet: JB Sentral → Woodlands Train Checkpoint on the 14:00 Shuttle Tebrau, booked ahead with KTMB, then a 24-minute walk to Marsiling MRT.",
-            ja: "ブキッ・チャガー → ウッドランズ・ノース（RTSリンク）。未開業なら、JBセントラル14:00発のシャトル・テブラウでウッドランズ駅へ（KTMBで事前予約）、マーシリンMRT駅まで徒歩24分。",
+            en: "Bukit Chagar → Woodlands North (RTS Link). If it has not opened yet: JB Sentral → Woodlands Train Checkpoint on the Shuttle Tebrau leaving nearest 15:30, booked ahead with KTMB, then a 24-minute walk to Marsiling MRT.",
+            ja: "ブキッ・チャガー → ウッドランズ・ノース（RTSリンク）。未開業なら、JBセントラルを15:30ごろに出るシャトル・テブラウでウッドランズ駅へ（KTMBで事前予約）、マーシリンMRT駅まで徒歩24分。",
           },
         },
         {
-          start: "14:00",
-          end: "15:00",
+          start: "16:10",
+          end: "17:10",
           type: "commute",
           title: { en: "Woodlands North → HarbourFront", ja: "ウッドランズ・ノース → ハーバーフロント" },
           note: {
@@ -495,72 +538,57 @@ export const MALAYSIA_SINGAPORE_2027: PlannedTrip = {
           },
         },
         {
-          start: "15:00",
-          end: "15:15",
+          start: "17:10",
+          end: "17:25",
           type: "lodging",
           title: CHECK_IN,
           location: TRAVELODGE,
           note: {
-            en: "Check-in from 15:00; if the room isn't ready, the front desk keeps the bags.",
-            ja: "チェックインは15:00から。部屋の準備がまだなら、フロントで荷物を預かってもらいます。",
+            en: "Check-in from 15:00. The bags go up to the room, then straight back out.",
+            ja: "チェックインは15:00から。荷物を部屋に置いたら、すぐに出発。",
           },
           map: TRAVELODGE_MAP,
           link: TRAVELODGE_LINK,
         },
         {
-          start: "15:15",
-          end: "15:40",
-          type: "activity",
-          title: STILL_TO_PLAN,
-        },
-        {
-          start: "15:40",
-          end: "16:00",
+          start: "17:25",
+          end: "18:40",
           type: "commute",
-          title: { en: "HarbourFront → Maxwell", ja: "ハーバーフロント → マックスウェル" },
+          title: { en: "HarbourFront → Night Safari", ja: "ハーバーフロント → ナイトサファリ" },
           note: {
-            en: "HarbourFront → Outram Park (North East Line) → Maxwell (Thomson–East Coast Line)",
-            ja: "ハーバーフロント → アウトラム・パーク（北東線）→ マックスウェル（トムソン・イーストコースト線）",
+            en: "HarbourFront → Dhoby Ghaut (North East Line) → Khatib (North–South Line) → Night Safari (Mandai Khatib bus M2, every 15 minutes, S$2.50 by card only)",
+            ja: "ハーバーフロント → ドービー・ゴート（北東線）→ カティブ（南北線）→ ナイトサファリ（マンダイ・カティブ・バスM2、15分間隔、S$2.50・カードのみ）",
           },
         },
         {
-          start: "16:00",
-          end: "16:50",
-          type: "meal",
-          title: DINNER,
-          location: { en: "Maxwell Food Centre", ja: "マックスウェル・フードセンター" },
-          note: {
-            en: "An early hawker dinner in Chinatown, by the MRT exit. Tian Tian's Hainanese chicken rice has a Michelin Bib Gourmand and is open until about 19:30 (closed Mondays); some other stalls close by the afternoon.",
-            ja: "チャイナタウンのホーカーで早めの夕食。MRT駅の出口のすぐそば。ミシュランのビブグルマンに選ばれた「天天」の海南チキンライスは19:30ごろまで営業（月曜定休）。午後には閉まる店も。",
-          },
-          map: mapsSearch("Maxwell Food Centre"),
-        },
-        {
-          start: "16:50",
-          end: "18:00",
-          type: "commute",
-          title: { en: "Maxwell → Night Safari", ja: "マックスウェル → ナイトサファリ" },
-          note: {
-            en: "Maxwell → Orchard (Thomson–East Coast Line) → Khatib (North–South Line) → Night Safari (Mandai Khatib bus M2, every 15 minutes, S$2.50 by card only)",
-            ja: "マックスウェル → オーチャード（トムソン・イーストコースト線）→ カティブ（南北線）→ ナイトサファリ（マンダイ・カティブ・バスM2、15分間隔、S$2.50・カードのみ）",
-          },
-        },
-        {
-          start: "18:00",
-          end: "21:00",
+          start: "18:40",
+          end: "20:30",
           type: "activity",
           title: { en: "Night Safari", ja: "ナイトサファリ" },
           location: { en: "Mandai Wildlife Reserve", ja: "マンダイ・ワイルドライフ・リザーブ" },
           note: {
-            en: "The gates open at 18:00 (tickets are timed, S$58: book the earliest entry); the tram and trails start at 19:00. The tram is included. Creatures of the Night (19:30 or 20:30) needs a free seat booking, which opens online two hours before each show.",
-            ja: "ゲートは18:00に開門（入場は時間指定制・S$58、いちばん早い枠を予約）。トラムとトレイルは19:00から、トラムは料金に含まれます。「クリーチャーズ・オブ・ザ・ナイト」（19:30か20:30）は無料の座席予約が必要で、各回2時間前からオンラインで受付。",
+            en: "Tickets are timed (S$58): book an entry around 18:30. The first tram leaves at 19:00 and takes about 30 minutes (included), then the walking trails. Creatures of the Night (19:30 or 20:30) needs a free seat booking two hours before, and only fits if the trails give way.",
+            ja: "入場は時間指定制（S$58）、18:30ごろの枠を予約。19:00の始発トラム（料金込み、約30分）に乗ってから、徒歩のトレイルへ。「クリーチャーズ・オブ・ザ・ナイト」（19:30か20:30）は2時間前からの無料座席予約が必要で、トレイルを削れば見られます。",
           },
-          map: mapsSearch("Night Safari Singapore, 80 Mandai Lake Rd"),
+          map: NIGHT_SAFARI_MAP,
           link: "https://www.mandai.com/en/night-safari.html",
         },
         {
-          start: "21:00",
-          end: "22:00",
+          start: "20:30",
+          end: "21:30",
+          type: "meal",
+          title: DINNER,
+          location: { en: "Ulu Ulu Safari Restaurant, Night Safari", ja: "ウルウル・サファリ・レストラン（ナイトサファリ）" },
+          note: {
+            en: "Local and Asian dishes, Indian food and grills, 18:00–23:00 (last orders 22:30), with Ben & Jerry's for afters.",
+            ja: "ローカル・アジア料理、インド料理、グリルなど。18:00〜23:00（ラストオーダー22:30）、デザートにはベン＆ジェリーズも。",
+          },
+          map: NIGHT_SAFARI_MAP,
+          link: "https://www.mandai.com/en/night-safari/things-to-do/dine.html",
+        },
+        {
+          start: "21:30",
+          end: "22:30",
           type: "commute",
           title: { en: "Night Safari → HarbourFront", ja: "ナイトサファリ → ハーバーフロント" },
           note: {

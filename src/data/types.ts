@@ -9,7 +9,7 @@ export type BlockType =
   | "logistics"
 
 /** How a journey is made. */
-export type TravelBy = "train" | "bus" | "walk" | "plane"
+export type TravelBy = "train" | "bus" | "car" | "walk" | "plane"
 
 export interface Block {
   /** 24h "HH:MM" */
