@@ -4,7 +4,8 @@ import { CHECK_OUT, DINNER, LUNCH, MEET_AT_DOUTOR, SIGHTSEEING, mapsSearch } fro
 // Source of truth for 11/21–23: "Japan 202611 - 11_21-23.csv".
 // The CSV labels its second day block "11/21"; it is 11/22 — the day opens by
 // checking out of the Tsuruga hotel checked into on 11/21.
-// The Yokohama dinners on 11/20 and 11/24 are not in the CSV.
+// The Yokohama dinners on 11/20 and 11/24 are not in the CSV, and 11/23 from
+// leaving Eiheiji on follows a later plan: the 14:09 shinkansen and a 19:00 dinner.
 
 const DORMY_INN_MAP = "https://maps.app.goo.gl/wWWnXj6HG3LYspV46"
 const DORMY_INN = {
@@ -327,15 +328,15 @@ export const FUKUI_2026: PlannedTrip = {
         },
         {
           start: "10:59",
-          end: "13:22",
+          end: "12:22",
           type: "activity",
           title: SIGHTSEEING,
           location: { en: "Daihonzan Eiheiji", ja: "大本山永平寺" },
           map: "https://maps.app.goo.gl/zewbjjW6Lu2Fc8Tz6",
         },
         {
-          start: "13:22",
-          end: "14:00",
+          start: "12:22",
+          end: "13:00",
           type: "commute",
           by: "bus",
           title: {
@@ -348,8 +349,8 @@ export const FUKUI_2026: PlannedTrip = {
           },
         },
         {
-          start: "14:00",
-          end: "15:23",
+          start: "13:00",
+          end: "14:09",
           type: "meal",
           title: LUNCH,
           location: {
@@ -360,21 +361,34 @@ export const FUKUI_2026: PlannedTrip = {
           link: "https://tabelog.com/en/fukui/A1801/A180101/18000015/",
         },
         {
-          start: "15:23",
-          end: "19:08",
+          start: "14:09",
+          end: "17:52",
           type: "commute",
           hop: true,
           title: {
-            en: "Fukui Station → Yokohama Station",
-            ja: "福井駅 → 横浜駅",
+            en: "Fukui Station → Tokyo Station",
+            ja: "福井駅 → 東京駅",
           },
           note: {
-            en: "Fukui Station → Tokyo Station → Yokohama Station",
-            ja: "福井駅 → 東京駅 → 横浜駅",
+            en: "Fukui Station → Tokyo Station (Hokuriku Shinkansen)",
+            ja: "福井駅 → 東京駅（北陸新幹線）",
           },
         },
         {
-          start: "19:08",
+          start: "17:52",
+          end: "18:30",
+          type: "commute",
+          title: {
+            en: "Tokyo Station → Yokohama Station",
+            ja: "東京駅 → 横浜駅",
+          },
+          note: {
+            en: "Tokyo Station → Yokohama Station (JR Tokaido Line)",
+            ja: "東京駅 → 横浜駅（JR東海道線）",
+          },
+        },
+        {
+          start: "19:00",
           end: "20:30",
           type: "meal",
           title: DINNER,
