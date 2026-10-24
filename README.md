@@ -9,7 +9,7 @@ Itineraries for our trips, day by day:
 - **Fukui, for Two**, 20–24 November 2026: Tsuruga, the Echizen Crab Festival,
   the Ichijōdani ruins and Eiheiji temple, with a dinner in Yokohama either side.
 - **Malaysia & Singapore, for Two**, 18–22 March 2027: the Petronas Towers, Batu
-  Caves and the National Mosque in Kuala Lumpur, a morning in Johor Bahru, then
+  Caves and the National Mosque in Kuala Lumpur, a day at Legoland Malaysia, then
   Universal Studios, the Night Safari and Marina Bay in Singapore.
 
 And one still to plan, with its dates and places set:

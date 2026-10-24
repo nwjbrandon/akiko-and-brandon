@@ -2,6 +2,7 @@ import {
   BedDouble,
   Bus,
   Camera,
+  Car,
   Footprints,
   Heart,
   Luggage,
@@ -36,6 +37,7 @@ const LABEL_KEYS: Record<BlockType, UiKey> = {
 const TRAVEL_ICONS: Record<TravelBy, LucideIcon> = {
   train: TrainFront,
   bus: Bus,
+  car: Car,
   walk: Footprints,
   plane: Plane,
 }

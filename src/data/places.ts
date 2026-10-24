@@ -70,12 +70,12 @@ export const PLACES: Record<string, Coordinates> = {
   [mapsSearch("KSL Hotel & Resort, 33 Jalan Seladang, Johor Bahru")]: [1.48603, 103.76300],
   "https://maps.app.goo.gl/z1FzvQUDfFxxSXXX6": [1.48520, 103.76074], // Pin Ming Xuan (HQ KSL), Jalan Serigala
   [mapsSearch("Bukit Chagar RTS Station")]: [1.46611, 103.76244],
+  [mapsSearch("LEGOLAND Malaysia Resort")]: [1.42736, 103.62987],
 
   // Singapore
   [mapsSearch("Night Safari Singapore, 80 Mandai Lake Rd")]: [1.40219, 103.78806],
   [mapsSearch("Changi Airport")]: [1.35860, 103.98994],
   [mapsSearch("Travelodge Harbourfront Singapore, 50 Telok Blangah Rd")]: [1.26618, 103.82377],
-  [mapsSearch("Maxwell Food Centre")]: [1.28034, 103.84477],
   [mapsSearch("Seah Im Food Centre")]: [1.26665, 103.81903],
   [mapsSearch("Universal Studios Singapore")]: [1.25404, 103.82381],
   [mapsSearch("Mega Adventure Park Singapore, 10A Siloso Beach Walk")]: [1.25594, 103.81230],
