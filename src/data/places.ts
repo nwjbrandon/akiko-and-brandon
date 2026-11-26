@@ -53,6 +53,12 @@ export const PLACES: Record<string, Coordinates> = {
   "https://maps.app.goo.gl/zewbjjW6Lu2Fc8Tz6": [36.05659, 136.35688], // Daihonzan Eiheiji
   [mapsSearch("ヨーロッパ軒 総本店 福井市順化1-7-4")]: [36.06407, 136.21478],
 
+  // Tendo, Ginzan Onsen and Zao
+  [mapsSearch("天童温泉 栄屋ホテル")]: [38.35709, 140.38779],
+  [mapsSearch("天童温泉トラベラーズラウンジ 天童市鎌田本町2-5-43")]: [38.35836, 140.38178],
+  [mapsSearch("銀山温泉")]: [38.56937, 140.53153],
+  [mapsSearch("蔵王ライザワールド")]: [38.12401, 140.41138],
+
   // Kuala Lumpur
   [mapsSearch("KLIA Terminal 2")]: [2.74285, 101.68642],
   [mapsSearch("ibis Kuala Lumpur City Centre")]: [3.16322, 101.71455],
