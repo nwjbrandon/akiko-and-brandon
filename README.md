@@ -11,11 +11,8 @@ Itineraries for our trips, day by day:
 - **Malaysia & Singapore, for Two**, 18–22 March 2027: the Petronas Towers, Batu
   Caves and the National Mosque in Kuala Lumpur, a day at Legoland Malaysia, then
   Universal Studios, the Night Safari and Marina Bay in Singapore.
-
-And one still to plan, with its dates and places set:
-
-- **Yamagata, for Two**, 19–24 February 2027: Yamagata and Ginzan Onsen, with
-  dinners in Yokohama.
+- **Yamagata, for Two**, 19–24 February 2027: a night tour of Ginzan Onsen from
+  Tendo, a snowshoe trek to the frozen falls at Zao, and dinners in Yokohama.
 
 Built with React 19, TypeScript, Vite and Tailwind CSS v4.
 
@@ -82,8 +79,9 @@ order; the first and last days are the trip's dates.
 - [`fukui-2026.ts`](src/data/trips/fukui-2026.ts): the 21st–23rd are transcribed
   from `Japan 202611 - 11_21-23.csv`; the Yokohama dinners on the 20th and 24th
   were added by hand.
-- [`yamagata-2027.ts`](src/data/trips/yamagata-2027.ts): dates and places only,
-  not planned yet.
+- [`yamagata-2027.ts`](src/data/trips/yamagata-2027.ts): planned in November
+  2026 around two tendodays.com tours. The comment at the top of the file lists
+  what is still to settle, including the train times, which are placeholders.
 - [`malaysia-singapore-2027.ts`](src/data/trips/malaysia-singapore-2027.ts):
   planned in October 2026 around the flights, hotels and train already booked.
   Opening hours, prices and routes were checked then; the comment at the top of

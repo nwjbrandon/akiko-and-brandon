@@ -61,6 +61,20 @@ export const CITIES: Record<string, City> = {
     lon: 140.5306,
     timeZone: "Asia/Tokyo",
   },
+  tendo: {
+    id: "tendo",
+    name: { en: "Tendo", ja: "天童" },
+    lat: 38.3622,
+    lon: 140.3786,
+    timeZone: "Asia/Tokyo",
+  },
+  zao: {
+    id: "zao",
+    name: { en: "Zao", ja: "蔵王" },
+    lat: 38.135,
+    lon: 140.39,
+    timeZone: "Asia/Tokyo",
+  },
   "kuala-lumpur": {
     id: "kuala-lumpur",
     name: { en: "Kuala Lumpur", ja: "クアラルンプール" },
